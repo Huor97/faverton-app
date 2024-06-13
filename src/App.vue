@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Welcome from "./components/Welcome.vue";
+</script>
 
 <template>
-  <h1>hello this page is the construction...</h1>
+  <Welcome />
 </template>
 
 <style scoped></style>
