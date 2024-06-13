@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { TresCanvas } from "@tresjs/core";
 import {
-  OrbitControls,
   RoundedBox,
   MeshGlassMaterial,
   GLTFModel,
