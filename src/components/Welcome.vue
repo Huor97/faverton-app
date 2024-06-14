@@ -8,21 +8,17 @@ import {
   Text3D,
 } from "@tresjs/cientos";
 
-// const path = "src/assets/solar-panel.glb";
-// const path = "src/assets/earth/scene.glb";
-const pathEarh = "src/assets/earth.glb";
+const pathEarh = "/models/earth.glb";
+
 </script>
 <template>
   <TresCanvas window-size>
     <TresPerspectiveCamera :position="[0, 0, 5]" />
-    <!-- <OrbitControls /> -->
-    <!-- <TresAxesHelper /> -->
-    <!-- <TresGridHelper /> -->
     <Suspense>
       <Text3D
         :position="[0, 0, -3]"
         :scale="[3, 7, 2]"
-        font="src/assets/Concert.json"
+        font="/fonts/Concert.json"
       >
         FAVERTON
         <TresMeshNormalMaterial />
