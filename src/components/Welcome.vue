@@ -9,6 +9,7 @@ import {
 } from "@tresjs/cientos";
 
 const pathEarh = "/models/earth.glb";
+
 </script>
 <template>
   <TresCanvas window-size>
