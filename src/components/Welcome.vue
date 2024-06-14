@@ -6,15 +6,16 @@ import {
   GLTFModel,
   MouseParallax,
   Text3D,
+
   Levioso,
 } from "@tresjs/cientos";
 
 const pathEarh = "/models/earth.glb";
+
 </script>
 <template>
   <TresCanvas window-size>
     <TresPerspectiveCamera :position="[0, 0, 5]" />
-
     <Suspense>
       <Text3D
         :position="[0, 0, -3]"
@@ -27,6 +28,7 @@ const pathEarh = "/models/earth.glb";
     </Suspense>
 
     <Suspense>
+
       <Levioso ref="groupRef">
         <GLTFModel
           :position="[0, -0.7, 0.1]"
@@ -34,6 +36,7 @@ const pathEarh = "/models/earth.glb";
           :scale="[0.02, 0.02, 0.02]"
         />
       </Levioso>
+
     </Suspense>
 
     <TresMesh>
