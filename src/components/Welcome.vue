@@ -6,6 +6,8 @@ import {
   GLTFModel,
   MouseParallax,
   Text3D,
+
+  Levioso,
 } from "@tresjs/cientos";
 
 const pathEarh = "/models/earth.glb";
@@ -26,11 +28,15 @@ const pathEarh = "/models/earth.glb";
     </Suspense>
 
     <Suspense>
-      <GLTFModel
-        :position="[0, -0.7, 0.1]"
-        :path="pathEarh"
-        :scale="[0.02, 0.02, 0.02]"
-      />
+
+      <Levioso ref="groupRef">
+        <GLTFModel
+          :position="[0, -0.7, 0.1]"
+          :path="pathEarh"
+          :scale="[0.02, 0.02, 0.02]"
+        />
+      </Levioso>
+
     </Suspense>
 
     <TresMesh>
