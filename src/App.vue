@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import Welcome from "./components/Welcome.vue";
+import FerstPage from "./components/ferst-page.vue"
 </script>
 
 <template>
-  <Welcome />
+  <FerstPage />
+  <!-- <Welcome /> -->
 </template>
 
 <style scoped></style>
