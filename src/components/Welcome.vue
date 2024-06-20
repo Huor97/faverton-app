@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 import { shallowRef } from "vue";
 import { TresCanvas, useRenderLoop } from "@tresjs/core";
 import {
@@ -27,10 +28,12 @@ onLoop(({ elapsed }) => {
 <template>
   <TresCanvas window-size>
     <TresPerspectiveCamera :position="[0, -0.4, 5]" />
+
     <Suspense>
       <Text3D
         :position="[0, 0, -3]"
         :scale="[3, 7, 2]"
+
         font="/fonts/Concert.json"
       >
         FAVERTON
@@ -39,6 +42,7 @@ onLoop(({ elapsed }) => {
     </Suspense>
 
     <Suspense>
+
       <TresMesh ref="boxRef">
         <GLTFModel
           :position="[0, -1, 0.1]"
@@ -67,10 +71,12 @@ onLoop(({ elapsed }) => {
     </Levioso>
 
     <TresDirectionalLight :intensity="1" :position="[-10, -6, 50]" />
+
     <TresAmbientLight :intensity="1" />
     <MouseParallax :factor="1" :ease="3" />
   </TresCanvas>
 </template>
+
 
 <style scoped>
 h1 {

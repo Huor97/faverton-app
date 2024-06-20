@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import Nav from "./components/Nav.vue";
 import Welcome from "./components/Welcome.vue";
+import FerstPage from "./components/ferst-page.vue"
 </script>
 
 <template>
-  <Nav />
-  <Welcome />
+  <FerstPage />
+  <!-- <Welcome /> -->
 </template>
 
 <style scoped></style>
