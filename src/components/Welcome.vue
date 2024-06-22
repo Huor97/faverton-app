@@ -34,7 +34,7 @@ onLoop(({ elapsed }) => {
         font="/fonts/Concert.json"
       >
         FAVERTON
-        <TresMeshNormalMaterial />
+        <TresMeshStandardMaterial color="#00acd4" />
       </Text3D>
     </Suspense>
 
