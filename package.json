@@ -11,6 +11,8 @@
   "dependencies": {
     "@tresjs/cientos": "^3.9.0",
     "@tresjs/core": "^4.0.2",
+    "gsap": "^3.12.5",
+    "gsap-trial": "^3.12.5",
     "three": "^0.165.0",
     "vue": "^3.4.21"
   },
