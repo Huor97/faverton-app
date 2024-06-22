@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import Nav from "./components/Nav.vue";
-import Welcome from "./components/Welcome.vue";
 import FirstPage from "./components/first-page.vue"
 import Intro from "./components/intro.vue"
 import { onMounted, ref } from "vue";
@@ -26,6 +24,7 @@ onMounted(() => {
         start: 'top 40%',
         end: 'bottom 45%',
         scrub: true,
+        // @ts-ignore
         onLeave: () => gsap.to(section1.value.children, { opacity: 0 }),
         markers: true, // Utile pour le débogage, à retirer en production
       },
@@ -44,6 +43,7 @@ onMounted(() => {
         start: 'top 40%',
         end: 'bottom 50%',
         scrub: true,
+        // @ts-ignore
         onLeave: () => gsap.to(section2.value.children, { opacity: 0 }),
         // markers: true, // Utile pour le débogage, à retirer en production
       },
@@ -63,6 +63,7 @@ onMounted(() => {
         start: 'top 80%',
         end: 'bottom 90%',
         scrub: true,
+        // @ts-ignore
         onLeave: () => gsap.to(section3.value.children, { opacity: 0 }),
         // markers: true, // Utile pour le débogage, à retirer en production
       },
@@ -81,6 +82,7 @@ onMounted(() => {
         start: 'top 90%',
         end: 'bottom 95%',
         scrub: true,
+        // @ts-ignore
         onLeave: () => gsap.to(section4.value.children, { opacity: 0 }),
         // markers: true, // Utile pour le débogage, à retirer en production
       },

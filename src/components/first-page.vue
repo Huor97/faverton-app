@@ -10,6 +10,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 const container = ref(null)
 const image = ref(null)
+// @ts-ignore
 let scrollTrigger
 
 
@@ -64,6 +65,7 @@ onMounted(() => {
 
 
 onUnmounted(() => {
+        // @ts-ignore
     if (scrollTrigger) scrollTrigger.kill()
 })
 
