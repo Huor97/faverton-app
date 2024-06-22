@@ -26,7 +26,7 @@ onMounted(() => {
         scrub: true,
         // @ts-ignore
         onLeave: () => gsap.to(section1.value.children, { opacity: 0 }),
-        markers: true, // Utile pour le débogage, à retirer en production
+        // markers: true, // Utile pour le débogage, à retirer en production
       },
     });
   }
@@ -79,8 +79,8 @@ onMounted(() => {
       stagger: 0.3,
       scrollTrigger: {
         trigger: section4.value,
-        start: 'top 90%',
-        end: 'bottom 95%',
+        start: 'top 80%',
+        end: 'bottom 90%',
         scrub: true,
         // @ts-ignore
         onLeave: () => gsap.to(section4.value.children, { opacity: 0 }),
