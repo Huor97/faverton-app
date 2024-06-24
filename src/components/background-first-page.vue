@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import gsap from "gsap"
-import {ScrollTrigger} from 'gsap/ScrollTrigger'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { onMounted, onUnmounted, ref } from "vue";
 // console.log("gsap", gsap)
 // console.log("gsap", ScrollTrigger)
 
 gsap.registerPlugin(ScrollTrigger)
-
 
 const container = ref(null)
 const image = ref(null)
@@ -16,7 +15,7 @@ let scrollTrigger
 
 onMounted(() => {
   const img = image.value;
-  
+
   scrollTrigger = ScrollTrigger.create({
     trigger: "body",
     start: "top top",
@@ -30,7 +29,7 @@ onMounted(() => {
       let x, y;
       const zoom = 1.5 + progress * 0.5;
 
-      switch(stage) {
+      switch (stage) {
         case 0: // Haut gauche à haut droit
           console.log("0");
           x = gsap.utils.interpolate(0, -25, stageProgress);
@@ -65,16 +64,16 @@ onMounted(() => {
 
 
 onUnmounted(() => {
-        // @ts-ignore
-    if (scrollTrigger) scrollTrigger.kill()
+  // @ts-ignore
+  if (scrollTrigger) scrollTrigger.kill()
 })
 
 </script>
 
 <template>
-    <div class="image-container" ref="container">
-        <img src="../assets/faverton_background.jpg" alt="background" ref="image">
-    </div>
+  <div class="image-container" ref="container">
+    <img src="../assets/faverton_background.jpg" alt="background" ref="image">
+  </div>
 </template>
 
 <style scoped>
@@ -87,7 +86,7 @@ onUnmounted(() => {
   overflow: hidden;
 }
 
-.image-container > img {
+.image-container>img {
   width: 100%;
   height: 100%;
   object-fit: cover;

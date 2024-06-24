@@ -10,7 +10,9 @@ import {
   Levioso,
   Html,
 } from "@tresjs/cientos";
-import { BackSide } from "three";
+import { BackSide, DoubleSide } from "three";
+
+const emit = defineEmits(['startClicked']);
 
 const pathEarh = "/models/earth.glb";
 
@@ -23,6 +25,10 @@ onLoop(({ elapsed }) => {
     boxRef.value.rotation.y = elapsed * 0.1;
   }
 });
+
+function handleStartClick() {
+  emit('startClicked');
+}
 </script>
 <template>
   <TresCanvas window-size>
@@ -48,23 +54,25 @@ onLoop(({ elapsed }) => {
       </TresMesh>
     </Suspense>
 
-    <Levioso ref="groupRef">
+    <Levioso ref="groupRef" :speed="3">
       <TresMesh>
         <RoundedBox :scale="[1.5, 1.5, 1.5]" :args="[1.5, 1.5, 1.5, 2, 0.03]">
-          <MeshGlassMaterial :side="BackSide" />
+          <MeshGlassMaterial :side="DoubleSide" />
         </RoundedBox>
       </TresMesh>
-
-      <Html
-        center
-        transform
-        :distance-factor="4"
-        :position="[0, 0, 0.65]"
-        :scale="[0.75, 0.75, 0.75]"
-      >
-        <h1 class="bg-white dark:bg-dark text-xs p-1 rounded">START</h1>
-      </Html>
     </Levioso>
+
+        <Html
+          center
+          transform
+          :distance-factor="4"
+          :position="[0, 0, 0.65]"
+          :scale="[0.75, 0.75, 0.75]"
+          
+        >
+          <h1 @click="handleStartClick" class="bg-white dark:bg-dark text-xs p-1 rounded">START</h1>
+        </Html>
+
 
     <TresDirectionalLight :intensity="1" :position="[-10, -6, 50]" />
     <TresAmbientLight :intensity="1" />
@@ -75,5 +83,7 @@ onLoop(({ elapsed }) => {
 <style scoped>
 h1 {
   cursor: pointer;
+  position: relative;
+  top: 13vh;
 }
 </style>
