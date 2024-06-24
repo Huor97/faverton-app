@@ -10,7 +10,7 @@ import {
   Levioso,
   Html,
 } from "@tresjs/cientos";
-import { BackSide, DoubleSide } from "three";
+import { DoubleSide } from "three";
 
 const emit = defineEmits(['startClicked']);
 
