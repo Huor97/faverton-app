@@ -1,3 +1,9 @@
 {
-  "recommendations": ["Vue.volar"]
+  "recommendations": [
+    "Vue.volar",
+    "dbaeumer.vscode-eslint",
+    "antfu.goto-alias",
+    "vue.volar",
+    "dariofuzinato.vue-peek"
+  ]
 }
