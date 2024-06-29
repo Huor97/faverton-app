@@ -5,7 +5,7 @@ import Intro from "./components/intro.vue"
 import WindTurbine from "./components/wind-turbine.vue"
 import BioGasSolarPanel from "./components/bio-gas-solar-panel.vue"
 import HydroElectric from "./components/hydro-electric.vue"
-
+import Header from "./components/header.vue"
 import { ref } from "vue";
 const showSections = ref(false);
 
@@ -21,18 +21,21 @@ const showSections = ref(false);
   <template v-else>
 
     <BackgroundFirstPage />
+    <Header />
     <Intro />
     <WindTurbine />
     <BioGasSolarPanel />
     <HydroElectric />
-    <div></div>
+    <div class="fist-page-header"></div>
 
   </template>
+
+
 
 </template>
 
 <style scoped>
-div {
+.fist-page-header {
   height: 100vh;
 }
 </style>

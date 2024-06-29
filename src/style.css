@@ -1,3 +1,10 @@
+:root {
+    --bg-gradient: linear-gradient(135deg, #00acd4, #6fdde9 66%, #7aeca9);
+    --box-shadow: 0 30px 160px 0 rgba(0, 0, 0, .3), 0 40px 77px 0 rgba(0, 0, 0, .1);
+    --transition-fast: .25s ease-in-out;
+    --transition-slow: .5s ease-in-out;
+}
+
 html, body {
     margin: 0;
     padding: 0;
