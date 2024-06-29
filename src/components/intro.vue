@@ -32,6 +32,13 @@ onMounted(() => {
   left: 35vw;
   top: 5;
   width: 40%;
+  height: 100vh;
+}
+
+.container-intro >h1,
+.container-intro > p {
+  position: relative;
+  top: 20vh;
 }
 
 </style>

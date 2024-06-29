@@ -45,6 +45,7 @@ onMounted(() => {
     position: relative;
     color: aliceblue;
     width: 30%;
+    height: 100vh;
 }
 
 .container-section>h2,
