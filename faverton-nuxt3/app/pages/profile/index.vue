@@ -1,9 +1,11 @@
 <script lang="ts" setup>
-
+definePageMeta({
+  middleware: [`auth`],
+});
 </script>
 
 <template>
   <div>
-    settings page
+    <UserAuthProfileAccount />
   </div>
 </template>

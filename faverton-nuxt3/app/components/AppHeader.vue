@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+const user = useSupabaseUser();
 
 const isMenuOpen = ref(false);
+
 const menuItems = [
   { href: `http://`, text: `Anatomy` },
   { href: `http://`, text: `Ecology` },
@@ -43,6 +44,7 @@ const toggleMenu = () => {
           >
             {{ item.text }}
           </a>
+          <UserAuthForms v-if="!user" />
         </div>
       </div>
     </div>
