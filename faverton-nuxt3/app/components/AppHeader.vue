@@ -53,6 +53,7 @@ console.log(`user is :`, user.value);
               class="bg-blue-500 p-4 text-white"
             />
           </div>
+          <UserAuthForms />
         </div>
       </div>
     </div>
