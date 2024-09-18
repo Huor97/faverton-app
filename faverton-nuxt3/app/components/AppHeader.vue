@@ -13,7 +13,6 @@ const menuItems = [
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
-console.log(`user is :`, user.value);
 </script>
 
 <template>
