@@ -55,7 +55,6 @@ console.log(`user is :`, user.value);
           </div>
 
           <UserAuthForms />
-
         </div>
       </div>
     </div>
