@@ -2,7 +2,7 @@ FROM node:18-alpine AS base
 
 RUN npm i -g pnpm
 
-WORKDIR /app
+WORKDIR /faverton-nuxt3/app
 
 FROM base AS dependencies
 COPY package.json pnpm-lock.yaml ./
