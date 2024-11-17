@@ -8,9 +8,9 @@ export default defineNuxtConfig({
   modules: [
     `@nuxt/eslint`,
     `@nuxt/ui`,
-    `@tresjs/nuxt`,
     `@nuxt/devtools`,
     `@nuxtjs/supabase`,
+    `@tresjs/nuxt`,
   ],
   supabase: {
     redirectOptions: {
