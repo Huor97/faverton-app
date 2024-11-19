@@ -8,10 +8,14 @@ const menuItems = [
   { href: `http://`, text: `Ecology` },
   { href: `http://`, text: `Intelligence` },
   { href: `http://`, text: `Mythology` },
+  // { href: `http://`, text: `Connexion` },
 ];
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
+};
+const goToLogin = () => {
+  navigateTo(`/login`);
 };
 </script>
 
@@ -44,6 +48,25 @@ const toggleMenu = () => {
           >
             {{ item.text }}
           </a>
+          <div>
+            <div
+              :class="['menu__item', { 'menu__item--is-visible': isMenuOpen }]"
+            >
+              <button
+                v-if="!user"
+                class="login-button"
+                @click="goToLogin"
+              >
+                Se connecter
+              </button>
+              <button
+                v-else
+                class="login-button"
+              >
+                Profile
+              </button>
+            </div>
+          </div>
           <UserAuthForms v-if="!user" />
         </div>
       </div>
@@ -95,8 +118,10 @@ const toggleMenu = () => {
     left: 5vw;
   }
 .card__header {
-  height: 50px;
-  padding: 15px 55px 45px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .menu {

@@ -13,11 +13,13 @@ export default defineNuxtConfig({
     `@tresjs/nuxt`,
   ],
   supabase: {
+    url: process.env.SUPABASE_URL,
+    key: process.env.SUPABASE_KEY,
     redirectOptions: {
-      login: `/`, // Désactive la redirection vers la page de connexion
-      callback: `/confirm`, // Garde la redirection vers la page de callback
-      include: undefined,
-      exclude: [`/`, `/introduction`], // N'applique pas de redirection pour cette page
+      login: `/login`,
+      callback: `/confirm`,
+      include: [`register`],
+      exclude: [`/`, `/introduction`, `confirm`],
       cookieRedirect: false,
     },
   },
