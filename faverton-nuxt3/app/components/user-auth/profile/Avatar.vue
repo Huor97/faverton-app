@@ -1,6 +1,7 @@
 <script setup>
-const props = defineProps([`path`]);
-const { path } = toRefs(props);
+const props = defineProps({
+  path: String,
+});
 
 const emit = defineEmits([`update:path`, `upload`]);
 
@@ -12,7 +13,9 @@ const files = ref();
 
 const downloadImage = async () => {
   try {
-    const { data, error } = await supabase.storage.from(`avatars`).download(path.value);
+    const { data, error } = await supabase.storage
+      .from(`avatars`)
+      .download(props.path);
     if (error) throw error;
     src.value = URL.createObjectURL(data);
   }
@@ -35,7 +38,9 @@ const uploadAvatar = async (evt) => {
     const fileName = `${Math.random()}.${fileExt}`;
     const filePath = `${fileName}`;
 
-    const { error: uploadError } = await supabase.storage.from(`avatars`).upload(filePath, file);
+    const { error: uploadError } = await supabase.storage
+      .from(`avatars`)
+      .upload(filePath, file);
 
     if (uploadError) throw uploadError;
 
@@ -52,40 +57,28 @@ const uploadAvatar = async (evt) => {
 
 downloadImage();
 
-watch(path, () => {
-  if (path.value) {
-    downloadImage();
-  }
-});
+watch(
+  () => props.path,
+  () => {
+    if (props.path) {
+      downloadImage();
+    }
+  },
+);
 </script>
 
 <template>
-  <div class="flex flex-col items-center gap-2">
-    <UAvatar
+  <div>
+    <img
       v-if="src"
-      size="lg"
-      chip-color="primary"
-      chip-text="ÉD"
-      chip-position="bottom-right"
       :src="src"
       alt="Avatar"
-      @change="uploadAvatar"
-    />
-    <UAvatar
-      v-else
-      icon="i-heroicons-photo"
-      size="sm"
-    />
-
-    <div>
-      <label
-        for="single"
-      >
-        {{ uploading ? 'Uploading ...' : 'Upload' }}
-      </label>
+      class="w-full h-full rounded-full"
+    >
+    <div style="width: 10em; position: relative">
       <input
         id="single"
-        class="hidden absolute"
+        style="position: absolute; visibility: hidden"
         type="file"
         accept="image/*"
         :disabled="uploading"

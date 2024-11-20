@@ -1,7 +1,10 @@
 <script setup lang="ts">
 const user = useSupabaseUser();
+const supabase = useSupabaseClient();
 
 const isMenuOpen = ref(false);
+const avatarUrl = ref(``);
+const name = ref(``);
 
 const menuItems = [
   { href: `http://`, text: `Anatomy` },
@@ -17,6 +20,26 @@ const toggleMenu = () => {
 const goToLogin = () => {
   navigateTo(`/login`);
 };
+const goToProfile = () => {
+  navigateTo(`/profile`);
+};
+
+onMounted(async () => {
+  if (user.value) {
+    // Récupérez l'URL de l'avatar depuis votre base de données ou API
+    // Ceci est un exemple, adaptez-le à votre structure de données
+    const { data, error } = await supabase
+      .from(`profiles`)
+      .select(`username, avatar_url`)
+      .eq(`id`, user.value.id)
+      .single();
+
+    if (data && !error) {
+      avatarUrl.value = data.avatar_url;
+      name.value = data.username;
+    }
+  }
+});
 </script>
 
 <template>
@@ -31,43 +54,49 @@ const goToLogin = () => {
       :class="{ 'is-visible': isMenuOpen }"
     >
       <div class="card__header">
-        <div class="menu">
+        <div class="flex items-center">
           <div
             :class="['menu__icon', { open: isMenuOpen }]"
             @click="toggleMenu"
           >
             <span /><span /><span />
           </div>
-          <a
-            v-for="(item, index) in menuItems"
-            :key="index"
-            :href="item.href"
-            target="_blank"
-            :class="['menu__item', { 'menu__item--is-visible': isMenuOpen }]"
-            :style="{ transitionDelay: `${index * 75}ms` }"
-          >
-            {{ item.text }}
-          </a>
           <div>
-            <div
+            <a
+              v-for="(item, index) in menuItems"
+              :key="index"
+              :href="item.href"
+              target="_blank"
               :class="['menu__item', { 'menu__item--is-visible': isMenuOpen }]"
+              :style="{ transitionDelay: `${index * 75}ms` }"
             >
-              <button
-                v-if="!user"
-                class="login-button"
+              {{ item.text }}
+            </a>
+          </div>
+          <div :class="['menu__item', { 'menu__item--is-visible': isMenuOpen }]">
+            <div
+              v-if="!user"
+            >
+              <UButton
+                label="Login"
+                type="submit"
                 @click="goToLogin"
-              >
-                Se connecter
-              </button>
-              <button
-                v-else
-                class="login-button"
-              >
-                Profile
-              </button>
+              />
+            </div>
+
+            <div
+              v-else
+              class="w-10 h-10 cursor-pointer"
+              @click="goToProfile"
+            >
+              <UserAuthProfileAvatar
+                v-if="user"
+                :path="avatarUrl"
+                size="large"
+                :alt="`Avatar de ${name}`"
+              />
             </div>
           </div>
-          <UserAuthForms v-if="!user" />
         </div>
       </div>
     </div>
@@ -122,14 +151,6 @@ const goToLogin = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.menu {
-  display: flex;
-  overflow: hidden;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  align-items: flex-start;
 }
 
 .menu__icon {
