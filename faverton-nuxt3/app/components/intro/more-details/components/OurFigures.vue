@@ -74,7 +74,7 @@ onMounted (() => {
 </script>
 
 <template>
-  <div class="bg-blue-300 max-w-[250px] grid justify-center gap-5">
+  <div class="max-w-[250px] grid justify-center gap-5">
     <div
       ref="numbersSectionFourRef"
       class="text-6xl text-center"

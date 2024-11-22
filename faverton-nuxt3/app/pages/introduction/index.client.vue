@@ -1,11 +1,13 @@
 <template>
   <div>
-    <IntroductionFarmeBackground />
+    <IntroFarmeBackground />
     <AppHeader />
-    <IntroductionIntro />
-    <IntroductionWindTurbine />
-    <IntroductionBioGas />
-    <IntroductionSolarPanel />
-    <IntroductionHydroElectric />
+    <IntroPresent />
+    <IntroGreenEnergyProduction />
+    <IntroOrganicWasteRecycling />
+    <IntroSustainableAgriculture />
+    <IntroEducationAndWorkshops />
+    <IntroRestaurantAndCulturalActivities />
+    <IntroCoworkingAndAccommodation />
   </div>
 </template>

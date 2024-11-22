@@ -7,24 +7,24 @@ const props = defineProps<{
   button: string
 }>();
 
-const data = [
-  {
-    title: `Vos données vous porterons vers de nouveaux sommets`,
-    subtitle: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro voluptatum deleniti omnis, excepturi`,
-  },
-  {
-    title: `Vos données vous porterons vers de nouveaux sommets`,
-    subtitle: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro voluptatum deleniti omnis, excepturi`,
-  },
-  {
-    title: `Vos données vous porterons vers de nouveaux sommets`,
-    subtitle: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro voluptatum deleniti omnis, excepturi`,
-  },
-  {
-    title: `Vos données vous porterons vers de nouveaux sommets`,
-    subtitle: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro voluptatum deleniti omnis, excepturi`,
-  },
-];
+// const data = [
+//   {
+//     title: `Vos données vous porterons vers de nouveaux sommets`,
+//     subtitle: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro voluptatum deleniti omnis, excepturi`,
+//   },
+//   {
+//     title: `Vos données vous porterons vers de nouveaux sommets`,
+//     subtitle: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro voluptatum deleniti omnis, excepturi`,
+//   },
+//   {
+//     title: `Vos données vous porterons vers de nouveaux sommets`,
+//     subtitle: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro voluptatum deleniti omnis, excepturi`,
+//   },
+//   {
+//     title: `Vos données vous porterons vers de nouveaux sommets`,
+//     subtitle: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro voluptatum deleniti omnis, excepturi`,
+//   },
+// ];
 
 const titleSection1 = ref<HTMLElement | null>(null);
 const subTitleSection1 = ref<HTMLElement | null>(null);

@@ -18,7 +18,7 @@ onMounted(() => {
     end: `bottom bottom`,
     scrub: 1,
     onUpdate: (self) => {
-      const progress = self.progress * 4;
+      const progress = self.progress * 2.5;
       const stage = Math.floor(progress);
       const stageProgress = progress - stage;
 
@@ -27,7 +27,7 @@ onMounted(() => {
 
       switch (stage) {
         case 0: // Haut gauche à haut droit
-          x = gsap.utils.interpolate(0, -25, stageProgress);
+          x = gsap.utils.interpolate(0, -20, stageProgress);
           y = 0;
           break;
         case 1: // Haut droit à bas droit
@@ -35,12 +35,12 @@ onMounted(() => {
           y = gsap.utils.interpolate(-90, -30, stageProgress);
           break;
         case 2: // Haut droit à bas droit
-          x = -30;
-          y = gsap.utils.interpolate(-150, 0, stageProgress);
+          x = -5;
+          y = gsap.utils.interpolate(-100, -200, stageProgress);
           break;
         default:
           x = 0;
-          y = -130;
+          y = -150;
       }
 
       gsap.to(img, {
@@ -62,13 +62,13 @@ onUnmounted(() => {
 <template>
   <div
     ref="container"
-    class="bg-blue-300 fixed top-0 left-0 w-screen h-screen"
+    class=" fixed top-0 left-0 w-screen h-screen overflow-hidden"
   >
     <img
       ref="image"
       class="w-full h-full object-cover origin-top-left"
-      src="../../assets/faverton_background.jpg"
-      alt="background"
+      src="~/assets/faverton_background.jpg"
+      alt="farme"
     >
   </div>
 </template>
