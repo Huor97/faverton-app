@@ -36,6 +36,12 @@ Locally preview production build:
 pnpm run preview
 ```
 
+Static build page 
+```bash
+#pnpm
+pnpm run generate
+```
+
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
 # Module 
