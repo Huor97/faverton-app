@@ -1,6 +1,6 @@
 <template>
   <div>
-    <IntroFarmeBackground />
+    <IntroBackground />
     <AppHeader />
     <IntroPresent />
     <IntroGreenEnergyProduction />

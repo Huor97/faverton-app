@@ -5,28 +5,6 @@ import { gsap } from 'gsap';
 const leftRef = ref<HTMLElement | null>(null);
 const btn = ref<HTMLElement | null>(null);
 
-// onMounted(() => {
-//   if (leftRef.value) {
-//     gsap.from(leftRef.value.children, {
-//       opacity: 0,
-//       y: 20,
-//       stagger: 0.3,
-//       scrollTrigger: {
-//         trigger: leftRef.value,
-//         start: `top 45%`,
-//         end: `bottom 45%`,
-//         scrub: true,
-//         onLeave: () => {
-//           if (leftRef.value) {
-//             gsap.to(leftRef.value.children, { opacity: 0 });
-//           }
-//         },
-//         // markers: true, // Utile pour le débogage, à retirer en production
-//       },
-//     });
-//   }
-// });
-
 onMounted(() => {
   if (leftRef.value) {
     gsap.fromTo(
@@ -74,7 +52,7 @@ onMounted(() => {
 });
 
 const goToWindTurbine = () => {
-  navigateTo(`/introduction/wind-turbine`);
+  navigateTo(`/introduction/restaurants-cultural-activities`);
 };
 </script>
 

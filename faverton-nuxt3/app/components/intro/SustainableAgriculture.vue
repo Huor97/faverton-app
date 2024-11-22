@@ -52,7 +52,7 @@ onMounted(() => {
 });
 
 const goToWindTurbine = () => {
-  navigateTo(`introduction/solar-panel`);
+  navigateTo(`introduction/sustainable-agriculture`);
 };
 </script>
 

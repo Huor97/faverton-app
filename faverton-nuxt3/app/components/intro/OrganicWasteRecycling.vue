@@ -52,7 +52,7 @@ onMounted(() => {
 });
 
 const goToWindTurbine = () => {
-  navigateTo(`/introduction/bio-gaz`);
+  navigateTo(`/introduction/organic-waste-recycling`);
 };
 </script>
 

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const data = {
-  title: `Bio Gaz Lorem ipsum dolor sit amet wind turbine`,
+  title: `Coworking Accommodation`,
   subTitle: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
   button: `Learn more`,
 };
@@ -8,7 +8,7 @@ const data = {
 
 <template>
   <div>
-    <IntroductionSourceEnergies
+    <IntroSourceEnergies
       :title="data.title"
       :sub-title="data.subTitle"
       :button="data.button"

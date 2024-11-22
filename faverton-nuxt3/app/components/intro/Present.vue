@@ -6,7 +6,7 @@ onMounted(() => {
   gasp.set(`.container-intro`, { opacity: 0 }); // Cache initialement le contenu
   gasp.to(`.container-intro`, {
     opacity: 1,
-    duration: 1, // Durée de l'animation en secondes
+    duration: 0.7, // Durée de l'animation en secondes
     delay: 0.5, // Délai avant le début de l'animation en secondes
     ease: `power2.out`, // Type d'easing pour une animation fluide
   });
@@ -14,7 +14,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class=" container-intro flex justify-center items-center h-screen relative text-white">
+  <div class="container-intro flex justify-center items-center h-screen relative text-white">
     <div class="p-l w-[60%] backdrop-blur-sm">
       <h1 class="relative text-center t-[20vh] md:text-[42px]">
         GO GREEN & SAVE THE PLANET

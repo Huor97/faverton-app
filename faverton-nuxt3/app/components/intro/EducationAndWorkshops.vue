@@ -52,7 +52,7 @@ onMounted(() => {
 });
 
 const goToWindTurbine = () => {
-  navigateTo(`/introduction/hydro-electric`);
+  navigateTo(`/introduction/education-workshops`);
 };
 </script>
 
