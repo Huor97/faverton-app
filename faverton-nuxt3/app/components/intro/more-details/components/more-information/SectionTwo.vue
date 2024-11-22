@@ -76,19 +76,19 @@ onMounted(() => {
       <div class="grid gap-5 grid-cols-2">
         <div class="grid h-full mt-[-90px]">
           <div>
-            <IntroductionMoreDetailsComponentsPointsDetails />
+            <IntroMoreDetailsComponentsPointsDetails />
           </div>
           <div>
-            <IntroductionMoreDetailsComponentsPointsDetails />
+            <IntroMoreDetailsComponentsPointsDetails />
           </div>
         </div>
 
         <div class="grid items-center h-full mt-[-80px]">
           <div>
-            <IntroductionMoreDetailsComponentsPointsDetails />
+            <IntroMoreDetailsComponentsPointsDetails />
           </div>
           <div>
-            <IntroductionMoreDetailsComponentsPointsDetails />
+            <IntroMoreDetailsComponentsPointsDetails />
           </div>
         </div>
       </div>

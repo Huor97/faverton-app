@@ -38,19 +38,19 @@ onMounted(() => {
     </div>
     <div class="grid grid-cols-5 gap-16">
       <div>
-        <IntroductionMoreDetailsComponentsOurFigures />
+        <IntroMoreDetailsComponentsOurFigures />
       </div>
       <div>
-        <IntroductionMoreDetailsComponentsOurFigures />
+        <IntroMoreDetailsComponentsOurFigures />
       </div>
       <div>
-        <IntroductionMoreDetailsComponentsOurFigures />
+        <IntroMoreDetailsComponentsOurFigures />
       </div>
       <div>
-        <IntroductionMoreDetailsComponentsOurFigures />
+        <IntroMoreDetailsComponentsOurFigures />
       </div>
       <div>
-        <IntroductionMoreDetailsComponentsOurFigures />
+        <IntroMoreDetailsComponentsOurFigures />
       </div>
     </div>
   </div>

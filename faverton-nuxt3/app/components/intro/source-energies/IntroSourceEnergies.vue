@@ -93,18 +93,18 @@ onMounted(() => {
     <div class="h-[50vh]" />
 
     <div class="h-[90vh] ml-14 mr-14 flex border-2 border-black">
-      <IntroductionMoreDetailsComponentsMoreInformationSectionTwo />
+      <IntroMoreDetailsComponentsMoreInformationSectionTwo />
     </div>
     <div class="h-[35vh]" />
     <div class="ml-14 mr-14 h-full flex border-2 border-black">
-      <IntroductionMoreDetailsComponentsMoreInformationSectionThree />
+      <IntroMoreDetailsComponentsMoreInformationSectionThree />
     </div>
     <div class="h-[20vh]" />
     <div class="h-screen">
-      <IntroductionMoreDetailsComponentsMoreInformationSectionFour />
+      <IntroMoreDetailsComponentsMoreInformationSectionFour />
     </div>
     <div class="ml-14 mr-14">
-      <IntroductionMoreDetailsComponentsMoreInformationSectionFive />
+      <IntroMoreDetailsComponentsMoreInformationSectionFive />
     </div>
   </div>
 </template>
