@@ -1,14 +1,11 @@
-<script lang="ts" setup>
-
-</script>
-
 <template>
   <div>
     <IntroductionFarmeBackground />
     <AppHeader />
     <IntroductionIntro />
     <IntroductionWindTurbine />
-    <IntroductionBioGasSolarPanel />
+    <IntroductionBioGas />
+    <IntroductionSolarPanel />
     <IntroductionHydroElectric />
   </div>
 </template>

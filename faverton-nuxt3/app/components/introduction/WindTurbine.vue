@@ -13,7 +13,7 @@ onMounted(() => {
       scrollTrigger: {
         trigger: section1.value,
         start: `top 60%`,
-        end: `bottom 65%`,
+        end: `bottom 45%`,
         scrub: true,
         onLeave: () => {
           if (section1.value) {
@@ -44,7 +44,7 @@ onMounted(() => {
         <br>
         <NuxtLink
           class="underline underline-offset-8 hover:decoration-sky-500"
-          to="introduction/objective"
+          to="introduction/wind-turbine"
           text="mor information"
         />
       </p>

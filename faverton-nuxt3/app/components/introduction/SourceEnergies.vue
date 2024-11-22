@@ -1,6 +1,31 @@
 <script setup lang="ts">
 import gsap from 'gsap';
 
+const props = defineProps<{
+  title: string
+  subTitle: string
+  button: string
+}>();
+
+const data = [
+  {
+    title: `Vos données vous porterons vers de nouveaux sommets`,
+    subtitle: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro voluptatum deleniti omnis, excepturi`,
+  },
+  {
+    title: `Vos données vous porterons vers de nouveaux sommets`,
+    subtitle: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro voluptatum deleniti omnis, excepturi`,
+  },
+  {
+    title: `Vos données vous porterons vers de nouveaux sommets`,
+    subtitle: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro voluptatum deleniti omnis, excepturi`,
+  },
+  {
+    title: `Vos données vous porterons vers de nouveaux sommets`,
+    subtitle: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro voluptatum deleniti omnis, excepturi`,
+  },
+];
+
 const titleSection1 = ref<HTMLElement | null>(null);
 const subTitleSection1 = ref<HTMLElement | null>(null);
 const buttonSection1 = ref<HTMLElement | null>(null);
@@ -46,7 +71,7 @@ onMounted(() => {
           class="p-5"
         >
           <h1 class="text-7xl font-extrabold">
-            Lorem ipsum dolor sit amet wind turbine
+            {{ props.title }}
           </h1>
         </div>
         <div
@@ -54,18 +79,14 @@ onMounted(() => {
           class="p-5"
         >
           <p class="text-3xl">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro voluptatum deleniti omnis, excepturi
+            {{ props.subTitle }}
           </p>
         </div>
         <div
           ref="buttonSection1"
           class="p-5"
         >
-          <NuxtLink
-            to="/"
-            text="mor information"
-            class="text-3xl border-2 border-black p-2 hover:bg-sky-700 hover:text-white"
-          />
+          <FavertonBtn :button="props.button" />
         </div>
       </div>
     </div>

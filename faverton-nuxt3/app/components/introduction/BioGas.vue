@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref } from "vue";
 import { gsap } from 'gsap';
 
-const hedroElectricRef = ref<HTMLElement | null>(null);
+const bioGazRef = ref<HTMLElement | null>(null);
+
 onMounted(() => {
-  if (hedroElectricRef.value) {
+  if (bioGazRef.value) {
     gsap.fromTo(
-      hedroElectricRef.value,
+      bioGazRef.value,
       {
         autoAlpha: 0,
         x: -50,
@@ -15,9 +16,9 @@ onMounted(() => {
         autoAlpha: 1,
         x: 0,
         scrollTrigger: {
-          trigger: hedroElectricRef.value,
-          start: `top 90%`,
-          end: `bottom 80%`,
+          trigger: bioGazRef.value,
+          start: `top 55%`,
+          end: `bottom 60%`,
           toggleActions: `play reverse play reverse`,
           // markers: true,
         },
@@ -28,23 +29,23 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative text-white w-1/4 h-screen container-section">
+  <div class="h-screen w-1/4 text-white relative container-section ">
     <div
-      ref="hedroElectricRef"
-      class=" bottom-[50vw] relative flex flex-col left-[25vw] p-5 shadow-lg shadow-green-500/60 backdrop-blur-sm"
+      ref="bioGazRef"
+      class="bottom-80 relative left-[30vw] p-5 shadow-lg shadow-green-500/60 backdrop-blur-sm"
     >
       <p>
-        <b>Hydro Electric.</b>
+        <b>Bio gas.</b>
         <span class="text-slate-400">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam fugit, doloremque accusamus
+          Lorem ipsum dolor sit amet. Magnam fugit, doloremque accusamus
           recusandae suscipit blanditiis, architecto eum ab accusantium dignissimos animi consequatur, pariatur
           qui delectus odio consectetur atque aut eius!
-          Qui, error. Perspiciatis, voluptatem. Laudantium veniam deleniti temporibus
+          Qui, error. Perspiciatis, voluptatem. Laudantium veniam deleniti temporibus.
         </span>
         <br>
         <NuxtLink
           class="underline underline-offset-8 hover:decoration-sky-500"
-          to="introduction/hydro-electric"
+          to="introduction/bio-gaz"
           text="mor information"
         />
       </p>

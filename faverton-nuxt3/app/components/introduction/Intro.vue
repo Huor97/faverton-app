@@ -7,7 +7,7 @@ onMounted(() => {
   gasp.to(`.container-intro`, {
     opacity: 1,
     duration: 1, // Durée de l'animation en secondes
-    delay: 1, // Délai avant le début de l'animation en secondes
+    delay: 0.5, // Délai avant le début de l'animation en secondes
     ease: `power2.out`, // Type d'easing pour une animation fluide
   });
 });

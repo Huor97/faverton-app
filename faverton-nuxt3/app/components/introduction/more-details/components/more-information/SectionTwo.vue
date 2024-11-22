@@ -55,25 +55,17 @@ onMounted(() => {
 <template>
   <div class="border-r-2 border-black">
     <div class="min-w-xl p-10 flex flex-col justify-center h-full">
-      <div class="relative left-10 mb-5">
-        <h2
-          ref="titleSection2"
-          class="max-w-96 text-3xl font-semibold"
-        >
-          <span>
-            Vos données vous porterons vers de nouveaux sommets
-          </span>
-        </h2>
+      <div
+        ref="titleSection2"
+        class="relative left-10 mb-5"
+      >
+        <FavertonChapterTitle title="Vos données vous porterons vers de nouveaux sommets" />
       </div>
-      <div class="relative left-10">
-        <p
-          ref="subTitleSection2"
-          class="max-w-80"
-        >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro voluptatum deleniti omnis, excepturi
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro voluptatum deleniti omnis, excepturi
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro voluptatum deleniti omnis, excepturi
-        </p>
+      <div
+        ref="subTitleSection2"
+        class="relative left-10"
+      >
+        <FavertonParagraphe pargraphe="Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro voluptatum deleniti omnis, excepturi" />
       </div>
     </div>
   </div>
