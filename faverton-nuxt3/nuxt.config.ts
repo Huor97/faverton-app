@@ -12,6 +12,8 @@ export default defineNuxtConfig({
     `@nuxtjs/supabase`,
     `@tresjs/nuxt`,
     `@nuxtjs/leaflet`,
+    `@hebilicious/vue-query-nuxt`,
+    `vuetify-nuxt-module`,
   ],
   supabase: {
     url: process.env.SUPABASE_URL,
