@@ -23,7 +23,9 @@ const goToLogin = () => {
 const goToProfile = () => {
   navigateTo(`/profile`);
 };
-
+const goToSimulator = () => {
+  navigateTo(`/simulator`);
+};
 onMounted(async () => {
   if (user.value) {
     // Récupérez l'URL de l'avatar depuis votre base de données ou API
@@ -81,6 +83,12 @@ onMounted(async () => {
                 label="Login"
                 type="submit"
                 @click="goToLogin"
+              />
+              <UButton
+                label="Simulateur"
+                type="submit"
+                class="ml-2"
+                @click="goToSimulator"
               />
             </div>
 

@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     `@nuxt/devtools`,
     `@nuxtjs/supabase`,
     `@tresjs/nuxt`,
+    `@nuxtjs/leaflet`,
   ],
   supabase: {
     url: process.env.SUPABASE_URL,
