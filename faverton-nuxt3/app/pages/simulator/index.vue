@@ -1,5 +1,5 @@
 <template>
   <ClientOnly>
-    <CalcCart />
+    <CalcCard />
   </ClientOnly>
 </template>
