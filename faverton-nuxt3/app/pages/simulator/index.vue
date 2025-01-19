@@ -1,5 +1,3 @@
 <template>
-  <ClientOnly>
-    <CalcCard />
-  </ClientOnly>
+  <CalcCard />
 </template>

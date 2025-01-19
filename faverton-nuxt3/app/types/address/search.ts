@@ -1,15 +1,19 @@
-export type Feature = {
-  features: PropertiesAddress[]
-  type: string
-  geometry: {
-    type: string
-    coordinates: [number, number]
-  }
+export type FeatureCollection = {
+  type: "FeatureCollection"
+  features: Feature
+  version?: string
 };
 
-export type PropertiesAddress = {
+export type Feature = {
+  type: "Feature"
+  geometry: Point
   properties: Address
-};
+}
+
+export type Point = {
+  type: "Point"
+  coordinates: [number, number]
+}
 
 export type Address = {
   label: string
