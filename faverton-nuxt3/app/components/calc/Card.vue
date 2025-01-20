@@ -92,5 +92,8 @@ const geoStyler = feature => ({
         :options-style="geoStyler"
       />
     </LMap>
+      <v-app class="absolute">
+          <CalcNavigationDrawers :solarPotential/>
+      </v-app>
   </div>
 </template>
