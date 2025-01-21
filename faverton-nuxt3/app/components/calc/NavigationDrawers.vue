@@ -11,7 +11,7 @@ const drawer = ref(true)
 </script>
 <template>
     <VNavigationDrawer 
-        :width="400" 
+        :width="500" 
         location="right"
         v-model="drawer"
         :rail="rail"
@@ -19,7 +19,6 @@ const drawer = ref(true)
         @click="rail = false"
 
     >
-      <v-divider></v-divider>
       <template v-slot:append>
             <v-btn
                :icon="rail ? 'mdi-chevron-left' : 'mdi-chevron-right'"
@@ -28,6 +27,7 @@ const drawer = ref(true)
             >
           </v-btn>
       </template>
+      <!-- <v-divider></v-divider> -->
       <v-list density="compact" nav>
           <v-list-item prepend-icon="mdi-account" value="account">
               <FavertonDoughnut />
