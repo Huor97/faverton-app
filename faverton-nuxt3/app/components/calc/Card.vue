@@ -46,7 +46,7 @@ const geoStyler = feature => ({
 });
 </script>
 
-<template>
+<template> 
   <div>
     <div class="z-[999] fixed w-96 left-16 top-20 m-0 p-5 bg-blue">
       <VAutocomplete

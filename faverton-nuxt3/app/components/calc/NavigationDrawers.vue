@@ -1,17 +1,19 @@
 <script setup lang="ts">
+import type {PVGISData} from "~/types/potential-solar"
 const props = defineProps<{
   // TODO: ajouter le type correct
-  solarPotential: Object
+  solarPotential: PVGISData
 }>()
 const rail = ref(true)
 const drawer = ref(true)
 
 // TODO: structure prop passer à composant FavertonDoughnut
-// - passe just tot energie annuel pour mvp
+// - passe just potential energie annuel pour mvp
+const potentialSolarTotals = computed(() => props.solarPotential?.outputs)
 </script>
 <template>
     <VNavigationDrawer 
-        :width="500" 
+        :width="600" 
         location="right"
         v-model="drawer"
         :rail="rail"
@@ -20,21 +22,45 @@ const drawer = ref(true)
 
     >
       <template v-slot:append>
-            <v-btn
+            <VBtn
                :icon="rail ? 'mdi-chevron-left' : 'mdi-chevron-right'"
               variant="text"
               @click.stop="rail = !rail"
             >
-          </v-btn>
+          </VBtn>
       </template>
-      <!-- <v-divider></v-divider> -->
-      <v-list density="compact" nav>
-          <v-list-item prepend-icon="mdi-account" value="account">
-              <FavertonDoughnut />
-          </v-list-item>
-          <v-list-item prepend-icon="mdi-account" value="account">
-            <pre>{{ solarPotential }}</pre>
-          </v-list-item>
-      </v-list>
+      <v-divider></v-divider>
+      <VList v-if="!potentialSolarTotals" density="compact" nav>
+        <VListItem prepend-icon="mdi-account">
+              Il faut saisir une address dans le chemps de recherch :)
+        </VListItem>
+      </VList>
+
+      <VList v-else density="compact" nav>
+          <VListItem prepend-icon="mdi-account">
+              <FavertonDoughnut :potentialSolarTotals />
+          </VListItem>
+          <VListItem prepend-icon="mdi-account">
+            Production d'énergie annuelle moyenne (E_y) : {{ potentialSolarTotals?.totals.fixed.E_y }} kWh/an
+          </VListItem>
+          <VListItem prepend-icon="mdi-account">
+            Production d'énergie mensuelle moyenne (E_m) : {{ potentialSolarTotals?.totals.fixed.E_m }} kWh/mois1
+          </VListItem>
+          <VListItem prepend-icon="mdi-account">
+            Production d'énergie journalière moyenne (E_d) : {{ potentialSolarTotals?.totals.fixed.E_d }} kWh/jour1
+          </VListItem>
+          <VListItem prepend-icon="mdi-account">
+            Variation annuelle de la production (SD_y) : {{ potentialSolarTotals?.totals.fixed.SD_y }} kWh1
+          </VListItem>
+          <VListItem prepend-icon="mdi-account">
+            Perte totale du système (l_total) : {{ potentialSolarTotals?.totals.fixed.l_total }}%
+          </VListItem>
+
+          <VListItem prepend-icon="mdi-account">
+            <!-- TODO: si personne connecter : tout l'information qui est dans potentialSolarTotals va être enregistré dans bdd table favoris -->
+             <!-- TODO: sinon redrige vers la page de connexion -->
+            Ajouter au favorie votre recherche LINK :)
+          </VListItem>
+      </VList>
     </VNavigationDrawer>
 </template>
