@@ -73,7 +73,7 @@ const geoStyler = feature => ({
     <LMap
       style="height: 100vh"
       :zoom="5"
-      :center="[47.21322, 0.559482]"
+      :center="[50, 19]"
       :use-global-leaflet="false"
     >
       <LTileLayer

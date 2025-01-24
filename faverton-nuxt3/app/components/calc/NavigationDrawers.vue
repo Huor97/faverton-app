@@ -20,11 +20,10 @@ const potentialSolarTotals = computed(() => {
 <template>
   <VNavigationDrawer
     v-model="drawer"
-    :width="600"
+    :width="700"
     location="right"
-    :rail="rail"
+    :rail="!rail"
     permanent
-    @click="rail = false"
   >
     <template #append>
       <VBtn
