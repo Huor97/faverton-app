@@ -25,7 +25,7 @@ watch(searchTerm, () => {
 });
 
 const selectedFeatureCollection = ref<FeatureCollection | null>(null);
-const coordinates = ref<Array<number>>([])
+const coordinates = ref<Array<number>>([]);
 
 const { data: solarPotential, isLoading: solarLoading, error: solarError } = useSolarPotential(coordinates);
 
@@ -35,18 +35,13 @@ const onSelect = (item: FeatureCollection | null) => {
   emit(`update:modelValue`, item);
 };
 
-// debug
-watch(solarPotential, (newValue) => {
-  console.log("Solar potential data updated:", newValue);
-});
-
-// @ts-expect-error
+// @ts-expect-error: feature does not have a defined type
 const geoStyler = feature => ({
   opacity: feature.properties.code / 100000,
 });
 </script>
 
-<template> 
+<template>
   <div>
     <div class="z-[999] fixed w-96 left-16 top-20 m-0 p-5 bg-blue">
       <VAutocomplete
@@ -92,8 +87,17 @@ const geoStyler = feature => ({
         :options-style="geoStyler"
       />
     </LMap>
-      <v-app class="absolute">
-          <CalcNavigationDrawers :solarPotential/>
-      </v-app>
+    <v-app
+      v-if="!solarError"
+      class="absolute"
+    >
+      <div v-if="solarLoading">
+        En chargement de donner ...
+      </div>
+      <CalcNavigationDrawers
+        v-else
+        :solar-potential
+      />
+    </v-app>
   </div>
 </template>
