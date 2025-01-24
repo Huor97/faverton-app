@@ -17,7 +17,7 @@ const chartData = {
   labels: [`January`, `February`, `March`, `April`, `May`, `June`, `July`, `August`, `September`, `October`, `November`, `December`],
   datasets: [{
     label: `données mensuelle`,
-    data: [40, 20, 12, 34, 40, 20, 12, 34, 40, 20, 12, 34],
+    data: [10, 20, 12, 3, 10, 20, 12, 34, 10, 20, 12, 3],
     backgroundColor: [
       `rgba(255, 99, 132, 0.6)`,
       `rgba(54, 162, 235, 0.6)`,
@@ -52,14 +52,10 @@ const chartData = {
 
 const chartOptions = {
   responsive: true,
-  maintainAspectRatio: false,
+  maintainAspectRatio: true,
   plugins: {
     legend: {
       display: true,
-    },
-    title: {
-      display: true,
-      text: `Monthly Data Chart`,
     },
   },
   scales: {
