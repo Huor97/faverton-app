@@ -2,19 +2,25 @@
 import type { PVGISData } from "~/types/potential-solar";
 
 const props = defineProps<{
-  // TODO: ajouter le type correct
   solarPotential?: PVGISData
 }>();
 
 const rail = ref(true);
 const drawer = ref(true);
 
-// TODO: structure prop passer à composant FavertonDoughnut
-// - passe just potential energie annuel pour mvp
 const potentialSolarTotals = computed(() => {
   if (props.solarPotential === undefined) return;
   return props.solarPotential?.outputs;
 });
+
+const { data } = await useFetch(`/api/calc/solar-potential/price-year`, {
+  params: {
+    annualKwh: 1481.69,
+    surface: 3,
+  },
+});
+
+console.log(data.value);
 </script>
 
 <template>
@@ -44,7 +50,7 @@ const potentialSolarTotals = computed(() => {
       density="compact"
       nav
     >
-      <VListItem prepend-icon="mdi-account">
+      <VListItem>
         Il faut saisir une address dans le chemps de recherch :)
       </VListItem>
     </VList>
