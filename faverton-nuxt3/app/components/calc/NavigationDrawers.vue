@@ -3,6 +3,7 @@ import type { PVGISData } from "~/types/potential-solar";
 
 const props = defineProps<{
   solarPotential?: PVGISData
+  solarLoading?: boolean
 }>();
 
 const rail = ref(true);
@@ -45,45 +46,59 @@ console.log(data.value);
     temporary
   >
     <v-divider />
-    <VList
-      v-if="!potentialSolarTotals"
-      density="compact"
-      nav
-    >
-      <VListItem>
-        Il faut saisir une address dans le chemps de recherch :)
-      </VListItem>
-    </VList>
 
-    <VList
-      v-else
-      density="compact"
-      nav
+    <div
+      v-if="solarLoading"
+      class="flex items-center justify-center h-full "
     >
-      <VListItem>
-        <FavertonDoughnut :potential-solar-totals />
-      </VListItem>
-      <VListItem>
-        Production d'énergie annuelle moyenne (E_y) : {{ potentialSolarTotals?.totals.fixed.E_y }} kWh/an
-      </VListItem>
-      <VListItem>
-        Production d'énergie mensuelle moyenne (E_m) : {{ potentialSolarTotals?.totals.fixed.E_m }} kWh/mois1
-      </VListItem>
-      <VListItem>
-        Production d'énergie journalière moyenne (E_d) : {{ potentialSolarTotals?.totals.fixed.E_d }} kWh/jour1
-      </VListItem>
-      <VListItem>
-        Variation annuelle de la production (SD_y) : {{ potentialSolarTotals?.totals.fixed.SD_y }} kWh1
-      </VListItem>
-      <VListItem>
-        Perte totale du système (l_total) : {{ potentialSolarTotals?.totals.fixed.l_total }}%
-      </VListItem>
+      <VProgressCircular
+        color="amber"
+        indeterminate
+        :size="128"
+      />
+    </div>
 
-      <VListItem>
-        <!-- TODO: si personne connecter : tout l'information qui est dans potentialSolarTotals va être enregistré dans bdd table favoris -->
-        <!-- TODO: sinon redrige vers la page de connexion -->
-        Ajouter au favorie votre recherche LINK :)
-      </VListItem>
-    </VList>
+    <template v-else>
+      <VList
+        v-if="!potentialSolarTotals"
+        density="compact"
+        nav
+      >
+        <VListItem>
+          Il faut saisir une address dans le chemps de recherch :)
+        </VListItem>
+      </VList>
+
+      <VList
+        v-else
+        density="compact"
+        nav
+      >
+        <VListItem>
+          <FavertonDoughnut :potential-solar-totals />
+        </VListItem>
+        <VListItem>
+          Production d'énergie annuelle moyenne (E_y) : {{ potentialSolarTotals?.totals.fixed.E_y }} kWh/an
+        </VListItem>
+        <VListItem>
+          Production d'énergie mensuelle moyenne (E_m) : {{ potentialSolarTotals?.totals.fixed.E_m }} kWh/mois1
+        </VListItem>
+        <VListItem>
+          Production d'énergie journalière moyenne (E_d) : {{ potentialSolarTotals?.totals.fixed.E_d }} kWh/jour1
+        </VListItem>
+        <VListItem>
+          Variation annuelle de la production (SD_y) : {{ potentialSolarTotals?.totals.fixed.SD_y }} kWh1
+        </VListItem>
+        <VListItem>
+          Perte totale du système (l_total) : {{ potentialSolarTotals?.totals.fixed.l_total }}%
+        </VListItem>
+
+        <VListItem>
+          <!-- TODO: si personne connecter : tout l'information qui est dans potentialSolarTotals va être enregistré dans bdd table favoris -->
+          <!-- TODO: sinon redrige vers la page de connexion -->
+          Ajouter au favorie votre recherche LINK :)
+        </VListItem>
+      </VList>
+    </template>
   </VNavigationDrawer>
 </template>

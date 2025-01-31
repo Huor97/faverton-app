@@ -91,12 +91,9 @@ const geoStyler = feature => ({
       v-if="!solarError"
       class="absolute"
     >
-      <div v-if="solarLoading">
-        En chargement de donner ...
-      </div>
       <CalcNavigationDrawers
-        v-else
         :solar-potential
+        :solar-loading
       />
     </v-app>
   </div>
