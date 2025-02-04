@@ -39,6 +39,21 @@ const onSelect = (item: FeatureCollection | null) => {
 const geoStyler = feature => ({
   opacity: feature.properties.code / 100000,
 });
+
+// surface
+const inputValue = ref<number>(1);
+const surface = ref<number>(1);
+const validate = (inputValue) => {
+  if (inputValue < 1 || inputValue > 100) {
+    return `La valeur doit être entre 1 et 100`;
+  }
+  return true;
+};
+const onSubmit = () => {
+  // Traitement après soumission
+  surface.value = inputValue.value;
+  console.log(`Valeur soumise:`, surface.value);
+};
 </script>
 
 <template>
@@ -68,6 +83,23 @@ const geoStyler = feature => ({
           </VListItem>
         </template>
       </VAutocomplete>
+      <UForm
+        :validate="validate"
+        @submit="onSubmit"
+      >
+        <UFormGroup label="Entrez un nombre entre 1 et 100">
+          <UInput
+            v-model="inputValue"
+            type="number"
+            :min="1"
+            :max="100"
+            step="1"
+          />
+        </UFormGroup>
+        <UButton type="submit">
+          Soumettre
+        </UButton>
+      </UForm>
     </div>
 
     <LMap
@@ -94,6 +126,7 @@ const geoStyler = feature => ({
       <CalcNavigationDrawers
         :solar-potential
         :solar-loading
+        :surface
       />
     </v-app>
   </div>

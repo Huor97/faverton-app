@@ -6,7 +6,7 @@ import type { Outputs } from '~/types/potential-solar';
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 const props = defineProps<{
-  potentialSolarTotals: Outputs
+  potentialSolarTotals?: Outputs
 }>();
 
 const annualPercentage = computed(() => parseFloat((props.potentialSolarTotals?.totals.fixed.E_y / props.potentialSolarTotals?.totals.fixed[`H(i)_y`] * 100).toFixed(2)));

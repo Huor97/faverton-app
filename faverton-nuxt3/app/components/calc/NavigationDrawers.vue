@@ -4,6 +4,7 @@ import type { PVGISData } from "~/types/potential-solar";
 const props = defineProps<{
   solarPotential?: PVGISData
   solarLoading?: boolean
+  surface?: number
 }>();
 
 const rail = ref(true);
@@ -21,7 +22,7 @@ const { data } = await useFetch(`/api/calc/solar-potential/price-year`, {
   },
 });
 
-console.log(data.value);
+console.log(`fetch potential solar year`, data.value, `surface `, props.surface);
 </script>
 
 <template>
@@ -65,7 +66,7 @@ console.log(data.value);
         nav
       >
         <VListItem>
-          Il faut saisir une address dans le chemps de recherch :)
+          Il faut saisir une address dans le chemps de recherch et le surface :)
         </VListItem>
       </VList>
 
@@ -76,27 +77,6 @@ console.log(data.value);
       >
         <VListItem>
           <FavertonDoughnut :potential-solar-totals />
-        </VListItem>
-        <VListItem>
-          Production d'énergie annuelle moyenne (E_y) : {{ potentialSolarTotals?.totals.fixed.E_y }} kWh/an
-        </VListItem>
-        <VListItem>
-          Production d'énergie mensuelle moyenne (E_m) : {{ potentialSolarTotals?.totals.fixed.E_m }} kWh/mois1
-        </VListItem>
-        <VListItem>
-          Production d'énergie journalière moyenne (E_d) : {{ potentialSolarTotals?.totals.fixed.E_d }} kWh/jour1
-        </VListItem>
-        <VListItem>
-          Variation annuelle de la production (SD_y) : {{ potentialSolarTotals?.totals.fixed.SD_y }} kWh1
-        </VListItem>
-        <VListItem>
-          Perte totale du système (l_total) : {{ potentialSolarTotals?.totals.fixed.l_total }}%
-        </VListItem>
-
-        <VListItem>
-          <!-- TODO: si personne connecter : tout l'information qui est dans potentialSolarTotals va être enregistré dans bdd table favoris -->
-          <!-- TODO: sinon redrige vers la page de connexion -->
-          Ajouter au favorie votre recherche LINK :)
         </VListItem>
       </VList>
     </template>
