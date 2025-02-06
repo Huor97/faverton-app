@@ -5,8 +5,14 @@ import type { FormError, FormSubmitEvent } from '#ui/types';
 
 const searchTerm = ref<string>(``);
 const surface = ref<number>(1);
+const selectedFeatureCollection = ref<FeatureCollection | null>(null);
+const coordinates = ref<Array<number>>([]);
+const state = reactive({
+  inputValue: undefined,
+});
 
 const { data, isLoading, error, refetch } = useAddressSearch(searchTerm);
+const { data: solarPotential, isLoading: solarLoading, error: solarError } = useSolarPotential(coordinates);
 
 const items = computed(
   () =>
@@ -26,30 +32,21 @@ watch(searchTerm, () => {
   return () => clearTimeout(timeout);
 });
 
-const selectedFeatureCollection = ref<FeatureCollection | null>(null);
-const coordinates = ref<Array<number>>([]);
-
-const { data: solarPotential, isLoading: solarLoading, error: solarError } = useSolarPotential(coordinates);
-
-const onSelect = (item: FeatureCollection | null) => {
-  selectedFeatureCollection.value = item;
-  coordinates.value = item?.features.geometry.coordinates ?? [];
-  emit(`update:modelValue`, item);
-};
-
 // @ts-expect-error: feature does not have a defined type
 const geoStyler = feature => ({
   opacity: feature.properties.code / 100000,
-});
-
-const state = reactive({
-  inputValue: undefined,
 });
 
 const validate = (state: { inputValue: number | undefined }): FormError[] => {
   const errors = [];
   if (!state.inputValue) errors.push({ path: `number`, message: `La valeur doit être entre 1 et 100` });
   return errors;
+};
+
+const onSelect = (item: FeatureCollection | null) => {
+  selectedFeatureCollection.value = item;
+  coordinates.value = item?.features.geometry.coordinates ?? [];
+  emit(`update:modelValue`, item);
 };
 
 async function onSubmit(event: FormSubmitEvent<{ inputValue: number }>) {
