@@ -7,7 +7,7 @@ export default defineEventHandler((event) => {
   const annualKwh = Number(query.annualKwh);
   const surfaceArea = Number(query.surface);
 
-  if (isNaN(annualKwh) || isNaN(surfaceArea)) {
+  if (isNaN(annualKwh) || isNaN(surfaceArea) || surfaceArea == 0) {
     return {
       error: `Paramètres invalides`,
       status: 400,

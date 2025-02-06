@@ -15,14 +15,18 @@ const potentialSolarTotals = computed(() => {
   return props.solarPotential?.outputs;
 });
 
-const { data } = await useFetch(`/api/calc/solar-potential/price-year`, {
-  params: {
-    annualKwh: 1481.69,
-    surface: 3,
-  },
+const queryParams = computed(() => ({
+  annualKwh: potentialSolarTotals.value?.totals.fixed.E_y ?? 0,
+  surface: props.surface,
+}));
+
+const { data, status } = useLazyFetch(`/api/calc/solar-potential/price-year`, {
+  query: queryParams,
 });
 
-console.log(`fetch potential solar year`, data.value, `surface `, props.surface);
+const canDisplayGraph = computed(() => {
+  return !!props.surface && !!potentialSolarTotals.value && !!data.value;
+});
 </script>
 
 <template>
@@ -49,7 +53,7 @@ console.log(`fetch potential solar year`, data.value, `surface `, props.surface)
     <v-divider />
 
     <div
-      v-if="solarLoading"
+      v-if="status === 'pending'"
       class="flex items-center justify-center h-full "
     >
       <VProgressCircular
@@ -61,7 +65,7 @@ console.log(`fetch potential solar year`, data.value, `surface `, props.surface)
 
     <template v-else>
       <VList
-        v-if="!potentialSolarTotals"
+        v-if="!canDisplayGraph"
         density="compact"
         nav
       >
@@ -76,7 +80,10 @@ console.log(`fetch potential solar year`, data.value, `surface `, props.surface)
         nav
       >
         <VListItem>
-          <FavertonDoughnut :potential-solar-totals />
+          <VListItem>
+            {{ data }}
+            <br>
+          </VListItem>
         </VListItem>
       </VList>
     </template>
