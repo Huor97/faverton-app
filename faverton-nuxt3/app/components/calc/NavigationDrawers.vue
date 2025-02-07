@@ -1,31 +1,24 @@
 <script setup lang="ts">
 import type { PVGISData } from "~/types/potential-solar";
+import type { AmountEurosPerYear } from "~/types/amount-euros-per-year";
 
 const props = defineProps<{
   solarPotential?: PVGISData
-  solarLoading?: boolean
   surface?: number
 }>();
 
 const rail = ref(true);
 const drawer = ref(true);
 
-const potentialSolarTotals = computed(() => {
-  if (props.solarPotential === undefined) return;
-  return props.solarPotential?.outputs;
-});
-
 const queryParams = computed(() => ({
-  annualKwh: potentialSolarTotals.value?.totals.fixed.E_y ?? 0,
+  annualKwh: props.solarPotential?.outputs.totals.fixed.E_y ?? 0,
   surface: props.surface,
 }));
 
+const amountEurosPerYear = computed<AmountEurosPerYear>(() => data.value as AmountEurosPerYear);
+
 const { data, status } = useLazyFetch(`/api/calc/solar-potential/price-year`, {
   query: queryParams,
-});
-
-const canDisplayGraph = computed(() => {
-  return !!props.surface && !!potentialSolarTotals.value && !!data.value;
 });
 </script>
 
@@ -50,8 +43,6 @@ const canDisplayGraph = computed(() => {
     :rail="!rail"
     temporary
   >
-    <v-divider />
-
     <div
       v-if="status === 'pending'"
       class="flex items-center justify-center h-full "
@@ -65,13 +56,11 @@ const canDisplayGraph = computed(() => {
 
     <template v-else>
       <VList
-        v-if="!canDisplayGraph"
+        v-if="!solarPotential"
         density="compact"
         nav
       >
-        <VListItem>
-          Il faut saisir une address dans le chemps de recherch et le surface :)
-        </VListItem>
+        Il faut saisir une address dans le chemps de recherch et le surface :)
       </VList>
 
       <VList
@@ -79,12 +68,7 @@ const canDisplayGraph = computed(() => {
         density="compact"
         nav
       >
-        <VListItem>
-          <VListItem>
-            {{ data }}
-            <br>
-          </VListItem>
-        </VListItem>
+        <FavertonCardYear :amount-euros-per-year />
       </VList>
     </template>
   </VNavigationDrawer>

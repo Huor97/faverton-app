@@ -1,6 +1,5 @@
-export type AmountEurosPerYear = {
-  averageAnnualProduction: number
-  surfaceAreaInSquareMeters: number
-  edfPrice: number
-  highPerformancePanel: string
-};
+export interface AmountEurosPerYear {
+  annualKwh: number
+  surfaceArea: number
+  amountEurosPerYear: number
+}

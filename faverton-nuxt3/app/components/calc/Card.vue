@@ -8,11 +8,11 @@ const surface = ref<number>(1);
 const selectedFeatureCollection = ref<FeatureCollection | null>(null);
 const coordinates = ref<Array<number>>([]);
 const state = reactive({
-  inputValue: undefined,
+  inputValue: 1,
 });
 
 const { data, isLoading, error, refetch } = useAddressSearch(searchTerm);
-const { data: solarPotential, isLoading: solarLoading, error: solarError } = useSolarPotential(coordinates);
+const { data: solarPotential, error: solarError } = useSolarPotential(coordinates);
 
 const items = computed(
   () =>
@@ -127,7 +127,6 @@ async function onSubmit(event: FormSubmitEvent<{ inputValue: number }>) {
     >
       <CalcNavigationDrawers
         :solar-potential
-        :solar-loading
         :surface
       />
     </v-app>

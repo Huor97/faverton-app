@@ -5,13 +5,11 @@ import type { Outputs } from '~/types/potential-solar';
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
-const props = defineProps<{
+defineProps<{
   potentialSolarTotals?: Outputs
 }>();
 
-const annualPercentage = computed(() => parseFloat((props.potentialSolarTotals?.totals.fixed.E_y / props.potentialSolarTotals?.totals.fixed[`H(i)_y`] * 100).toFixed(2)));
-
-console.log(annualPercentage.value);
+// const annualPercentage = computed(() => parseFloat((props.potentialSolarTotals?.totals.fixed.E_y / props.potentialSolarTotals?.totals.fixed[`H(i)_y`] * 100).toFixed(2)));
 
 const chartData = {
   labels: [`January`, `February`, `March`, `April`, `May`, `June`, `July`, `August`, `September`, `October`, `November`, `December`],
