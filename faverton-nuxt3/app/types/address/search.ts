@@ -1,19 +1,19 @@
 export type FeatureCollection = {
-  type: "FeatureCollection"
+  type: `FeatureCollection`
   features: Feature
   version?: string
 };
 
 export type Feature = {
-  type: "Feature"
+  type: `Feature`
   geometry: Point
   properties: Address
-}
+};
 
 export type Point = {
-  type: "Point"
+  type: `Point`
   coordinates: [number, number]
-}
+};
 
 export type Address = {
   label: string

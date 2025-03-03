@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import AuthSectionsConnection from '~/components/user-auth/auth/Login.vue';
-import AuthSectionsForgetPass from '~/components/user-auth/auth/ForgetPass.vue';
-import AuthSectionsRegister from '~/components/user-auth/auth/Register.vue';
+import AuthSectionsConnection from '~/components/user/auth/Login.vue';
+import AuthSectionsForgetPass from '~/components/user/auth/ForgetPass.vue';
+import AuthSectionsRegister from '~/components/user/auth/Register.vue';
 
 const isOpen = ref(false);
 const displayedForm = ref<`connection` | `forgetPass` | `register`>(`connection`);

@@ -61,7 +61,7 @@ const gotoLogin = () => {
 
       <UButton
         variant="link"
-        label="se connecter"
+        label="Connexion"
         type="submit"
         @click="gotoLogin"
       />

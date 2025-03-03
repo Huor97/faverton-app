@@ -69,6 +69,10 @@ const { data, status } = useLazyFetch(`/api/calc/solar-potential/price-year`, {
         nav
       >
         <FavertonCardYear :amount-euros-per-year />
+        {{ amountEurosPerYear }}
+        <FavertonBtn
+          button="ajouter dans history"
+        />
       </VList>
     </template>
   </VNavigationDrawer>

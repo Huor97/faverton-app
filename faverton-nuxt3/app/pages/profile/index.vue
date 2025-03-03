@@ -86,7 +86,7 @@ const signOut = async () => {
       @submit.prevent="updateProfile"
     >
       <div class="w-48 h-48">
-        <UserAuthProfileAvatar
+        <UserProfileAvatar
           v-model:path="avatar_path"
           @upload="updateProfile"
         />

@@ -14,7 +14,7 @@ const login = async () => {
     message.value = `Login ne peut pas être effectué, une erreur s'est produite`;
   }
   else {
-    message.value = `Login successful`;
+    message.value = `Connexion réussie`;
     navigateTo(`/profile`);
   }
 };
@@ -61,7 +61,7 @@ const gotToRegister = () => {
       </p>
       <UButton
         variant="link"
-        label="Register"
+        label="Inscription"
         type="submit"
         @click="gotToRegister"
       />
