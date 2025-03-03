@@ -15,11 +15,11 @@ const queryParams = computed(() => ({
   surface: props.surface,
 }));
 
-const amountEurosPerYear = computed<AmountEurosPerYear>(() => data.value as AmountEurosPerYear);
-
 const { data, status } = useLazyFetch(`/api/calc/solar-potential/price-year`, {
   query: queryParams,
 });
+
+const amountEurosPerYear = computed<AmountEurosPerYear>(() => data.value as AmountEurosPerYear);
 </script>
 
 <template>
@@ -68,8 +68,7 @@ const { data, status } = useLazyFetch(`/api/calc/solar-potential/price-year`, {
         density="compact"
         nav
       >
-        <FavertonCardYear :amount-euros-per-year />
-        {{ amountEurosPerYear }}
+        <CalcSimulationYearlyAmount :amount-euros-per-year />
         <FavertonBtn
           button="ajouter dans history"
         />

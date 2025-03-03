@@ -2,9 +2,10 @@
 import type { FeatureCollection } from "~/types/address/base-address-national";
 import type { NewFeatureCollection } from "~/types/address/new-base-address-national";
 
+const model = defineModel();
+
 const selected = ref();
 const query = ref(``);
-const savedAddress = ref<NewFeatureCollection | null>(null);
 
 const { data: resultAddress } = await useFetch<FeatureCollection>(`api/address`, {
   query: { q: query },
@@ -46,9 +47,7 @@ const emit = defineEmits<{
 
 // Quand une adresse est sélectionnée
 function onSelect(item: NewFeatureCollection) {
-  // Enregistrer l'adresse sélectionnée
-  savedAddress.value = item;
-
+  model.value = item;
   // Maintenir le texte dans le champ de recherche
   query.value = item?.name;
 
@@ -69,6 +68,5 @@ function onSelect(item: NewFeatureCollection) {
       size="xl"
       @update:model-value="onSelect"
     />
-    <pre>toto{{ savedAddress }}</pre>
   </div>
 </template>
