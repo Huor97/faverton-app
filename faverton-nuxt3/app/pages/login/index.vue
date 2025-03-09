@@ -25,46 +25,46 @@ const gotToRegister = () => {
 </script>
 
 <template>
-  <UContainer class="h-screen flex flex-col justify-center items-center">
-    <div>
-      <h1 class=" h-10">
-        Se connecter
-      </h1>
+  <div>
+    <AppHeader />
 
-      <form
-        class="gap-4 flex"
-        @submit.prevent="login"
-      >
-        <UInput
-          v-model="email"
-          color="primary"
-          variant="outline"
-          type="email"
-          placeholder="Email"
-        />
-        <UInput
-          v-model="password"
-          color="primary"
-          variant="outline"
-          type="password"
-          placeholder="Password"
-        />
-        <UButton
-          label="Continuer"
-          type="submit"
-        />
-      </form>
-      <p
-        class="text-red-500 text-xs"
-      >
-        {{ message }}
-      </p>
-      <UButton
-        variant="link"
-        label="Inscription"
-        type="submit"
-        @click="gotToRegister"
+    <h1 class=" h-10">
+      Se connecter
+    </h1>
+
+    <form
+      class="gap-4 flex"
+      @submit.prevent="login"
+    >
+      <UInput
+        v-model="email"
+        color="primary"
+        variant="outline"
+        type="email"
+        placeholder="Email"
       />
-    </div>
-  </UContainer>
+      <UInput
+        v-model="password"
+        color="primary"
+        variant="outline"
+        type="password"
+        placeholder="Password"
+      />
+      <UButton
+        label="Continuer"
+        type="submit"
+      />
+    </form>
+    <p
+      class="text-red-500 text-xs"
+    >
+      {{ message }}
+    </p>
+    <UButton
+      variant="link"
+      label="Inscription"
+      type="submit"
+      @click="gotToRegister"
+    />
+  </div>
 </template>

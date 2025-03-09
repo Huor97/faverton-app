@@ -1,74 +1,71 @@
 <script setup lang="ts">
-import type { FeatureCollection } from "~/types/address/base-address-national";
-import type { NewFeatureCollection } from "~/types/address/new-base-address-national";
+import logo from '~/assets/favertonLogo.png';
 
-const selected = ref();
-const query = ref(``);
-const savedAddress = ref<NewFeatureCollection | null>(null);
+const targetSection = ref<HTMLElement | null>(null);
 
-const { data: resultAddress } = await useFetch<FeatureCollection>(`api/address`, {
-  query: { q: query },
-  watch: [query],
-});
+function scrollToSection() {
+  targetSection.value?.scrollIntoView({ behavior: `smooth` });
+}
 
-// Formater les résultats pour qu'ils soient compatibles avec UInputMenu
-const proposition = computed(() => {
-  if (!resultAddress.value || !resultAddress.value.features) return [];
+const isScrolled = ref(false);
 
-  return resultAddress.value.features.map((feature) => {
-    return {
-      name: feature.properties.label || `${feature.properties.city} ${feature.properties.postcode}`,
-
-      featureCollection: {
-        type: `FeatureCollection`,
-        features: [
-          {
-            type: `Feature`,
-            geometry: {
-              type: `Point`,
-              coordinates: feature.geometry.coordinates,
-            },
-            properties: {
-              postcode: feature.properties.postcode,
-              city: feature.properties.city,
-            },
-          },
-        ],
-      },
-    };
+onMounted(() => {
+  window.addEventListener(`scroll`, () => {
+    isScrolled.value = window.scrollY > 50;
   });
 });
-
-const emit = defineEmits<{
-  (e: `update:modelValue`, value: NewFeatureCollection): void
-  (e: `clickClear`): void
-}>();
-
-// Quand une adresse est sélectionnée
-function onSelect(item: NewFeatureCollection) {
-  // Enregistrer l'adresse sélectionnée
-  savedAddress.value = item;
-
-  // Maintenir le texte dans le champ de recherche
-  query.value = item?.name;
-
-  // Définir la sélection
-  selected.value = item;
-  emit(`update:modelValue`, item);
-}
 </script>
 
 <template>
   <div>
-    <UInputMenu
-      v-model="selected"
-      v-model:query="query"
-      :options="proposition"
-      option-attribute="name"
-      placeholder="Rechercher une adresse"
-      size="xl"
-      @update:model-value="onSelect"
-    />
-    <pre>toto{{ savedAddress }}</pre>
+    <div class="fixed z-index-[-1] m-0 p-0 bg-[url(~/assets/backgroundImage.jpg)] bg-cover bg-center w-full h-screen" />
+    <div class="relative z-index-1">
+      <ClientOnly>
+        <AppHeader />
+      </ClientOnly>
+      <UContainer class="flex text-white justify-center h-screen">
+        <div class="mt-20 flex flex-col items-center gap-14">
+          <div class="flex justify-center">
+            <img
+              class="w-25"
+              :src="logo"
+              alt="faverton"
+            >
+          </div>
+          <div class="flex flex-col items-center w-[58%] gap-10 text-justify">
+            <h1
+              class="text-5xl font-extrabold"
+            >
+              GO GREEN & SAVE THE PLANET
+            </h1>
+
+            <p class="font-bold">
+              Bienvenue dans le monde serein des maisons de ferme vertes, où durabilité et charme de la vie à la campagne se rencontrent. Une maison de ferme verte n'est pas simplement un logement ; c'est l'incarnation de la conscience écologique, d'une vie harmonieuse avec la nature et de l'engagement envers la préservation de l'environnement.
+            </p>
+          </div>
+          <div class="mt-15">
+            <img
+              src="~/assets/scroll-down.svg"
+              alt="scroll"
+              class="size-32 animate-bounce cursor-pointer"
+              @click="scrollToSection"
+            >
+          </div>
+        </div>
+      </UContainer>
+      <div
+        ref="targetSection"
+        class="min-h-screen"
+      >
+        <UContainer
+          ref="targetSection"
+          class="h-screen"
+        >
+          <div class="text-white">
+            hell world
+          </div>
+        </UContainer>
+      </div>
+    </div>
   </div>
 </template>

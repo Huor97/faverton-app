@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     `@nuxtjs/leaflet`,
     `@hebilicious/vue-query-nuxt`,
     `vuetify-nuxt-module`,
+    `@pinia/nuxt`,
   ],
   devtools: { enabled: true },
   app: {

@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import type { FeatureCollection } from "~/types/address/base-address-national";
 import type { NewFeatureCollection } from "~/types/address/new-base-address-national";
+import { useAddressStore } from '~/stores/address';
 
 const model = defineModel();
 
 const selected = ref();
-const query = ref(``);
+const searchAddress = ref(``);
 
 const { data: resultAddress } = await useFetch<FeatureCollection>(`api/address`, {
-  query: { q: query },
-  watch: [query],
+  query: { q: searchAddress },
+  watch: [searchAddress],
 });
 
 // Formater les résultats pour qu'ils soient compatibles avec UInputMenu
@@ -45,15 +46,14 @@ const emit = defineEmits<{
   (e: `clickClear`): void
 }>();
 
-// Quand une adresse est sélectionnée
+const addressStore = useAddressStore();
+
 function onSelect(item: NewFeatureCollection) {
   model.value = item;
-  // Maintenir le texte dans le champ de recherche
-  query.value = item?.name;
-
-  // Définir la sélection
+  searchAddress.value = item?.name;
   selected.value = item;
   emit(`update:modelValue`, item);
+  addressStore.setSavedAddress(item);
 }
 </script>
 
@@ -61,11 +61,12 @@ function onSelect(item: NewFeatureCollection) {
   <div>
     <UInputMenu
       v-model="selected"
-      v-model:query="query"
+      v-model:query="searchAddress"
       :options="proposition"
       option-attribute="name"
       placeholder="Rechercher une adresse"
       size="xl"
+      class="w-[30vw]"
       @update:model-value="onSelect"
     />
   </div>

@@ -1,0 +1,5 @@
+/* Variables globales à ajouter dans assets/css/main.css ou similaire */
+:root {
+    --card-height: 200px;
+    --card-width: calc(var(--card-height) / 1.5);
+  }

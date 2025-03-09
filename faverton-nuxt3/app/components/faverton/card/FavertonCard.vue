@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { NewFeatureCollection } from "~/types/address/new-base-address-national";
+import type { FeatureCollection } from "~/types/address/new-base-address-national";
 
 defineProps<{
-  savedAddress: NewFeatureCollection | null
+  savedAddress?: FeatureCollection | null
 }>();
 
 // @ts-expect-error: feature does not have a defined type
@@ -25,7 +25,7 @@ const geoStyler = feature => ({
       name="OpenStreetMap"
     />
     <LGeoJson
-      :geojson="savedAddress?.featureCollection"
+      :geojson="savedAddress"
       :options-style="geoStyler"
     />
   </LMap>

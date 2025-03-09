@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { AmountEurosPerYear } from "~/types/amount-euros-per-year";
 
-defineProps<{
-  amountEurosPerYear: AmountEurosPerYear
+const props = defineProps<{
+  amountPerYear?: AmountEurosPerYear
 }>();
+
+const amountEurosPerYear = computed<AmountEurosPerYear>(() => props.amountPerYear as AmountEurosPerYear);
 </script>
 
 <template>

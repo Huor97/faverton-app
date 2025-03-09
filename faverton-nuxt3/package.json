@@ -13,9 +13,11 @@
   },
   "dependencies": {
     "@hebilicious/vue-query-nuxt": "^0.3.0",
+    "@lottiefiles/dotlottie-vue": "^0.5.8",
     "@nuxt/ui": "^2.21.0",
     "@nuxtjs/leaflet": "^1.2.6",
     "@nuxtjs/supabase": "^1.4.6",
+    "@pinia/nuxt": "^0.10.1",
     "@tanstack/vue-query": "^5.64.2",
     "@tresjs/cientos": "^3.9.0",
     "@tresjs/nuxt": "^3.0.7",
@@ -23,6 +25,7 @@
     "chart.js": "^4.4.7",
     "gsap": "^3.12.7",
     "nuxt": "^3.15.2",
+    "pinia": "^3.0.1",
     "vue": "latest",
     "vue-chartjs": "^5.3.2",
     "vuetify-nuxt-module": "0.18.3"

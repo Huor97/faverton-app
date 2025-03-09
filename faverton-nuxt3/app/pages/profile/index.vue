@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 
@@ -23,8 +21,8 @@ onMounted(async () => {
     if (error) throw error;
 
     if (data) {
-      username.value = data.username;
-      avatar_path.value = data.avatar_url;
+      username.value = data.username ?? ``;
+      avatar_path.value = data.avatar_url ?? ``;
     }
   }
   catch (error) {
