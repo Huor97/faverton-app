@@ -62,7 +62,7 @@ onMounted(() => {
           class="h-screen"
         >
           <div class="text-white">
-            hell world
+            <IntroProjectPresentation />
           </div>
         </UContainer>
       </div>

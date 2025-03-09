@@ -13,7 +13,6 @@ defineProps<{
   <NuxtLink
     :to="link"
     :alt="altText || 'Card link'"
-    target="_blank"
   >
     <div class="card">
       <div class="wrapper">
