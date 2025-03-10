@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { FetchError } from 'ofetch';
 import type { Properties } from '~/types/address/new-base-address-national';
 import type { AmountEurosPerYear } from '~/types/amount-euros-per-year';
 import type { SimulationClass } from '~/types/simulation';
@@ -10,7 +11,11 @@ const props = defineProps<{
   addressProperty: Properties | null
   solarEnergy: SolarEnergy | null
 }>();
-
+interface SimulationResponse {
+  data: {
+    simulation_id: string
+  }
+}
 // UI state
 const drawer = ref(true);
 const rail = ref(true);
@@ -37,10 +42,9 @@ const { data: onePanel } = await useFetch(`/api/panel`, {
 const panelId = computed(() => onePanel.value?.[0]?.panel_id || null);
 
 // Simulation data
-const simulationResult = ref(null);
-const simulationId = ref(null);
+const simulationId = ref<string>(``);
 const simulation = ref<SimulationClass | null>(null);
-const simulationError = ref(null);
+const simulationError = ref<null | FetchError | unknown>(null);
 
 // Query parameters for potential future calculations
 const queryParams = computed(() => ({
@@ -61,7 +65,7 @@ function handlePanelClick(model: string) {
 // Form submission handler
 async function handleFormSubmit() {
   try {
-    const res = await $fetch(`/api/simulation`, {
+    const res = await $fetch<SimulationResponse>(`/api/simulation`, {
       method: `POST`,
       body: {
         solarEnergyId: solarEnergyId.value,
@@ -70,13 +74,12 @@ async function handleFormSubmit() {
       },
     });
 
-    simulationResult.value = res;
     simulationId.value = res.data.simulation_id;
     resultSimulation.value = true;
 
     // Fetch simulation details with the new ID
     const { data, error } = await useFetch(`/api/simulation`, {
-      query: { simulationId: simulationId.value },
+      params: { simulationId: simulationId.value },
     });
 
     simulation.value = data.value.simulation;
@@ -151,7 +154,6 @@ const isFormValid = computed(() =>
           </div>
         </div>
       </div>
-
       <!-- Submit Button -->
       <div class="p-3">
         <UButton
@@ -178,6 +180,7 @@ const isFormValid = computed(() =>
       <CalcSimulationYearlyAmount :amount-per-year />
 
       <CalcSimulationHistoryButton :simulation-id="simulationId" />
+
       <div
         v-if="simulationError"
         class="p-3 text-red-500"

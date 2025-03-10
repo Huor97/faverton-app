@@ -31,7 +31,6 @@ async function saveToHistory() {
 
     if (response.success) {
       success.value = true;
-      // Réinitialiser le succès après 2 secondes
       setTimeout(() => {
         success.value = false;
       }, 2000);
