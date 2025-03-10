@@ -4,6 +4,10 @@ const email = ref(``);
 const password = ref(``);
 const message = ref(``);
 
+definePageMeta({
+  middleware: [`auth`],
+});
+
 const login = async () => {
   const { error } = await supabase.auth.signInWithPassword({
     email: email.value,
@@ -25,15 +29,15 @@ const gotToRegister = () => {
 </script>
 
 <template>
-  <div>
-    <AppHeader />
+  <div class="flex flex-col justify-center h-screen items-center gap-3">
+    <!-- <AppHeader /> -->
 
-    <h1 class=" h-10">
+    <h1>
       Se connecter
     </h1>
 
     <form
-      class="gap-4 flex"
+      class="gap-4 flex flex-col"
       @submit.prevent="login"
     >
       <UInput

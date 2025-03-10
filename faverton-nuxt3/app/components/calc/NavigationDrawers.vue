@@ -163,7 +163,10 @@ const isFormValid = computed(() =>
     </div>
 
     <!-- Simulation Results View -->
-    <div v-else>
+    <div
+      v-else
+      class="flex flex-col gap-5"
+    >
       <div class="p-3">
         <UButton
           label="Retour"
@@ -175,9 +178,6 @@ const isFormValid = computed(() =>
       <CalcSimulationYearlyAmount :amount-per-year />
 
       <CalcSimulationHistoryButton :simulation-id="simulationId" />
-      <pre>
-       {{ simulation }}
-      </pre>
       <div
         v-if="simulationError"
         class="p-3 text-red-500"

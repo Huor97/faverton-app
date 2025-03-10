@@ -1,4 +1,8 @@
 <template>
+  <Intro />
+</template>
+
+<!-- <template>
   <div>
     <IntroBackground />
     <AppHeader />
@@ -10,4 +14,4 @@
     <IntroRestaurantAndCulturalActivities />
     <IntroCoworkingAndAccommodation />
   </div>
-</template>
+</template> -->

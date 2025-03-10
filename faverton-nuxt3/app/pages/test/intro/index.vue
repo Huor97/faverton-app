@@ -1,3 +1,0 @@
-<template>
-  <IntroProjectPresentation />
-</template>

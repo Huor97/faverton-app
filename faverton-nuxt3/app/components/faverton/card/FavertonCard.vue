@@ -14,8 +14,8 @@ const geoStyler = feature => ({
 <template>
   <LMap
     style="height: 100vh"
-    :zoom="5"
-    :center="[50, 19]"
+    :zoom="6"
+    :center="[46, 10]"
     :use-global-leaflet="false"
   >
     <LTileLayer
@@ -24,6 +24,7 @@ const geoStyler = feature => ({
       layer-type="base"
       name="OpenStreetMap"
     />
+
     <LGeoJson
       :geojson="savedAddress"
       :options-style="geoStyler"

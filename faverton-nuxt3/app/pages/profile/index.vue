@@ -2,6 +2,10 @@
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 
+definePageMeta({
+  middleware: [`auth`],
+});
+
 const router = useRouter();
 const loading = ref(false);
 const username = ref(``);

@@ -10,7 +10,7 @@ const detailProgram = [
 
   {
     title: `Pratiques de Conservation de l'Eau.`,
-    subtitle: ` La gestion de l'eau est un aspect crucial des maisons de ferme vertes. Des systèmes de collecte des eaux pluviales et de recyclage des eaux grises sont mis en place pour réduire la consommation d'eau potable. De plus, des aménagements paysagers intelligents et des méthodes d'irrigation économes en eau sont utilisés pour préserver les ressources hydriques et favoriser la croissance de plantes adaptées à l'environnement local.`,
+    subtitle: `La gestion de l'eau est un aspect crucial des maisons de ferme vertes. Des systèmes de collecte des eaux pluviales et de recyclage des eaux grises sont mis en place pour réduire la consommation d'eau potable. De plus, des aménagements paysagers intelligents et des méthodes d'irrigation économes en eau sont utilisés pour préserver les ressources hydriques et favoriser la croissance de plantes adaptées à l'environnement local.`,
     link: `/introduction/organic-waste-recycling`,
   },
 
@@ -49,9 +49,8 @@ const setActiveCard = (index: number) => {
     <div class="h-screen flex flex-col justify-center mt-15">
       <div class="cards-container h-80 mb-3 mt-15 w-full flex justify-center items-center">
         <div
-          class="p-1 hover:p-10 hover:transition delay-300 duration-700 ease-in-out"
+          class="p-1 hover:scale-[120%] hover:p-10 hover:transition delay-150 duration-700 ease-out"
           @mouseenter="setActiveCard(0)"
-          @mouseleave="setActiveCard(activeCardIndex.value)"
         >
           <FavertonCardHover
             cover-image="https://ggayane.github.io/css-experiments/cards/dark_rider-cover.jpg"
@@ -62,9 +61,8 @@ const setActiveCard = (index: number) => {
           />
         </div>
         <div
-          class="p-1 hover:p-10 hover:transition delay-300 duration-700 ease-in-out"
+          class="p-1 hover:scale-[120%] hover:p-10 hover:transition delay-150 duration-700 ease-in-out"
           @mouseenter="setActiveCard(1)"
-          @mouseleave="setActiveCard(activeCardIndex.value)"
         >
           <FavertonCardHover
             :link="detailProgram[1]?.link"
@@ -75,9 +73,8 @@ const setActiveCard = (index: number) => {
           />
         </div>
         <div
-          class="p-1 hover:p-10 hover:transition delay-300 duration-700 ease-in-out"
+          class="p-1 hover:scale-[120%] hover:p-10 hover:transition delay-150 duration-700 ease-in-out"
           @mouseenter="setActiveCard(2)"
-          @mouseleave="setActiveCard(activeCardIndex.value)"
         >
           <FavertonCardHover
             :link="detailProgram[2]?.link"
@@ -90,9 +87,8 @@ const setActiveCard = (index: number) => {
       </div>
       <div class="cards-container h-80 mt-3 w-full flex justify-center items-center">
         <div
-          class=" flex items-center justify-center p-1 hover:p-10 hover:transition delay-300 duration-700 ease-in-out"
+          class="p-1 hover:scale-[120%] hover:p-10 hover:transition delay-300 duration-700 ease-in-out"
           @mouseenter="setActiveCard(3)"
-          @mouseleave="setActiveCard(activeCardIndex.value)"
         >
           <FavertonCardHover
             :link="detailProgram[3]?.link"
@@ -103,9 +99,8 @@ const setActiveCard = (index: number) => {
           />
         </div>
         <div
-          class="p-1 hover:p-10 hover:transition delay-300 duration-700 ease-in-out"
+          class="p-1 hover:scale-[120%] hover:p-10 hover:transition delay-300 duration-700 ease-in-out"
           @mouseenter="setActiveCard(4)"
-          @mouseleave="setActiveCard(activeCardIndex.value)"
         >
           <FavertonCardHover
             :link="detailProgram[4]?.link"
@@ -116,9 +111,8 @@ const setActiveCard = (index: number) => {
           />
         </div>
         <div
-          class="p-1 hover:p-10 hover:transition delay-300 duration-700 ease-in-out"
+          class="p-1 hover:scale-[120%] hover:p-10 hover:transition delay-300 duration-700 ease-in-out"
           @mouseenter="setActiveCard(5)"
-          @mouseleave="setActiveCard(activeCardIndex.value)"
         >
           <FavertonCardHover
             :link="detailProgram[5]?.link"
@@ -140,7 +134,7 @@ const setActiveCard = (index: number) => {
           :key="activeCardIndex"
           class="indent-8 text-justify text-2xl font-bold leading-[1.1]"
         >
-          {{ detailProgram[activeCardIndex].subtitle }}
+          {{ detailProgram[activeCardIndex]?.subtitle }}
         </p>
       </transition>
     </div>

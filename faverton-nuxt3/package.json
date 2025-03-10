@@ -24,6 +24,7 @@
     "@tresjs/post-processing": "^0.7.1",
     "chart.js": "^4.4.7",
     "gsap": "^3.12.7",
+    "leaflet.heat": "^0.2.0",
     "nuxt": "^3.15.2",
     "pinia": "^3.0.1",
     "vue": "latest",

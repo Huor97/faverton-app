@@ -54,6 +54,8 @@ async function saveToHistory() {
     :loading="isLoading"
     :disabled="isLoading || success"
     :color="success ? 'green' : 'primary'"
+    size="xl"
+    class="w-64"
     @click="saveToHistory"
   >
     <template v-if="!success">

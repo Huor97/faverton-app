@@ -1,9 +1,9 @@
 <script setup lang="ts">
 defineProps<{
   coverImage: string
-  titleImage: string
+  titleImage?: string
   characterImage: string
-  link: string
+  link?: string
   altText?: string
   title?: string
 }>();
@@ -21,10 +21,6 @@ defineProps<{
           class="cover-image"
         >
       </div>
-      <!-- <img
-        :src="titleImage"
-        class="title"
-      > -->
       <h1 class="title text-white text-center text-xl"> {{ title }}</h1>
 
       <img
@@ -45,7 +41,6 @@ defineProps<{
   align-items: flex-end;
   padding: 0 1px;
   perspective: 2500px;
-  /* margin: 0 50px; */
 }
 
 .cover-image {
