@@ -1,4 +1,3 @@
-// server/api/simulation/update-history.post.ts
 import { serverSupabaseClient } from '#supabase/server';
 
 export default defineEventHandler(async (event) => {
@@ -8,7 +7,7 @@ export default defineEventHandler(async (event) => {
     if (!body.simulationId) {
       return createError({
         statusCode: 400,
-        message: `L'ID de simulation est requis`,
+        message: `simulation id is required`,
       });
     }
 
@@ -16,15 +15,15 @@ export default defineEventHandler(async (event) => {
 
     const { data, error } = await supabase
       .from(`simulation`)
-      .update({ history: body.history })
+      .update({ history: body.history, surface: body.surface })
       .eq(`simulation_id`, body.simulationId)
       .select();
 
     if (error) {
-      console.error(`Erreur Supabase:`, error);
+      console.error(`Error Supabase:`, error);
       return createError({
         statusCode: 500,
-        message: `Erreur lors de la mise à jour de la simulation`,
+        message: `Error updating simulation`,
         data: error,
       });
     }
@@ -35,10 +34,10 @@ export default defineEventHandler(async (event) => {
     };
   }
   catch (error) {
-    console.error(`Erreur du serveur:`, error);
+    console.error(`Server error:`, error);
     return createError({
       statusCode: 500,
-      message: `Erreur du serveur`,
+      message: `Server error`,
       data: error,
     });
   }

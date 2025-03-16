@@ -1,9 +1,12 @@
 <script setup lang="ts">
 const props = defineProps<{
   simulationId: string | null
+  surface: number
 }>();
 
-console.log(`simulation id`, props.simulationId);
+interface SimulationHistoryResponse {
+  success: boolean
+}
 
 const isLoading = ref(false);
 const error = ref<string | null>(null);
@@ -12,7 +15,7 @@ const saved = ref(true);
 
 async function saveToHistory() {
   if (!props.simulationId) {
-    error.value = `ID de simulation manquant`;
+    error.value = `Missing simulation ID`;
     return;
   }
 
@@ -21,11 +24,12 @@ async function saveToHistory() {
   success.value = false;
 
   try {
-    const response = await $fetch(`/api/simulation/history`, {
+    const response = await $fetch<SimulationHistoryResponse>(`/api/simulation/history`, {
       method: `POST`,
       body: {
         simulationId: props.simulationId,
         history: saved.value,
+        surface: props.surface,
       },
     });
 
@@ -36,11 +40,16 @@ async function saveToHistory() {
       }, 2000);
     }
     else {
-      error.value = `Erreur lors de la mise à jour`;
+      error.value = `Error while updating`;
     }
   }
-  catch (err: any) {
-    error.value = err.message || `Une erreur s'est produite`;
+  catch (err: unknown) {
+    if (err instanceof Error) {
+      error.value = err.message;
+    }
+    else {
+      error.value = `An error has occurred`;
+    }
   }
   finally {
     isLoading.value = false;
