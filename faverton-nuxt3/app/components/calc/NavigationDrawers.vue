@@ -2,7 +2,7 @@
 import type { FetchError } from 'ofetch';
 import type { Properties } from '~/types/address/new-base-address-national';
 import type { AmountEurosPerYear } from '~/types/amount-euros-per-year';
-import type { SimulationClass } from '~/types/simulation';
+import type { Simulation } from '~/types/simulation';
 import type { SolarEnergy } from '~/types/solar_energy';
 
 const user = useSupabaseUser();
@@ -43,7 +43,7 @@ const panelId = computed(() => onePanel.value?.[0]?.panel_id || null);
 
 // Simulation data
 const simulationId = ref<string>(``);
-const simulation = ref<SimulationClass | null>(null);
+const simulation = ref<Simulation | null>(null);
 const simulationError = ref<null | FetchError | unknown>(null);
 
 // Query parameters for potential future calculations
@@ -179,7 +179,10 @@ const isFormValid = computed(() =>
 
       <CalcSimulationYearlyAmount :amount-per-year />
 
-      <CalcSimulationHistoryButton :simulation-id="simulationId" />
+      <CalcSimulationHistoryButton
+        :simulation-id="simulationId"
+        :surface
+      />
 
       <div
         v-if="simulationError"

@@ -1,3 +1,11 @@
+<script setup lang="ts">
+definePageMeta({
+  middleware: [`auth`],
+});
+</script>
+
 <template>
-  <h1>hello</h1>
+  <div>
+    <CalcSimulationHistory />
+  </div>
 </template>

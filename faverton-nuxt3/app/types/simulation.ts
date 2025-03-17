@@ -1,8 +1,8 @@
-export interface Simulation {
-  simulation: SimulationClass
+export interface Simulations {
+  simulations: Simulation[]
 }
 
-export interface SimulationClass {
+export interface Simulation {
   simulation_id: string
   simulation_date: Date
   solar_energy_id: string
@@ -11,6 +11,7 @@ export interface SimulationClass {
   history: boolean
   panel: Panel
   solar_energy: SolarEnergy
+  surface: number
 }
 
 export interface Panel {
