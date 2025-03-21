@@ -2,9 +2,11 @@
 import type { Simulations } from '~/types/simulation';
 
 const selectedSimulationId = ref(null);
-const { data: resultSimulations } = await useFetch<Simulations>(`/api/simulation/history`);
+
+const { data: resultSimulations, refresh } = await useFetch<Simulations>(`/api/simulation/history`);
+
 const simulationLists = computed(() => {
-  if (!resultSimulations) return [];
+  if (!resultSimulations.value) return [];
   return resultSimulations.value?.simulations.map((simulation) => {
     return {
       id: simulation.simulation_id,
@@ -22,6 +24,11 @@ const simulationLists = computed(() => {
     };
   });
 });
+async function handleSimulationDeleted() {
+  selectedSimulationId.value = null;
+  await refresh();
+}
+
 const selectedSimulation = computed(() => {
   if (!selectedSimulationId.value || !resultSimulations.value?.simulations) return null;
   return resultSimulations.value.simulations.find(
@@ -51,8 +58,8 @@ const selectedSimulation = computed(() => {
       class="bg-white p-6 rounded-lg shadow-lg"
     >
       <CalcSimulationHistoryDetails
-        v-model="selectedSimulationId"
-        :selected-simulation
+        :selected-simulation="selectedSimulation"
+        @simulation-deleted="handleSimulationDeleted"
       />
     </div>
     <div

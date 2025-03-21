@@ -3,6 +3,8 @@ import { useFormatters } from '~/composables/useFormatters';
 import type { AmountEurosPerYear } from '~/types/amount-euros-per-year';
 import type { Simulation } from '~/types/simulation';
 
+const emit = defineEmits([`simulationDeleted`]);
+
 const props = defineProps<{
   selectedSimulation?: Simulation | null
 }>();
@@ -11,6 +13,11 @@ const model = defineModel<string | null>();
 
 function closeSimulation() {
   model.value = null;
+}
+function handleSimulationDeleted(deletedId: string) {
+  emit(`simulationDeleted`, deletedId);
+
+  closeSimulation();
 }
 
 const queryParams = computed(() => ({
@@ -187,9 +194,10 @@ const simulationDate = computed(() => props.selectedSimulation?.simulation_date 
     </div>
 
     <div class="mt-6 flex justify-end gap-3">
-      <button class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-        Supprimer de l'historique
-      </button>
+      <CalcSimulationHistoryButtonDelete
+        :simulation-id="selectedSimulation?.simulation_id"
+        @simulation-deleted="handleSimulationDeleted"
+      />
     </div>
   </div>
 </template>
