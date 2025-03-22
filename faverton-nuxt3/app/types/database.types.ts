@@ -98,21 +98,18 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
-          email: string | null
           id: string
           updated_at: string | null
           username: string | null
         }
         Insert: {
           avatar_url?: string | null
-          email?: string | null
           id: string
           updated_at?: string | null
           username?: string | null
         }
         Update: {
           avatar_url?: string | null
-          email?: string | null
           id?: string
           updated_at?: string | null
           username?: string | null
@@ -121,33 +118,30 @@ export type Database = {
       }
       simulation: {
         Row: {
-          annual_income: number | null
           history: boolean | null
-          monthly_income: number | null
           panel_id: string | null
           simulation_date: string
           simulation_id: string
           solar_energy_id: string | null
+          surface: number | null
           user_id: string | null
         }
         Insert: {
-          annual_income?: number | null
           history?: boolean | null
-          monthly_income?: number | null
           panel_id?: string | null
           simulation_date: string
           simulation_id?: string
           solar_energy_id?: string | null
+          surface?: number | null
           user_id?: string | null
         }
         Update: {
-          annual_income?: number | null
           history?: boolean | null
-          monthly_income?: number | null
           panel_id?: string | null
           simulation_date?: string
           simulation_id?: string
           solar_energy_id?: string | null
+          surface?: number | null
           user_id?: string | null
         }
         Relationships: [
@@ -163,64 +157,64 @@ export type Database = {
             columns: [`solar_energy_id`]
             isOneToOne: false
             referencedRelation: `solar_energy`
-            referencedColumns: [`solar_energy _id`]
+            referencedColumns: [`solar_energy_id`]
           },
         ]
       }
       solar_energy: {
         Row: {
-          "city": string | null
-          "month_1_energy": number | null
-          "month_10_energy": number | null
-          "month_11_energy": number | null
-          "month_12_energy": number | null
-          "month_2_energy": number | null
-          "month_3_energy": number | null
-          "month_4_energy": number | null
-          "month_5_energy": number | null
-          "month_6_energy": number | null
-          "month_7_energy": number | null
-          "month_8_energy": number | null
-          "month_9_energy": number | null
-          "postal_code": string
-          "solar_energy _id": string
-          "yearly_energy": number | null
+          city: string | null
+          month_1_energy: number | null
+          month_10_energy: number | null
+          month_11_energy: number | null
+          month_12_energy: number | null
+          month_2_energy: number | null
+          month_3_energy: number | null
+          month_4_energy: number | null
+          month_5_energy: number | null
+          month_6_energy: number | null
+          month_7_energy: number | null
+          month_8_energy: number | null
+          month_9_energy: number | null
+          postal_code: string
+          solar_energy_id: string
+          yearly_energy: number | null
         }
         Insert: {
-          "city"?: string | null
-          "month_1_energy"?: number | null
-          "month_10_energy"?: number | null
-          "month_11_energy"?: number | null
-          "month_12_energy"?: number | null
-          "month_2_energy"?: number | null
-          "month_3_energy"?: number | null
-          "month_4_energy"?: number | null
-          "month_5_energy"?: number | null
-          "month_6_energy"?: number | null
-          "month_7_energy"?: number | null
-          "month_8_energy"?: number | null
-          "month_9_energy"?: number | null
-          "postal_code": string
-          "solar_energy _id"?: string
-          "yearly_energy"?: number | null
+          city?: string | null
+          month_1_energy?: number | null
+          month_10_energy?: number | null
+          month_11_energy?: number | null
+          month_12_energy?: number | null
+          month_2_energy?: number | null
+          month_3_energy?: number | null
+          month_4_energy?: number | null
+          month_5_energy?: number | null
+          month_6_energy?: number | null
+          month_7_energy?: number | null
+          month_8_energy?: number | null
+          month_9_energy?: number | null
+          postal_code: string
+          solar_energy_id?: string
+          yearly_energy?: number | null
         }
         Update: {
-          "city"?: string | null
-          "month_1_energy"?: number | null
-          "month_10_energy"?: number | null
-          "month_11_energy"?: number | null
-          "month_12_energy"?: number | null
-          "month_2_energy"?: number | null
-          "month_3_energy"?: number | null
-          "month_4_energy"?: number | null
-          "month_5_energy"?: number | null
-          "month_6_energy"?: number | null
-          "month_7_energy"?: number | null
-          "month_8_energy"?: number | null
-          "month_9_energy"?: number | null
-          "postal_code"?: string
-          "solar_energy _id"?: string
-          "yearly_energy"?: number | null
+          city?: string | null
+          month_1_energy?: number | null
+          month_10_energy?: number | null
+          month_11_energy?: number | null
+          month_12_energy?: number | null
+          month_2_energy?: number | null
+          month_3_energy?: number | null
+          month_4_energy?: number | null
+          month_5_energy?: number | null
+          month_6_energy?: number | null
+          month_7_energy?: number | null
+          month_8_energy?: number | null
+          month_9_energy?: number | null
+          postal_code?: string
+          solar_energy_id?: string
+          yearly_energy?: number | null
         }
         Relationships: []
       }
