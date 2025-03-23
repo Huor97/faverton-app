@@ -19,7 +19,7 @@ const register = async () => {
 };
 
 const gotoLogin = () => {
-  navigateTo(`/login`);
+  navigateTo(`/user/login`);
 };
 </script>
 

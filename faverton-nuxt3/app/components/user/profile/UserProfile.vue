@@ -69,7 +69,7 @@ const signOut = async () => {
   try {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
-    router.push(`/`);
+    router.push(`/introduction`);
   }
   catch (error) {
     // @ts-expect-error: error.message is a string
@@ -97,7 +97,7 @@ const signOut = async () => {
         class="cursor-pointer bg-green-500 text-white text-center py-2 rounded"
         for="single"
       >
-        {{ uploading ? "Uploading ..." : "Upload" }}
+        {{ uploading ? "Uploading ..." : "Change photo" }}
       </label>
       <label for="email">Email</label>
       <!-- @vue-expect-error -->
@@ -107,16 +107,17 @@ const signOut = async () => {
         :value="user.email"
         disabled
       >
-      <label for="username">Username</label>
+      <label for="username">Profile name</label>
       <input
         id="username"
         v-model="username"
         type="text"
+        class="focus:outline-hidden"
       >
       <input
         type="submit"
         class="cursor-pointer bg-green-500 text-white text-center py-2 rounded"
-        :value="loading ? 'Loading ...' : 'Update'"
+        :value="loading ? 'Loading ...' : 'Enregistrer'"
         :disabled="loading"
       >
     </form>

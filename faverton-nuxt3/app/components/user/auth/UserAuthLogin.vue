@@ -4,10 +4,6 @@ const email = ref(``);
 const password = ref(``);
 const message = ref(``);
 
-definePageMeta({
-  middleware: [`auth`],
-});
-
 const login = async () => {
   const { error } = await supabase.auth.signInWithPassword({
     email: email.value,
@@ -19,12 +15,12 @@ const login = async () => {
   }
   else {
     message.value = `Connexion réussie`;
-    navigateTo(`/profile`);
+    navigateTo(`/user/profile`);
   }
 };
 
 const gotToRegister = () => {
-  navigateTo(`/register`);
+  navigateTo(`/user/register`);
 };
 </script>
 
