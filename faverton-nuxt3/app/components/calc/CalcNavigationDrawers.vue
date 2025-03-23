@@ -62,6 +62,9 @@ function handlePanelClick(model: string) {
 
 // Form submission handler
 async function handleFormSubmit() {
+  if (userId.value !== user?.value?.id) {
+    navigateTo(`/user/login`);
+  }
   try {
     const res = await $fetch<SimulationResponse>(`/api/simulation`, {
       method: `POST`,
@@ -130,7 +133,7 @@ const isFormValid = computed(() =>
 
       <!-- Selection Summary -->
       <div class="p-3">
-        <p>Il faut choisir votre address et le surface en m2 avec le panel</p>
+        <p>Si vous êtes connecté, vous devez choisir votre adresse et la surface en m² avec le panel.</p>
 
         <div class="mt-3">
           <div v-if="addressProperty">
