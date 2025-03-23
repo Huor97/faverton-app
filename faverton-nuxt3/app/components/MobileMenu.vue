@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 const user = useSupabaseUser();
 const userLoaded = ref(false);
 
@@ -94,7 +94,7 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped>
+<!-- <style scoped>
 .mobile-menu {
     position: absolute;
     left: 0;
@@ -185,4 +185,4 @@ onMounted(() => {
     top: 12px;
     transform: rotate(-135deg);
   }
-</style>
+</style> -->

@@ -1,19 +1,19 @@
-<script setup>
+<script setup lang="ts">
 const user = useSupabaseUser();
 const userLoaded = ref(false);
 
-const height = ref(0);
-const x = ref(0);
-const y = ref(0);
-const curveX = ref(0);
-const curveY = ref(0);
-const targetX = ref(0);
-const xitteration = ref(0);
-const yitteration = ref(0);
+const height = ref<number>(0);
+const x = ref<number>(0);
+const y = ref<number>(0);
+const curveX = ref<number>(0);
+const curveY = ref<number>(0);
+const targetX = ref<number>(0);
+const xitteration = ref<number>(0);
+const yitteration = ref<number>(0);
 const menuExpanded = ref(false);
 const blobPath = ref(`M60,500H58V0h1c0,0,20,172,20,250S60,900,60,500z`);
 
-const handleMouseMove = (e) => {
+const handleMouseMove = (e: MouseEvent) => {
   x.value = e.pageX;
   y.value = e.pageY - window.scrollY;
 };
@@ -26,7 +26,7 @@ const collapseMenu = () => {
   menuExpanded.value = false;
 };
 
-const easeOutExpo = (currentIteration, startValue, changeInValue, totalIterations) => {
+const easeOutExpo = (currentIteration: number, startValue: number, changeInValue: number, totalIterations: number) => {
   return changeInValue * (-Math.pow(2, -10 * currentIteration / totalIterations) + 1) + startValue;
 };
 

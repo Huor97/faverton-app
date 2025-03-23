@@ -1,20 +1,4 @@
-<template>
-  <div>
-    <div class="w-full h-[25vh]">
-      <div
-        ref="box"
-        class="box"
-      >
-        <img
-          :src="logo"
-          alt="faverton"
-        >
-      </div>
-    </div>
-  </div>
-</template>
-
-<script setup>
+<script setup lang="ts">
 import { gsap } from 'gsap';
 import logo from '~/assets/favertonLogo.png';
 
@@ -55,6 +39,22 @@ onUnmounted(() => {
   window.removeEventListener(`scroll`, handleScroll);
 });
 </script>
+
+<template>
+  <div>
+    <div class="w-full h-[25vh]">
+      <div
+        ref="box"
+        class="box"
+      >
+        <img
+          :src="logo"
+          alt="faverton"
+        >
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .box {
