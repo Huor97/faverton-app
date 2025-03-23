@@ -17,8 +17,6 @@ interface SimulationResponse {
   }
 }
 // UI state
-const drawer = ref(true);
-const rail = ref(true);
 const resultSimulation = ref(false);
 
 // Form data
@@ -105,16 +103,8 @@ const isFormValid = computed(() =>
 </script>
 
 <template>
-  <FavertonMenuNavigationDrawerToggle v-model="drawer" />
-
-  <VNavigationDrawer
-    v-model="drawer"
-    :width="700"
-    location="right"
-    :rail="!rail"
-    temporary
-  >
-    <!-- Panel Selection View -->
+  <!-- Panel Selection View -->
+  <div class="fixed z-[900] bg-white right-0 border h-full">
     <div v-if="!resultSimulation">
       <div class="z-[999] m-0 p-3 flex gap-3">
         <FavertonInputSearch />
@@ -167,9 +157,9 @@ const isFormValid = computed(() =>
     <!-- Simulation Results View -->
     <div
       v-else
-      class="flex flex-col gap-5"
+      class="flex flex-col gap-5 p-1"
     >
-      <div class="p-3">
+      <div>
         <UButton
           label="Retour"
           icon="i-heroicons-arrow-left"
@@ -191,5 +181,5 @@ const isFormValid = computed(() =>
         Une erreur s'est produite lors de la simulation.
       </div>
     </div>
-  </VNavigationDrawer>
+  </div>
 </template>

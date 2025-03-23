@@ -7,7 +7,6 @@ export default defineNuxtConfig({
     `@nuxtjs/supabase`,
     `@tresjs/nuxt`,
     `@nuxtjs/leaflet`,
-    `vuetify-nuxt-module`,
     `@pinia/nuxt`,
   ],
   devtools: { enabled: true },

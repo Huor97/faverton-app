@@ -156,14 +156,11 @@ const solarEnergy = computed(() => {
 
 <template>
   <div>
+    <CalcNavigationDrawers
+      :address-property
+      :solar-energy
+    />
+
     <FavertonCard :saved-address="featureCollection" />
-    <v-app
-      class="absolute"
-    >
-      <CalcNavigationDrawers
-        :address-property
-        :solar-energy
-      />
-    </v-app>
   </div>
 </template>
