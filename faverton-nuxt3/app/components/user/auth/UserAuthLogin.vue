@@ -15,7 +15,7 @@ const login = async () => {
   }
   else {
     message.value = `Connexion réussie`;
-    navigateTo(`/user/profile`);
+    navigateTo(`/simulator`);
   }
 };
 
@@ -26,8 +26,6 @@ const gotToRegister = () => {
 
 <template>
   <div class="flex flex-col justify-center h-screen items-center gap-3">
-    <!-- <AppHeader /> -->
-
     <h1>
       Se connecter
     </h1>
