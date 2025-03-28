@@ -148,12 +148,13 @@ const isFormValid = computed(() =>
         </div>
       </div>
       <!-- Submit Button -->
-      <div class="p-3">
+      <div class="p-3 flex gap-2">
         <UButton
           label="Lancer la simulation"
           :disabled="!isFormValid"
           @click="handleFormSubmit"
         />
+        <CalcSimulationHistoryButton />
       </div>
     </div>
 
@@ -172,10 +173,13 @@ const isFormValid = computed(() =>
 
       <CalcSimulationYearlyAmount :amount-per-year />
 
-      <CalcSimulationHistoryButton
+      <CalcSimulationHistoryButtonRegister
         :simulation-id="simulationId"
         :surface
       />
+      <div>
+        <CalcSimulationHistoryButton />
+      </div>
 
       <div
         v-if="simulationError"
