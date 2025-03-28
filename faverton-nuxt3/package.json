@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@nuxt/ui": "^2.21.1",
+    "@nuxtjs/cloudinary": "^4.0.0",
     "@nuxtjs/leaflet": "^1.2.6",
     "@nuxtjs/supabase": "^1.5.0",
     "@pinia/nuxt": "^0.10.1",

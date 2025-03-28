@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     `@tresjs/nuxt`,
     `@nuxtjs/leaflet`,
     `@pinia/nuxt`,
+    `@nuxtjs/cloudinary`,
   ],
   devtools: { enabled: true },
   app: {

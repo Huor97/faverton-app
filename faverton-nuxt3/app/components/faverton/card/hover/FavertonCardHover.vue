@@ -1,8 +1,8 @@
 <script setup lang="ts">
 defineProps<{
-  coverImage: string
+  coverImage?: string
   titleImage?: string
-  characterImage: string
+  characterImage?: string
   link?: string
   altText?: string
   title?: string
@@ -106,8 +106,8 @@ defineProps<{
   transform: translate3d(0%, -60px, 100px);
 }
 .character {
-  width: 100%;
-  height: 100%;
+  width: 80%;
+  height: 80%;
   opacity: 0;
   transition: all 0.5s;
   position: absolute;
