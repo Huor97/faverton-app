@@ -1,3 +1,5 @@
+import type { SolarEnergy } from "../simulation";
+
 export interface SimulationList {
   id: string
   date: Date
@@ -9,10 +11,4 @@ export interface SimulationList {
 export interface Panel {
   model: string
   panelEfficiency: number
-}
-
-export interface SolarEnergy {
-  city: string
-  postalCode: string
-  yearlyEnergy: number
 }
