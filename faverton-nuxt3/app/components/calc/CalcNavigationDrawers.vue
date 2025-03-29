@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { FetchError } from 'ofetch';
 import type { Properties } from '~/types/address/new-base-address-national';
+import type { AmountEurosPerMonths } from '~/types/amount-euros-per-months';
 import type { AmountEurosPerYear } from '~/types/amount-euros-per-year';
 import type { Simulation, SolarEnergy } from '~/types/simulation';
 
@@ -56,7 +57,7 @@ const queryParamsMonth = computed(() => ({
   solarEnergyId: simulation.value?.solar_energy.solar_energy_id ?? null,
 }));
 
-const { data: amountPerMonth } = useLazyFetch<AmountEurosPerYear>(`/api/simulation/price-month`, {
+const { data: amountPerMonth } = useLazyFetch<AmountEurosPerMonths>(`/api/simulation/price-month`, {
   query: queryParamsMonth,
   watch: [() => simulation.value?.solar_energy.solar_energy_id],
 });
@@ -182,7 +183,7 @@ const isFormValid = computed(() =>
       </div>
 
       <CalcSimulationYearlyAmount :amount-per-year />
-      <CalcSimulationMonthlyAmount />
+      <CalcSimulationMonthlyAmount :amount-per-month="amountPerMonth" />
 
       <CalcSimulationHistoryButtonRegister
         :simulation-id="simulationId"

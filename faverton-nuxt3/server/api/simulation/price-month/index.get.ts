@@ -2,6 +2,7 @@ import { serverSupabaseClient } from "#supabase/server";
 import type { SolarEnergy } from "~/types/simulation";
 
 interface MonthlyResult {
+  month: string
   energy: number
   euros: number
 }
@@ -11,20 +12,10 @@ export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event);
 
   const EDF_PRICE = 0.1269;
-  const MONTH_NAMES: Record<string, string> = {
-    1: `janvier`,
-    2: `février`,
-    3: `mars`,
-    4: `avril`,
-    5: `mai`,
-    6: `juin`,
-    7: `juillet`,
-    8: `août`,
-    9: `septembre`,
-    10: `octobre`,
-    11: `novembre`,
-    12: `décembre`,
-  };
+  const MONTH_NAMES = [
+    `janvier`, `février`, `mars`, `avril`, `mai`, `juin`,
+    `juillet`, `août`, `septembre`, `octobre`, `novembre`, `décembre`,
+  ];
 
   const surfaceArea = Number(query.surface);
   const panelEfficiency = query.panelEfficiency ? Number(query.panelEfficiency) : null;
@@ -51,9 +42,8 @@ export default defineEventHandler(async (event) => {
     if (error) throw error;
     if (!data) throw new Error(`Solar data not found`);
 
-    const monthlyResults: Record<string, MonthlyResult> = {};
-
     const monthliesEnergy = data as SolarEnergy;
+    const monthlyResults: MonthlyResult[] = [];
 
     for (let i = 1; i <= 12; i++) {
       const monthKey = `month_${i}_energy` as const;
@@ -63,19 +53,18 @@ export default defineEventHandler(async (event) => {
 
         if (monthEnergyRef !== undefined && !isNaN(Number(monthEnergyRef))) {
           const monthlyEnergy = Number(monthEnergyRef) * surfaceArea * HIGH_PERFORMANCE_PANEL;
-
           const monthlyEuros = monthlyEnergy * EDF_PRICE;
 
-          const monthName = MONTH_NAMES[i.toString()];
-          monthlyResults[monthName] = {
+          monthlyResults.push({
+            month: MONTH_NAMES[i - 1],
             energy: parseFloat(monthlyEnergy.toFixed(2)),
             euros: parseFloat(monthlyEuros.toFixed(2)),
-          };
+          });
         }
       }
     }
 
-    if (Object.keys(monthlyResults).length === 0) {
+    if (monthlyResults.length === 0) {
       return {
         error: `No valid monthly data found`,
         status: 404,
