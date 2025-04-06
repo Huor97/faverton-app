@@ -12,6 +12,21 @@
       "source.fixAll.eslint": "explicit",
       "source.organizeImports": "never"
     },
+    "todo-tree.general.tags": [
+      "TODO:",
+      "FIXME:",
+      "NOTE:",
+      "HACK:",
+      "XXX:"
+    ],
+    "todo-tree.highlights.customHighlight": {
+      "NOTE:": {
+        "foreground": "#000000",
+        "background": "#FFD700",
+        "icon": "note",
+        "type": "text"
+      }
+    },
   
     // Silent the stylistic rules in you IDE, but still auto fix them
     "eslint.rules.customizations": [
