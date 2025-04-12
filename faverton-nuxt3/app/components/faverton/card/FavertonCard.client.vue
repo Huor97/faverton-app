@@ -67,7 +67,7 @@ const onMapReady = (mapInstance: L.Map) => {
             weight: 2,
           },
         },
-        // FIXME: how disabled there options?
+        // FIXME: how to disable these options?
         polyline: false,
         rectangle: false,
         circle: false,
