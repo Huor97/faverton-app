@@ -1,166 +1,192 @@
 <script setup lang="ts">
-import type { PVGISData } from "~/types/potential-solar";
-import { useAddressStore } from '~/stores/address';
-import type { FeatureCollection, Properties } from '~/types/address/new-base-address-national';
+import type { FetchError } from 'ofetch';
+import type { Properties } from '~~/shared/types/address/new-base-address-national';
+import type { AmountEurosPerMonths } from '~~/shared/types/amount-euros-per-months';
+import type { AmountEurosPerYear } from '~~/shared/types/amount-euros-per-year';
+import type { Simulation, SolarEnergy } from '~~/shared/types/simulation';
 
-const lat = ref<number>();
-const lon = ref<number>();
-const postalCode = ref<string>();
-const city = ref<string>();
-const favertonSolarData = ref(null);
-const fetchError = ref(null);
-const isLoading = ref(false);
-const isSaving = ref(false);
-const resultSolareEnergy = ref();
+const user = useSupabaseUser();
 
-const addressStore = useAddressStore();
-const featureCollection = computed<FeatureCollection | null>(() => addressStore.savedAddress?.featureCollection || null);
+const props = defineProps<{
+  addressProperty: Properties | null
+  solarEnergy: SolarEnergy | null
+}>();
 
-const addressProperty = computed<Properties | null>(() => {
-  return addressStore.savedAddress?.featureCollection.features[0]?.properties || null;
+interface SimulationResponse {
+  data: {
+    simulation_id: string
+  }
+}
+// UI state
+const resultSimulation = ref(false);
+
+// Form data
+const surface = ref<number>(1);
+const selectedModelName = ref<string | null>(null);
+
+// Computed ID values
+const solarEnergyId = computed(() => props.solarEnergy?.solar_energy_id || null);
+const userId = computed(() => user?.value?.id || null);
+
+// Panel data
+const { data: allPanels } = await useFetch(`/api/panels`);
+const panels = computed(() => allPanels.value || []);
+
+const modelPanel = computed(() => selectedModelName.value);
+const { data: onePanel } = await useFetch(`/api/panel`, {
+  query: { model: modelPanel },
+  watch: [modelPanel],
 });
 
-watch(featureCollection, (newVal) => {
-  if (newVal && newVal.features && newVal.features.length > 0) {
-    lat.value = newVal.features[0]?.geometry.coordinates[1];
-    lon.value = newVal.features[0]?.geometry.coordinates[0];
-    postalCode.value = newVal.features[0]?.properties.postcode;
-    city.value = newVal.features[0]?.properties.city;
-  }
-  else {
-    lat.value = undefined;
-    lon.value = undefined;
-    postalCode.value = undefined;
-    city.value = undefined;
-  }
+const panelId = computed(() => onePanel.value?.[0]?.panel_id || null);
+
+// Simulation data
+const simulationId = ref<string>(``);
+const simulation = ref<Simulation | null>(null);
+const simulationError = ref<null | FetchError | unknown>(null);
+
+// Query parameters for potential future calculations
+const queryParams = computed(() => ({
+  annualKwh: simulation.value?.solar_energy.yearly_energy ?? 0,
+  surface: surface.value,
+  panelEfficiency: simulation.value?.panel.efficiency ?? 0,
+}));
+
+const queryParamsMonth = computed(() => ({
+  surface: surface.value,
+  panelEfficiency: simulation.value?.panel.efficiency ?? 0,
+  solarEnergyId: simulation.value?.solar_energy.solar_energy_id ?? null,
+}));
+
+const { data: amountPerMonth } = useLazyFetch<AmountEurosPerMonths>(`/api/simulation/price-month`, {
+  query: queryParamsMonth,
+  watch: [() => simulation.value?.solar_energy.solar_energy_id],
 });
 
-// TODO: after do create the composable
-const saveJRCDataToFaverton = async (jrcData: PVGISData) => {
-  if (!postalCode.value || !city.value || !lat.value || !lon.value) {
-    console.error(`Missing location information`);
-    return null;
+const { data: amountPerYear } = useLazyFetch<AmountEurosPerYear>(`/api/simulation/price-year`, {
+  query: queryParams,
+});
+
+// Form submission handler
+async function handleFormSubmit() {
+  if (userId.value !== user?.value?.id) {
+    navigateTo(`/user/login`);
   }
-
-  isSaving.value = true;
-
   try {
-    const dataToSave = {
-      postalCode: postalCode.value,
-      city: city.value,
-      month1Energy: jrcData.outputs.monthly.fixed[0]?.E_m,
-      month2Energy: jrcData.outputs.monthly.fixed[1]?.E_m,
-      month3Energy: jrcData.outputs.monthly.fixed[2]?.E_m,
-      month4Energy: jrcData.outputs.monthly.fixed[3]?.E_m,
-      month5Energy: jrcData.outputs.monthly.fixed[4]?.E_m,
-      month6Energy: jrcData.outputs.monthly.fixed[5]?.E_m,
-      month7Energy: jrcData.outputs.monthly.fixed[6]?.E_m,
-      month8Energy: jrcData.outputs.monthly.fixed[7]?.E_m,
-      month9Energy: jrcData.outputs.monthly.fixed[8]?.E_m,
-      month10Energy: jrcData.outputs.monthly.fixed[9]?.E_m,
-      month11Energy: jrcData.outputs.monthly.fixed[10]?.E_m,
-      month12Energy: jrcData.outputs.monthly.fixed[11]?.E_m,
-      yearlyEnergy: jrcData.outputs.totals.fixed.E_y,
-    };
-
-    const savedData = await $fetch(`/api/solar-potential/faverton`, {
+    const res = await $fetch<SimulationResponse>(`/api/simulation`, {
       method: `POST`,
-      body: dataToSave,
+      body: {
+        solarEnergyId: solarEnergyId.value,
+        panelId: panelId.value,
+        userId: userId.value,
+      },
     });
 
-    return savedData;
+    simulationId.value = res.data.simulation_id;
+    resultSimulation.value = true;
+
+    // Fetch simulation details with the new ID
+    const { data, error } = await useFetch(`/api/simulation`, {
+      params: { simulationId: simulationId.value },
+    });
+
+    simulation.value = data.value.simulation;
+    simulationError.value = error.value;
   }
   catch (error) {
-    console.error(`Error saving JRC data in Faverton`, error);
-    fetchError.value = error;
-    return null;
+    simulationError.value = error;
+    console.error(`Simulation submission error:`, error);
   }
-  finally {
-    isSaving.value = false;
-  }
-};
+}
 
-const fetchSolarData = async () => {
-  favertonSolarData.value = null;
-  fetchError.value = null;
-  isLoading.value = true;
+// Reset simulation view
+function resetSimulation() {
+  resultSimulation.value = false;
+}
 
-  try {
-    if (postalCode.value && city.value) {
-      const favertonResponse = await $fetch(`/api/solar-potential/faverton`, {
-        query: {
-          postalCode: postalCode.value,
-          city: city.value,
-        },
-      });
-
-      if (favertonResponse && favertonResponse.length > 0) {
-        favertonSolarData.value = favertonResponse;
-        isLoading.value = false;
-        return;
-      }
-
-      if (lat.value && lon.value) {
-        const jrcResponse = await $fetch<PVGISData>(`/api/solar-potential/jrc`, {
-          query: {
-            lat: lat.value,
-            lon: lon.value,
-          },
-        });
-
-        if (jrcResponse) {
-          await saveJRCDataToFaverton(jrcResponse);
-
-          const updatedFavertonRespons = await $fetch(`/api/solar-potential/faverton`, {
-            query: {
-              postalCode: postalCode.value,
-              city: city.value,
-            },
-          });
-
-          favertonSolarData.value = updatedFavertonRespons;
-        }
-      }
-    }
-  }
-  catch (error) {
-    fetchError.value = error;
-  }
-  finally {
-    isLoading.value = false;
-  }
-};
-
-// Déclencher la recherche quand les valeurs changent
-watch([postalCode, city, lat, lon], () => {
-  fetchSolarData();
-});
-
-onMounted(() => {
-  if ((postalCode.value && city.value) || (lat.value && lon.value)) {
-    fetchSolarData();
-  }
-});
-
-watch(favertonSolarData, (newfavertonSolarData) => {
-  if (newfavertonSolarData) {
-    resultSolareEnergy.value = newfavertonSolarData;
-  }
-});
-
-const solarEnergy = computed(() => {
-  if (!resultSolareEnergy.value) return [];
-  return resultSolareEnergy.value[0];
-});
+// Check if form is valid
+const isFormValid = computed(() =>
+  !!props.addressProperty
+  && !!surface.value
+  && !!selectedModelName.value,
+);
+const info = [
+  {
+    label: `Quel est le modèle de vos panneaux solaires ? Chaque type de panneau possède un rendement différent, influencé par la technologie utilisée (monocristallin, polycristallin, etc.) et les conditions d'installation. Ce rendement est pris en compte pour estimer précisément votre production d’énergie solaire.`,
+    infoBol: `1`,
+  },
+];
 </script>
 
 <template>
-  <div>
-    <CalcNavigationDrawers
-      :address-property
-      :solar-energy
-    />
+  <FavertonCard>
+    <h1 class="text-xl text-center p-5 text-white">
+      Étapes de l'estimation
+    </h1>
+    <FavertonBtnCalc />
+    <!-- Calc simulation -->
+    <div
+      v-if="!resultSimulation"
+      class="z-[999] m-0 px-6"
+    >
+      <FavertonInputSearch />
+      <FavertonCardInfo
+        :label="info[0]?.label"
+        :info-bol="info[0]?.infoBol"
+      />
+      <FavertonSelectMenu :panels />
+      <div class="flex gap-5">
+        <UButton
+          icon="i-heroicons-paint-brush-20-solid"
+          label="Lancer la simulation"
+          :disabled="!isFormValid"
+          @click="handleFormSubmit"
+        />
+        <FavertonInputSurface v-model="surface" />
+      </div>
 
-    <FavertonCard :saved-address="featureCollection" />
-  </div>
+      <UDivider label="Lancer votre simulation" />
+
+      <div class="p-3 flex gap-2">
+        <UButton
+          label="Lancer la simulation"
+          :disabled="!isFormValid"
+          @click="handleFormSubmit"
+        />
+        <CalcSimulationHistoryButton />
+      </div>
+    </div>
+
+    <!-- Results Simulation -->
+    <div
+      v-else
+      class="flex flex-col gap-5 p-1"
+    >
+      <div>
+        <UButton
+          label="Retour"
+          icon="i-heroicons-arrow-left"
+          @click="resetSimulation"
+        />
+      </div>
+
+      <CalcSimulationYearlyAmount :amount-per-year />
+      <CalcSimulationMonthlyAmount :amount-per-month="amountPerMonth" />
+
+      <CalcSimulationHistoryButtonRegister
+        :simulation-id="simulationId"
+        :surface
+      />
+      <div>
+        <CalcSimulationHistoryButton />
+      </div>
+
+      <div
+        v-if="simulationError"
+        class="p-3 text-red-500"
+      >
+        Une erreur s'est produite lors de la simulation.
+      </div>
+    </div>
+  </FavertonCard>
 </template>

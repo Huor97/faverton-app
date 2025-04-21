@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { FetchError } from 'ofetch';
-import type { Properties } from '~/types/address/new-base-address-national';
-import type { AmountEurosPerMonths } from '~/types/amount-euros-per-months';
-import type { AmountEurosPerYear } from '~/types/amount-euros-per-year';
-import type { Simulation, SolarEnergy } from '~/types/simulation';
+import type { Properties } from '~~/shared/types/address/new-base-address-national';
+import type { AmountEurosPerMonths } from '~~/shared/types/amount-euros-per-months';
+import type { AmountEurosPerYear } from '~~/shared/types/amount-euros-per-year';
+import type { Simulation, SolarEnergy } from '~~/shared/types/simulation';
 
 const user = useSupabaseUser();
 
@@ -11,6 +11,7 @@ const props = defineProps<{
   addressProperty: Properties | null
   solarEnergy: SolarEnergy | null
 }>();
+
 interface SimulationResponse {
   data: {
     simulation_id: string
@@ -24,7 +25,7 @@ const surface = ref<number>(1);
 const selectedModelName = ref<string | null>(null);
 
 // Computed ID values
-const solarEnergyId = computed(() => props.solarEnergy?.solar_energy_id || null);
+const solarEnergyId = computed(() => props.solarEnergy?.data.solar_energy_id || null);
 const userId = computed(() => user?.value?.id || null);
 
 // Panel data
@@ -46,8 +47,8 @@ const simulationError = ref<null | FetchError | unknown>(null);
 
 // Query parameters for potential future calculations
 const queryParams = computed(() => ({
-  annualKwh: simulation.value?.solar_energy.yearly_energy ?? 0,
   surface: surface.value,
+  annualKwh: simulation.value?.solar_energy.yearly_energy ?? 0,
   panelEfficiency: simulation.value?.panel.efficiency ?? 0,
 }));
 
@@ -65,11 +66,6 @@ const { data: amountPerMonth } = useLazyFetch<AmountEurosPerMonths>(`/api/simula
 const { data: amountPerYear } = useLazyFetch<AmountEurosPerYear>(`/api/simulation/price-year`, {
   query: queryParams,
 });
-
-// Panel selection handler
-function handlePanelClick(model: string) {
-  selectedModelName.value = model;
-}
 
 // Form submission handler
 async function handleFormSubmit() {
@@ -114,51 +110,43 @@ const isFormValid = computed(() =>
   && !!surface.value
   && !!selectedModelName.value,
 );
+const info = [
+  {
+    label: `Quel est le modèle de vos panneaux solaires ? Chaque type de panneau possède un rendement différent, influencé par la technologie utilisée (monocristallin, polycristallin, etc.) et les conditions d'installation. Ce rendement est pris en compte pour estimer précisément votre production d’énergie solaire.`,
+    infoBol: `1`,
+  },
+];
 </script>
 
 <template>
-  <!-- Panel Selection View -->
-  <div class="fixed z-[900] bg-white right-0 border h-full">
-    <div v-if="!resultSimulation">
-      <div class="z-[999] m-0 p-3 flex gap-3">
-        <FavertonInputSearch />
+  <FavertonCard>
+    <h1 class="text-xl text-center p-5 text-white">
+      Étapes de l'estimation
+    </h1>
+    <FavertonBtnCalc />
+    <!-- Calc simulation -->
+    <div
+      v-if="!resultSimulation"
+      class="z-[999] m-0 px-6"
+    >
+      <FavertonInputSearch />
+      <FavertonCardInfo
+        :label="info[0]?.label"
+        :info-bol="info[0]?.infoBol"
+      />
+      <FavertonSelectMenu :panels />
+      <div class="flex gap-5">
+        <UButton
+          icon="i-heroicons-paint-brush-20-solid"
+          label="Lancer la simulation"
+          :disabled="!isFormValid"
+          @click="handleFormSubmit"
+        />
         <FavertonInputSurface v-model="surface" />
       </div>
-      <!-- Panel Selection List -->
-      <div class="h-full overflow-auto max-h-80">
-        <h1 class="m-3 text-xl">
-          Choisi votre panel:
-        </h1>
-        <div
-          v-for="panel in panels"
-          :key="panel"
-        >
-          <FavertonImagePanel
-            :panel
-            @panel-clicked="handlePanelClick"
-          />
-        </div>
-      </div>
 
-      <UDivider label="Afficher votre choix" />
+      <UDivider label="Lancer votre simulation" />
 
-      <!-- Selection Summary -->
-      <div class="p-3">
-        <p>Si vous êtes connecté, vous devez choisir votre adresse et la surface en m² avec le panel.</p>
-
-        <div class="mt-3">
-          <div v-if="addressProperty">
-            <p>Adresse: {{ addressProperty.postcode }}, {{ addressProperty.city }}</p>
-          </div>
-          <div>
-            <p>Surface en m²: {{ surface }}</p>
-          </div>
-          <div v-if="selectedModelName">
-            <p>Panneau: {{ selectedModelName }}</p>
-          </div>
-        </div>
-      </div>
-      <!-- Submit Button -->
       <div class="p-3 flex gap-2">
         <UButton
           label="Lancer la simulation"
@@ -169,7 +157,7 @@ const isFormValid = computed(() =>
       </div>
     </div>
 
-    <!-- Simulation Results View -->
+    <!-- Results Simulation -->
     <div
       v-else
       class="flex flex-col gap-5 p-1"
@@ -200,5 +188,5 @@ const isFormValid = computed(() =>
         Une erreur s'est produite lors de la simulation.
       </div>
     </div>
-  </div>
+  </FavertonCard>
 </template>

@@ -52,7 +52,7 @@ export default defineEventHandler (async (event) => {
       const { data, error } = await client
         .from(`solar_energy`)
         .insert(solarPotentialData)
-        .select();
+        .select(`solar_energy_id`);
 
       if (error) {
         throw createError({
@@ -64,7 +64,7 @@ export default defineEventHandler (async (event) => {
       result = {
         success: true,
         message: `Solar data inserted successfully`,
-        data: data[0],
+        solarEnergyId: data[0].solar_energy_id,
       };
     }
     else {
@@ -72,7 +72,7 @@ export default defineEventHandler (async (event) => {
       result = {
         success: true,
         message: `Existing data for this location`,
-        data: existingData,
+        solarEnergyId: existingData.solar_energy_id,
       };
     }
 

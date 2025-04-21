@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { Bar } from 'vue-chartjs';
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js';
-import type { AmountEurosPerMonths } from '~/types/amount-euros-per-months';
+import type { AmountEurosPerMonths } from '~~/shared/types/amount-euros-per-months';
 
 const props = defineProps<{
-  amountPerMonth?: AmountEurosPerMonths
+  amountPerMonth?: AmountEurosPerMonths | null
 }>();
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);

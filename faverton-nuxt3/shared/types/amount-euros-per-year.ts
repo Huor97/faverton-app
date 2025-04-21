@@ -1,5 +1,5 @@
 export interface AmountEurosPerYear {
-  annualKwh: number
+  yearlyEnergy: number
   surfaceArea: number
   amountEurosPerYear: number
 }

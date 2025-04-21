@@ -2,6 +2,22 @@ export interface Simulations {
   simulations: Simulation[]
 }
 
+export interface propertySimulationResult {
+  success: boolean
+  message: string
+  simulation: Simulation
+  surface: number
+}
+
+export interface propertySimulation {
+  success: boolean
+  message: string
+  simulationId: string
+  solarEnergyId: string
+  panel: Panel
+  surface: number
+}
+
 export interface Simulation {
   simulation_id: string
   simulation_date: Date
@@ -25,6 +41,10 @@ export interface Panel {
 }
 
 export interface SolarEnergy {
+  data: SolarProductionData
+}
+
+export interface SolarProductionData {
   city: string
   postal_code: string
   yearly_energy: number

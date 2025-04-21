@@ -17,6 +17,7 @@ export default defineEventHandler(async (event) => {
       .update({
         history: false,
         surface: null,
+        user_id: null,
       })
       .eq(`simulation_id`, id)
       .select();

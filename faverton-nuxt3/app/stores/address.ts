@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { NewFeatureCollection } from '~/types/address/new-base-address-national';
+import type { NewFeatureCollection } from '~~/shared/types/address/new-base-address-national';
 
 export const useAddressStore = defineStore(`address`, () => {
   const savedAddress = ref<NewFeatureCollection | null>(null);

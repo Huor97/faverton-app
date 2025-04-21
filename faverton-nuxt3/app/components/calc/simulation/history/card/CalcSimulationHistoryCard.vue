@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useFormatters } from '~/composables/useFormatters';
-import type { SimulationList } from '~/types/simulation/simulation-list';
+import type { SimulationList } from '~~/shared/types/simulation/simulation-list';
 
 defineProps<{
   simulationList: SimulationList

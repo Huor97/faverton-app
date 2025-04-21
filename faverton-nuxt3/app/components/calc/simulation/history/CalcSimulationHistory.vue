@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Simulations } from '~/types/simulation';
+import type { Simulations } from '~~/shared/types/simulation';
 
 const selectedSimulationId = ref(null);
 

@@ -1,5 +1,4 @@
 import { serverSupabaseClient } from "#supabase/server";
-import type { SolarEnergy } from "~/types/simulation";
 
 interface MonthlyResult {
   month: string

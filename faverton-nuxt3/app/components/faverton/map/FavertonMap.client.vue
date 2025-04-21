@@ -3,11 +3,12 @@ import L from 'leaflet';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import 'leaflet-draw';
 import type { LatLngExpression } from 'leaflet';
-import type { FeatureCollection } from "~/types/address/new-base-address-national";
+import type { FeatureCollection } from "~~/shared/types/address/new-base-address-national";
 
-const props = defineProps<{
-  savedAddress?: FeatureCollection | null
-}>();
+const addressStore = useAddressStore();
+const featureCollection = computed<FeatureCollection | null>(() => {
+  return addressStore.savedAddress?.featureCollection || null;
+});
 
 let leafletMap: L.Map | null = null;
 const isMapReady = ref(false);
@@ -29,7 +30,7 @@ const zoomToAddress = (coords: LatLngExpression) => {
   }, 500);
 };
 
-watch(() => props.savedAddress, (newAddress) => {
+watch(() => featureCollection.value, (newAddress) => {
   if (!newAddress) return;
 
   const coords = getCoordinates(newAddress);
@@ -58,6 +59,7 @@ const onMapReady = (mapInstance: L.Map) => {
     mapInstance.addLayer(drawnItems);
 
     const drawControl = new L.Control.Draw({
+      position: `topright`,
       draw: {
         polygon: {
           shapeOptions: {
@@ -98,6 +100,7 @@ const onMapReady = (mapInstance: L.Map) => {
     :zoom="6"
     :center="[46, 10]"
     :use-global-leaflet="true"
+    :options="{ zoomControl: false }"
     @ready="onMapReady"
   >
     <LTileLayer
@@ -123,10 +126,11 @@ const onMapReady = (mapInstance: L.Map) => {
       layer-type="base"
       name="IGN"
     />
-    <LControlLayers />
+    <LControlLayers position="bottomright" />
+    <LControlZoom position="topright" />
     <LCircle
-      v-if="savedAddress?.features[0]?.geometry?.coordinates"
-      :lat-lng="getCoordinates(savedAddress)"
+      v-if="featureCollection?.features[0]?.geometry?.coordinates"
+      :lat-lng="getCoordinates(featureCollection)"
       :radius="500"
       :options="{
         color: '#3388ff',
@@ -136,7 +140,7 @@ const onMapReady = (mapInstance: L.Map) => {
       }"
     >
       <LPopup>
-        Code postal: {{ savedAddress?.features[0]?.properties?.postcode }}
+        Code postal: {{ featureCollection?.features[0]?.properties?.postcode }}
       </LPopup>
     </LCircle>
   </LMap>

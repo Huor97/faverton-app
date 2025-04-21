@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useFormatters } from '~/composables/useFormatters';
-import type { AmountEurosPerYear } from '~/types/amount-euros-per-year';
-import type { Simulation } from '~/types/simulation';
+import type { AmountEurosPerYear } from '~~/shared/types/amount-euros-per-year';
+import type { Simulation } from '~~/shared/types/simulation';
 
 const emit = defineEmits([`simulationDeleted`]);
 

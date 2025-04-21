@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     `@pinia/nuxt`,
     `@nuxtjs/cloudinary`,
   ],
+
   devtools: { enabled: true },
   app: {
     pageTransition: { name: `page`, mode: `out-in` },
@@ -19,7 +20,6 @@ export default defineNuxtConfig({
     preference: `light`,
   },
   future: { compatibilityVersion: 4 },
-
   compatibilityDate: `2024-04-03`,
   eslint: {
     config: {

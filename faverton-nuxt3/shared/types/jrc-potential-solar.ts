@@ -1,10 +1,10 @@
-export type PVGISData = {
+export interface PVGISData {
   inputs: Inputs
   outputs: Outputs
   meta: Meta
 };
 
-export type Inputs = {
+export interface Inputs {
   location: Location
   meteo_data: MeteoData
   mounting_system: MountingSystem
@@ -12,13 +12,13 @@ export type Inputs = {
   economic_data: EconomicData
 };
 
-export type Location = {
+export interface Location {
   latitude: number
   longitude: number
   elevation: number
 };
 
-export type MeteoData = {
+export interface MeteoData {
   radiation_db: string
   meteo_db: string
   year_min: number
@@ -27,7 +27,7 @@ export type MeteoData = {
   horizon_db: string
 };
 
-export type MountingSystem = {
+export interface MountingSystem {
   fixed: {
     slope: {
       value: number
@@ -41,19 +41,19 @@ export type MountingSystem = {
   }
 };
 
-export type PVModule = {
+export interface PVModule {
   technology: string
   peak_power: number
   system_loss: number
 };
 
-export type EconomicData = {
+export interface EconomicData {
   system_cost: number | null
   interest: number | null
   lifetime: number | null
 };
 
-export type Outputs = {
+export interface Outputs {
   monthly: {
     fixed: MonthlyData[]
   }
@@ -62,7 +62,7 @@ export type Outputs = {
   }
 };
 
-export type MonthlyData = {
+export interface MonthlyData {
   "month": number
   "E_d": number
   "E_m": number
@@ -71,7 +71,7 @@ export type MonthlyData = {
   "SD_m": number
 };
 
-export type TotalsData = {
+export interface TotalsData {
   "E_d": number
   "E_m": number
   "E_y": number
@@ -86,12 +86,12 @@ export type TotalsData = {
   "l_total": number
 };
 
-export type Meta = {
+export interface Meta {
   inputs: MetaInputs
   outputs: MetaOutputs
 };
 
-export type MetaInputs = {
+export interface MetaInputs {
   location: MetaLocation
   meteo_data: MetaMeteoData
   mounting_system: MetaMountingSystem
@@ -99,7 +99,7 @@ export type MetaInputs = {
   economic_data: MetaEconomicData
 };
 
-export type MetaLocation = {
+export interface MetaLocation {
   description: string
   variables: {
     latitude: MetaVariable
@@ -108,7 +108,7 @@ export type MetaLocation = {
   }
 };
 
-export type MetaMeteoData = {
+export interface MetaMeteoData {
   description: string
   variables: {
     radiation_db: MetaVariable
@@ -120,7 +120,7 @@ export type MetaMeteoData = {
   }
 };
 
-export type MetaMountingSystem = {
+export interface MetaMountingSystem {
   description: string
   choices: string
   fields: {
@@ -129,7 +129,7 @@ export type MetaMountingSystem = {
   }
 };
 
-export type MetaPVModule = {
+export interface MetaPVModule {
   description: string
   variables: {
     technology: MetaVariable
@@ -138,7 +138,7 @@ export type MetaPVModule = {
   }
 };
 
-export type MetaEconomicData = {
+export interface MetaEconomicData {
   description: string
   variables: {
     system_cost: MetaVariable
@@ -147,17 +147,17 @@ export type MetaEconomicData = {
   }
 };
 
-export type MetaVariable = {
+export interface MetaVariable {
   description: string
   units?: string
 };
 
-export type MetaOutputs = {
+export interface MetaOutputs {
   monthly: MetaMonthly
   totals: MetaTotals
 };
 
-export type MetaMonthly = {
+export interface MetaMonthly {
   type: string
   timestamp: string
   variables: {
@@ -169,7 +169,7 @@ export type MetaMonthly = {
   }
 };
 
-export type MetaTotals = {
+export interface MetaTotals {
   type: string
   variables: {
     "E_d": MetaVariable

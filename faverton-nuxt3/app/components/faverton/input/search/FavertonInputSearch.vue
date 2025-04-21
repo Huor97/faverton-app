@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { FeatureCollection } from "~/types/address/base-address-national";
-import type { NewFeatureCollection } from "~/types/address/new-base-address-national";
+import type { FeatureCollection } from "~~/shared/types/address/base-address-national";
+import type { NewFeatureCollection } from "~~/shared/types/address/new-base-address-national";
 import { useAddressStore } from '~/stores/address';
 
 const model = defineModel();
@@ -64,9 +64,8 @@ function onSelect(item: NewFeatureCollection) {
       v-model:query="searchAddress"
       :options="proposition"
       option-attribute="name"
-      placeholder="Rechercher une adresse"
+      placeholder="Rechercher une adresse..."
       size="xl"
-      class="w-[30vw]"
       @update:model-value="onSelect"
     />
   </div>

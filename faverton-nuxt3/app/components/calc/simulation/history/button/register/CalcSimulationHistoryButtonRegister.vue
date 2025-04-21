@@ -1,13 +1,14 @@
 <script setup lang="ts">
 const props = defineProps<{
-  simulationId: string | null
-  surface: number
+  simulationId?: string | null
+  surface?: number
 }>();
 
 interface SimulationHistoryResponse {
   success: boolean
 }
 
+const user = useSupabaseUser();
 const isLoading = ref(false);
 const error = ref<string | null>(null);
 const success = ref(false);
@@ -30,6 +31,7 @@ async function saveToHistory() {
         simulationId: props.simulationId,
         history: saved.value,
         surface: props.surface,
+        userId: user.value?.id,
       },
     });
 

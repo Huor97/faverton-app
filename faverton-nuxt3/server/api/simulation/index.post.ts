@@ -15,17 +15,19 @@ export default defineEventHandler (async (event) => {
     const simulationData = {
       solar_energy_id: body.solarEnergyId,
       panel_id: body.panelId,
-      user_id: body.userId,
       history: false,
       simulation_date: new Date().toISOString(),
     };
 
     const { data: existingData, error: checkError } = await client
       .from(`simulation`)
-      .select(`simulation_id`)
+      .select(`
+        simulation_id,
+        panel(efficiency),
+        solar_energy_id
+        `)
       .eq(`solar_energy_id`, simulationData.solar_energy_id)
       .eq(`panel_id`, simulationData.panel_id)
-      .eq(`user_id`, simulationData.user_id)
       .single();
 
     if (checkError && checkError.code !== `PGRST116`) {
@@ -41,7 +43,11 @@ export default defineEventHandler (async (event) => {
       const { data, error } = await client
         .from(`simulation`)
         .insert(simulationData)
-        .select();
+        .select(`
+          simulation_id,
+          panel(efficiency),
+          solar_energy_id
+          `);
 
       if (error) {
         throw createError({
@@ -52,14 +58,14 @@ export default defineEventHandler (async (event) => {
       result = {
         success: true,
         message: `somulation data inserted successfully`,
-        data: data[0],
+        simulation: data[0],
       };
     }
     else {
       result = {
         success: true,
         message: `Existing data for this location`,
-        data: existingData,
+        simulation: existingData,
       };
     }
     return result;

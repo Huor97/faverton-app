@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
 
     const { data, error } = await supabase
       .from(`simulation`)
-      .update({ history: body.history, surface: body.surface })
+      .update({ history: body.history, surface: body.surface, user_id: body.userId })
       .eq(`simulation_id`, body.simulationId)
       .select();
 

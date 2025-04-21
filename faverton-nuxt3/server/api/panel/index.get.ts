@@ -3,9 +3,8 @@ import { serverSupabaseClient } from "#supabase/server";
 export default defineEventHandler (async (event) => {
   const query = getQuery(event);
 
-  // Validation explicite
   if (!query.model) {
-    return []; // Retourne un tableau vide si les paramètres sont manquants
+    return [];
   }
   const client = await serverSupabaseClient(event);
 

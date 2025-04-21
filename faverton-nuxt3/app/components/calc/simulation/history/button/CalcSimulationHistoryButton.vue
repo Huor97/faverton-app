@@ -1,20 +1,13 @@
 <script setup lang="ts">
 const user = useSupabaseUser();
-
-const goToHistory = () => {
-  if (user?.value?.id == null) {
-    navigateTo(`/user/login`);
-  }
-  else {
-    navigateTo(`/simulator/history`);
-  }
-};
+const userId = computed(() => user?.value?.id || null);
 </script>
 
 <template>
   <UButton
+    to="/simulator/history"
     label="Historique"
     size="xl"
-    @click="goToHistory"
+    :disabled="!userId"
   />
 </template>
