@@ -11,7 +11,7 @@ defineProps<{
 
 <template>
   <NuxtLink
-    :to="link"
+    :to="`/introduction/${link}`"
     :alt="altText || 'Card link'"
   >
     <div class="card">

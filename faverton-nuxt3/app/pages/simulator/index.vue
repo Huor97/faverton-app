@@ -3,7 +3,6 @@ import { useAddressStore } from '~/stores/address';
 import { useFetchJrc } from '~/composables/useFetchJrc';
 import { useSaveJRCDataToFaverton } from '~/composables/useSaveJRCData';
 import type { Properties } from '~~/shared/types/address/new-base-address-national';
-import HistoryAccess from '~/components/calc/simulation/history/access/HistoryAccess.vue';
 
 const responseSolarEnergyId = ref<SolarEnergyResponse | null>(null);
 const errorPost = ref<Error | null>(null);
@@ -46,18 +45,18 @@ watch(jrcResponse, (newJrc) => {
         v-model="activeTab"
         :active-result="!simulationResult"
       />
-      <CalcSimulationParameters
+      <SimulationParameters
         v-if="activeTab === 0"
         v-model="activeTab"
         :address-property
         :response-solar-energy-id
         @update:simulation="simulationResult = $event"
       />
-      <CalcSimulationResult
+      <SimulationResult
         v-else-if="activeTab === 1"
         :property-simulation="simulationResult"
       />
-      <HistoryAccess v-else-if="activeTab === 2" />
+      <SimulationHistoryAccess v-else-if="activeTab === 2" />
     </FavertonCard>
     <ClientOnly>
       <FavertonMap />

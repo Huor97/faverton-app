@@ -1,3 +1,5 @@
+import type { Panel } from "./panel";
+
 export interface Simulations {
   simulations: Simulation[]
 }
@@ -28,16 +30,6 @@ export interface Simulation {
   panel: Panel
   solar_energy: SolarEnergy
   surface: number
-}
-
-export interface Panel {
-  model: string
-  detail: string
-  company: string
-  country: string
-  panel_id: string
-  efficiency: number
-  panel_type_id: string
 }
 
 export interface SolarEnergy {
