@@ -10,7 +10,7 @@ const model = defineModel<number>();
       :min="1"
       :max="100"
       step="1"
-      placeholder="Entrez le surface"
+      placeholder="Entrez la surface"
       size="xl"
       class="w-full"
     >
