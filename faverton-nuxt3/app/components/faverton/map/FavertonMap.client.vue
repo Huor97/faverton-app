@@ -85,6 +85,7 @@ const onMapReady = (mapInstance: L.Map) => {
     mapInstance.addControl(drawControl);
     // @ts-expect-error Leaflet Draw event type mismatch with LeafletEventHandlerFn
     mapInstance.on(`draw:created`, (e: L.DrawEvents.Created) => {
+      // Clear all existing layers to enforce a single-polygon constraint.
       drawnItems?.clearLayers();
       const layer = e.layer;
       drawnItems?.addLayer(layer);
