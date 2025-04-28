@@ -2,15 +2,19 @@
 import L from 'leaflet';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import 'leaflet-draw';
-import type { LatLngExpression } from 'leaflet';
+import type { DrawMap, LatLngExpression } from 'leaflet';
 import type { FeatureCollection } from "~~/shared/types/address/new-base-address-national";
 
 const addressStore = useAddressStore();
+const mapStore = useMapStore();
+
 const featureCollection = computed<FeatureCollection | null>(() => {
   return addressStore.savedAddress?.featureCollection || null;
 });
 
 let leafletMap: L.Map | null = null;
+let drawControl: L.Control.Draw | null = null;
+let drawnItems: L.FeatureGroup | null = null;
 const isMapReady = ref(false);
 
 const getCoordinates = (address: FeatureCollection): LatLngExpression | null => {
@@ -49,16 +53,14 @@ watch(() => featureCollection.value, (newAddress) => {
   }
 }, { immediate: true });
 
-// Draw and calculate surface area
 const onMapReady = (mapInstance: L.Map) => {
   leafletMap = mapInstance;
   isMapReady.value = true;
 
   if (import.meta.client) {
-    const drawnItems = new L.FeatureGroup();
+    drawnItems = new L.FeatureGroup();
     mapInstance.addLayer(drawnItems);
-
-    const drawControl = new L.Control.Draw({
+    drawControl = new L.Control.Draw({
       position: `topright`,
       draw: {
         polygon: {
@@ -80,18 +82,44 @@ const onMapReady = (mapInstance: L.Map) => {
         featureGroup: drawnItems,
       },
     });
-
     mapInstance.addControl(drawControl);
     // @ts-expect-error Leaflet Draw event type mismatch with LeafletEventHandlerFn
     mapInstance.on(`draw:created`, (e: L.DrawEvents.Created) => {
+      drawnItems?.clearLayers();
       const layer = e.layer;
-      drawnItems.addLayer(layer);
+      drawnItems?.addLayer(layer);
       // @ts-expect-error Leaflet Draw layer type is not properly typed for getLatLngs
       const area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
-      layer.bindTooltip(`Superficie: ${area.toFixed(2)} m²`, { permanent: true, direction: `center` });
+      const roundedArea = Math.round(area);
+      mapStore.setDrawnArea(roundedArea);
+      layer.bindTooltip(`Superficie: ${roundedArea} m²`, { permanent: true, direction: `center` });
+    });
+
+    mapInstance.on(`draw:deleted`, () => {
+      mapStore.setDrawnArea(0);
+    });
+
+    mapInstance.on(`draw:editstop`, () => {
+      if (drawnItems?.getLayers().length === 0) {
+        mapStore.setDrawnArea(0);
+      }
+      else {
+        const layer = drawnItems?.getLayers()[0];
+        // @ts-expect-error Leaflet Draw layer type
+        const area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
+        const roundedArea = Math.round(area);
+        mapStore.setDrawnArea(roundedArea);
+      }
     });
   }
 };
+
+watch(() => mapStore.activateDrawing, (activate) => {
+  if (activate && leafletMap && drawControl) {
+    new L.Draw.Polygon(leafletMap as DrawMap, (drawControl.options as DrawControlOptions).draw.polygon).enable();
+    mapStore.resetDrawing();
+  }
+}, { immediate: true });
 </script>
 
 <template>

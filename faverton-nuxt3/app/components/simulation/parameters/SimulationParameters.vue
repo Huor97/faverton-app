@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { useAddSimulation } from '~/composables/useSimulation';
+import { useMapStore } from '~/stores/map';
 import type { Properties } from '~~/shared/types/address/new-base-address-national';
+
+const mapStore = useMapStore();
 
 const props = defineProps<{
   addressProperty: Properties | null
@@ -48,6 +51,19 @@ const info = [
     infoBol: `3`,
   },
 ];
+
+watch(() => mapStore.drawnArea, (newArea) => {
+  if (newArea > 0) {
+    surface.value = newArea;
+  }
+  else if (newArea === 0) {
+    surface.value = 1;
+  }
+});
+
+const activateDrawing = () => {
+  mapStore.startDrawing();
+};
 </script>
 
 <template>
@@ -77,6 +93,11 @@ const info = [
         <UButton
           icon="i-heroicons-paint-brush-20-solid"
           label="Desiner votre surface"
+          @click="activateDrawing"
+        />
+        <UDivider
+          label="OU"
+          orientation="vertical"
         />
         <FavertonInputSurface v-model="surface" />
       </div>
