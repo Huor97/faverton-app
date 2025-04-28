@@ -116,7 +116,10 @@ const onMapReady = (mapInstance: L.Map) => {
 
 watch(() => mapStore.activateDrawing, (activate) => {
   if (activate && leafletMap && drawControl) {
-    new L.Draw.Polygon(leafletMap as DrawMap, (drawControl.options as DrawControlOptions).draw.polygon).enable();
+    const drawOptions = (drawControl.options as DrawControlOptions).draw || {};
+    const polygonOptions = drawOptions.polygon || { allowIntersection: true, showArea: true };
+    drawOptions.polygon = polygonOptions;
+    new L.Draw.Polygon(leafletMap as DrawMap, polygonOptions).enable();
     mapStore.resetDrawing();
   }
 }, { immediate: true });

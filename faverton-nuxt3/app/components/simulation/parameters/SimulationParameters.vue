@@ -92,7 +92,7 @@ const activateDrawing = () => {
       <div class="flex gap-2">
         <UButton
           icon="i-heroicons-paint-brush-20-solid"
-          label="Desiner votre surface"
+          label="Dessiner votre surface"
           @click="activateDrawing"
         />
         <UDivider
