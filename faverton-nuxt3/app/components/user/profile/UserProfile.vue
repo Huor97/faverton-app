@@ -121,10 +121,12 @@ const signOut = async () => {
         :disabled="loading"
       >
     </form>
-    <UButton
-      label="Déconnexion"
-      class="mt-4"
-      @click="signOut"
-    />
+    <div class="flex gap-2 mt-5">
+      <UButton
+        label="Déconnexion"
+        @click="signOut"
+      />
+      <FavertonModal />
+    </div>
   </UContainer>
 </template>

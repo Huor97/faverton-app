@@ -17,6 +17,7 @@
     "@nuxtjs/leaflet": "^1.2.6",
     "@nuxtjs/supabase": "^1.5.0",
     "@pinia/nuxt": "^0.10.1",
+    "@supabase/supabase-js": "^2.49.4",
     "@tresjs/cientos": "^3.9.0",
     "@tresjs/nuxt": "^3.0.8",
     "@tresjs/post-processing": "^0.7.1",
