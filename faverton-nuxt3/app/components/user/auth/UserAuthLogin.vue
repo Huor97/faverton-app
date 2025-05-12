@@ -3,14 +3,16 @@ const supabase = useSupabaseClient();
 const email = ref(``);
 const password = ref(``);
 const message = ref(``);
+const error = ref(``);
 
 const login = async () => {
-  const { error } = await supabase.auth.signInWithPassword({
+  const { error: authError } = await supabase.auth.signInWithPassword({
     email: email.value,
     password: password.value,
   });
+  error.value = authError ? `Erreur d'authentification` : ``;
 
-  if (error) {
+  if (authError) {
     message.value = `Login ne peut pas être effectué, une erreur s'est produite`;
   }
   else {
@@ -54,8 +56,10 @@ const gotToRegister = () => {
       />
     </form>
     <p
-      class="text-red-500 text-xs"
+      class="text-xs"
+      :class="error?'text-red-500' : 'text-green-500'"
     >
+      {{ error }}
       {{ message }}
     </p>
     <UButton
