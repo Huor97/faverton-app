@@ -59,7 +59,6 @@ const gotToRegister = () => {
       class="text-xs"
       :class="error?'text-red-500' : 'text-green-500'"
     >
-      {{ error }}
       {{ message }}
     </p>
     <UButton
