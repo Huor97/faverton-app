@@ -1,4 +1,3 @@
-// server/api/user/delete.post.js
 import { createClient } from '@supabase/supabase-js';
 import { serverSupabaseClient } from "#supabase/server";
 

@@ -3,7 +3,7 @@ interface DeleteAccountResponse {
   error?: string
 }
 
-export async function deleteAccount(shouldSoftDelete: boolean = true): Promise<DeleteAccountResponse> {
+export async function useDeleteAccount(shouldSoftDelete: boolean = true): Promise<DeleteAccountResponse> {
   try {
     const response = await $fetch<DeleteAccountResponse>(`/api/user/delete`, {
       method: `POST`,
