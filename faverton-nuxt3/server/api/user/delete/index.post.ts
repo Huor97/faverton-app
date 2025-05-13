@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
     const { data: { user }, error: authError } = await client.auth.getUser();
 
     if (authError || !user) {
-      return { success: false, error: `Utilisateur non authentifié` };
+      return { success: false, error: `User not authenticated` };
     }
 
     // Supprimer l'utilisateur avec l'option shouldSoftDelete
@@ -40,7 +40,7 @@ export default defineEventHandler(async (event) => {
   }
   catch (error: Error | unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error(`Erreur lors de la suppression du compte:`, errorMessage);
+    console.error(`Error while deleting account:`, errorMessage);
     return { success: false, error: errorMessage };
   }
 });
