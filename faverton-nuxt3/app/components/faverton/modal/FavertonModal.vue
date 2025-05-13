@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { deleteAccount } from '~/composables/useAuth';
+import { useDeleteAccount } from '~/composables/useAuth';
+
+const supabase = useSupabaseClient();
+const user = useSupabaseUser();
 
 const isOpen = ref(false);
 const isLoading = ref(false);
@@ -9,16 +12,27 @@ const softDelete = ref(true);
 const confirmDelete = async () => {
   isLoading.value = true;
   error.value = ``;
+  try {
+    const { success } = await useDeleteAccount(softDelete.value);
 
-  const { success, error: deleteError } = await deleteAccount(softDelete.value);
+    isLoading.value = false;
 
-  isLoading.value = false;
-
-  if (success) {
-    await navigateTo(`/user/login`);
+    if (success) {
+      user.value = null;
+      await supabase.auth.signOut();
+      await navigateTo(`/introduction`, {
+        redirectCode: 301,
+        replace: true,
+      });
+    }
   }
-  else {
-    error.value = deleteError || `Une erreur est survenue`;
+  catch (err) {
+    error.value = `Échec de la suppression`;
+    console.error(err);
+  }
+  finally {
+    isLoading.value = false;
+    isOpen.value = false;
   }
 };
 </script>
@@ -30,23 +44,14 @@ const confirmDelete = async () => {
       color="red"
       @click="isOpen = true"
     />
-
     <UModal v-model="isOpen">
       <div class="p-4 flex flex-col gap-2">
         <h2>Supprimer votre compte</h2>
         <p>
           Êtes-vous sûr de vouloir supprimer définitivement votre compte ?
           Cette action est irréversible. Toutes vos données seront supprimées.
+          conserve des données anonymisées pendant 3 mois après la suppression.
         </p>
-        <div class="options">
-          <label>
-            <input
-              v-model="softDelete"
-              type="checkbox"
-            >
-            Suppression douce (conserve des données anonymisées)
-          </label>
-        </div>
         <div>
           <UButton
             color="red"
