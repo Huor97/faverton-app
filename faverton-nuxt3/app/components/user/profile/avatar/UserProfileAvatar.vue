@@ -73,7 +73,7 @@ watch(
       v-if="src"
       :src="src"
       alt="Avatar"
-      class="w-full h-full rounded-full"
+      class="w-full h-full rounded-full border-2 border-gray-200"
     >
     <div style="width: 10em; position: relative">
       <input
