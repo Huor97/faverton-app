@@ -21,13 +21,11 @@
     ],
     "todo-tree.highlights.customHighlight": {
       "NOTE:": {
-        "foreground": "#000000",
-        "background": "#FFD700",
-        "icon": "note",
-        "type": "text"
-      }
+        "foreground": "white",
+        "background": "#f3557d",
+        "gutterIcon": true
+      },
     },
-  
     // Silent the stylistic rules in you IDE, but still auto fix them
     "eslint.rules.customizations": [
       { "rule": "style/*", "severity": "off" },

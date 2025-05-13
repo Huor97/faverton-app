@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
 
     if (error) throw error;
 
-    // Supprimer également les données associées dans les autres tables
+    // NOTE: The following line is commented out as a placeholder for future functionality.
     // await supabaseAdmin.from(`profiles`).delete().eq(`user_id`, user.id);
 
     return { success: true };
