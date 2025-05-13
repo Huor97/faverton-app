@@ -40,7 +40,7 @@ const confirmDelete = async () => {
 <template>
   <div>
     <UButton
-      label="Suprimer compte"
+      label="Supprimer compte"
       color="red"
       @click="isOpen = true"
     />

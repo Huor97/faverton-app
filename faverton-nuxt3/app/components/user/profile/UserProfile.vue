@@ -111,7 +111,7 @@ const signOut = async () => {
       <input
         id="username"
         v-model="username"
-        placeholder="name"
+        placeholder="Nom"
         type="text"
         class="focus:outline-hidden"
       >
