@@ -40,6 +40,7 @@ const chartData = computed(() => {
 
 const chartOptions = ref({
   responsive: true,
+  maintainAspectRatio: false,
   scales: {
     y: {
       beginAtZero: true,
@@ -49,7 +50,9 @@ const chartOptions = ref({
 </script>
 
 <template>
-  <div>
+  <div
+    class="flex items-center h-[50vh] sm:h-[40vh] bg-white rounded-lg shadow p-4"
+  >
     <Bar
       v-if="hasMonthlyData"
       id="my-chart-id"
