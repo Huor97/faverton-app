@@ -58,11 +58,11 @@ onUnmounted(() => {
             </div>
             <div class="flex flex-col items-center gap-6 text-balance">
               <h1
-                class="text-nowrap font-extrabold text-xl sm:text-3xl lg:text-4xl xl:text-6xl 2xl:text-7xl"
+                class="text-nowrap font-extrabold text-2xl sm:text-3xl lg:text-4xl xl:text-6xl 2xl:text-7xl"
               >
                 GO GREEN & SAVE THE PLANET
               </h1>
-              <p class="text-justify font-medium text-sm xl:text-2xl">
+              <p class="text-justify font-medium text-xl xl:text-2xl">
                 Bienvenue dans le monde serein des maisons de ferme vertes, où durabilité et charme de la vie à la campagne se rencontrent. Une maison de ferme verte n'est pas simplement un logement ; c'est l'incarnation de la conscience écologique, d'une vie harmonieuse avec la nature et de l'engagement envers la préservation de l'environnement.
               </p>
             </div>

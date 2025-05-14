@@ -21,11 +21,12 @@ defineProps<{
           class="cover-image"
         >
       </div>
-
-      <img
-        :src="characterImage"
-        class="character"
+      <div
+        class="character flex items-center justify-center"
+        :style="characterImage ? `background-image: url(${characterImage}); background-size: cover; background-position: center;` : ''"
       >
+        <!-- L'image est maintenant en arrière-plan, donc on supprime l'élément img -->
+      </div>
       <div class="h-[100%] flex items-end">
         <h1 class="title text-center font-bold md:text-xs lg:text-2xl xl:p-2 "> {{ title }}</h1>
       </div>
@@ -107,7 +108,7 @@ defineProps<{
 }
 .character {
   width: 80%;
-  height: 80%;
+  height: 90%;
   opacity: 0;
   transition: all 0.5s;
   position: absolute;

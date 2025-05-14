@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { gsap } from 'gsap';
+
 const activeCardIndex = ref<number | null>(null);
 const emit = defineEmits([`hover-change`]);
+const textElement = ref(null);
 
 function handleMouseLeave() {
   activeCardIndex.value = null;
@@ -10,7 +13,31 @@ function handleMouseLeave() {
 const setActiveCard = (index: number) => {
   emit(`hover-change`, true);
   activeCardIndex.value = index;
+
+  nextTick(() => {
+    animateTextEntry();
+  });
 };
+
+function animateTextEntry() {
+  if (!textElement.value) return;
+
+  // Animation d'entrée du texte par la droite
+  gsap.fromTo(
+    textElement.value,
+    {
+      autoAlpha: 0,
+      x: 100,
+    },
+    {
+      autoAlpha: 1,
+      x: 0,
+      duration: 0.6,
+      ease: `power2.out`,
+    },
+  );
+}
+
 const detailProgram = [
   {
     title: `Solutions d'Énergie Durable.`,
@@ -33,7 +60,7 @@ const detailProgram = [
     subtitle: `Grâce à nos systèmes hydroponiques, nous cultivons des légumes frais avec un minimum de gaspillage d’eau, enrichis par du compost organique et l'énergie de la nature.`,
     link: `sustainable-agriculture`,
     coverImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1743028555/Top_Right_Faverton_mi2csg.png`,
-    characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1743166128/3_Fruits_from_Faverton_ytyrw5.png`,
+    characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1747181176/4_cbgeqj.png`,
   },
 
   {
@@ -41,15 +68,15 @@ const detailProgram = [
     subtitle: `Participez à nos ateliers et programmes de formation pour découvrir comment adopter des pratiques agricoles durables et renouvelables dans votre propre communauté.`,
     link: `education-workshops`,
     coverImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1743028554/Bottom_Left_Faverton_htilsr.png`,
-    characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1743166413/Faverton_Teach_mf1vbm.png`,
+    characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1747181177/8_odhv6f.png`,
   },
 
   {
-    title: `Restaurant and Cultural Activities.`,
+    title: `Restaurant et Activités Culturelles.`,
     subtitle: `Savourez des repas de la ferme à l’assiette, assistez à des cours de cuisine et participez à des festivals culturels célébrant la nature, la gastronomie et la communauté.`,
     link: `restaurants-cultural-activities`,
     coverImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1743028554/Bottom_Center_Faverton_ojl2zi.png`,
-    characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1743166412/Cooking_from_Faverton_lkq4kk.png`,
+    characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1747181178/5_jvbn9r.jpg`,
   },
 
   {
@@ -57,7 +84,7 @@ const detailProgram = [
     subtitle: `Profitez d’espaces de coworking modernes et d’hébergements éco-responsables, alliant productivité et sérénité au cœur de la nature.`,
     link: `coworking-accommodation`,
     coverImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1743028554/Bottom_Right_Faverton_ux8jvb.png`,
-    characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1743166508/Energies_Faverton_tljokh.png`,
+    characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1747181177/6II_zuqetz.png`,
   },
 ];
 </script>
@@ -65,7 +92,7 @@ const detailProgram = [
 <template>
   <div class="text-white h-screen w-full flex justify-end sm:max-w-[94%] xl:max-w-[95%]">
     <div
-      class="mt-15 flex justify-between flex-wrap items-start gap-1 w-[55%] sm:w-[50%]"
+      class="mt-15 flex sm:justify-between flex-wrap sm:items-start gap-1 w-[95%] sm:w-[50%]"
     >
       <div
         class="w-[48%] h-[30%] sm:h-[48%] sm:w-[32%] md:h-[48.71%] lg:w-[31.6%] lg:h-[48%] xl:w-[32.4%] xl:h-[48.75%]"
@@ -170,11 +197,12 @@ const detailProgram = [
       </div>
     </div>
 
-    <div class="mt-15 w-[40%] sm:w-[25%] md:w-[22%] xl:w-[22.37%] mx-[1.31%]">
+    <div class="title mt-15 w-[40%] w-[25%] md:w-[22%] xl:w-[22.37%] mx-[1.31%]">
       <p
         v-if="activeCardIndex !== null"
+        ref="textElement"
         :key="activeCardIndex"
-        class="paragraph-animation text-justify font-bold text-xs duration-300 ease-on sm:text-xs md:text-xl"
+        class="text-justify font-bold text-xs sm:text-xs md:text-xl"
       >
         {{ detailProgram[activeCardIndex]?.subtitle }}
       </p>
@@ -183,22 +211,11 @@ const detailProgram = [
 </template>
 
 <style scoped>
-.paragraph-animation {
-  position: relative;
-  overflow: hidden;
+@media (max-width: 640px) {
+  .title {
+  display:none
+  }
 }
-
-.paragraph-animation::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: white;
-  animation: revealText 2s cubic-bezier(0.88, 0, 0.18, 1) forwards;
-}
-
 @keyframes revealText {
   0% {
     transform: translateX(0);

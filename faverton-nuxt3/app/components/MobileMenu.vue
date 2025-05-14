@@ -74,14 +74,14 @@ onMounted(() => {
           <div class="flex flex-col">
             <NuxtLink
               v-if="!user"
-              to="/login"
+              to="/user/login"
               class="text-l font-bold text-white p-2 w-64"
             >
               Login
             </NuxtLink>
             <NuxtLink
               v-else
-              to="/profile"
+              to="/user/profile"
               class="text-l font-bold text-white p-2 w-64"
             >
               Profile
@@ -94,7 +94,7 @@ onMounted(() => {
   </div>
 </template>
 
-<!-- <style scoped>
+<style scoped>
 .mobile-menu {
     position: absolute;
     left: 0;
@@ -185,4 +185,4 @@ onMounted(() => {
     top: 12px;
     transform: rotate(-135deg);
   }
-</style> -->
+</style>
