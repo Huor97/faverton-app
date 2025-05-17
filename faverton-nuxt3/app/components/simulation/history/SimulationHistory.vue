@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import type { Simulations } from '~~/shared/types/simulation';
-
 const selectedSimulationId = ref(null);
 
-const { data: resultSimulations, refresh } = await useFetch<Simulations>(`/api/simulation/history`);
+const { data: resultSimulations, refresh } = await useFetch<SimulationResponse>(`/api/simulation/history`);
 
 const simulationLists = computed(() => {
   if (!resultSimulations.value) return [];
-  return resultSimulations.value?.simulations.map((simulation) => {
+  return resultSimulations?.value?.simulations?.map((simulation) => {
     return {
       id: simulation.simulation_id,
       date: simulation.simulation_date,
@@ -17,9 +15,9 @@ const simulationLists = computed(() => {
         panelEfficiency: simulation.panel.efficiency,
       },
       solar_energy: {
-        city: simulation.solar_energy.city,
-        postalCode: simulation.solar_energy.postal_code,
-        yearlyEnergy: simulation.solar_energy.yearly_energy,
+        city: simulation.solar_energy?.city,
+        postal_code: simulation.solar_energy?.postal_code,
+        yearly_energy: simulation.solar_energy?.yearly_energy,
       },
     };
   });
@@ -42,6 +40,9 @@ const selectedSimulation = computed(() => {
     <h1 class="text-2xl font-bold mb-6">
       Historique des simulations
     </h1>
+    <pre>
+      {{ resultSimulations }}
+    </pre>
     <div
       v-for="simulationList in simulationLists"
       :key="simulationList.id"
