@@ -13,7 +13,7 @@ defineProps<{
       {{ infoBol }}
     </h2>
     <div>
-      <p class=" text-sm text-[#29235C] bg-gradient-to-r from-[#FF7557]/70 to-[#FFE49E] rounded-2xl p-5">
+      <p class=" text-sm md:text-base text-[#29235C] bg-gradient-to-r from-[#FF7557]/70 to-[#FFE49E] rounded-2xl p-5">
         {{ label }}
       </p>
     </div>

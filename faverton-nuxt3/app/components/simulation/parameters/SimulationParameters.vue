@@ -68,7 +68,7 @@ const activateDrawing = () => {
 
 <template>
   <div
-    class="z-[999] m-0 px-6 flex flex-col gap-6"
+    class="z-[999] m-0 px-6 flex flex-col gap-8"
   >
     <div class="flex flex-col gap-1">
       <FavertonCardInfo

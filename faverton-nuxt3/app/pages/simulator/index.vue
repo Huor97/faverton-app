@@ -38,7 +38,7 @@ watch(jrcResponse, (newJrc) => {
 <template>
   <div>
     <FavertonCard>
-      <h1 class="text-xl text-center p-5 text-white">
+      <h1 class="text-xl text-center p-6 text-white">
         Étapes de l'estimation
       </h1>
       <FavertonTabs

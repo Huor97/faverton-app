@@ -27,7 +27,13 @@ const items = computed(() => [
 <template>
   <UTabs
     v-model="model"
+    class="m-0 px-6 mb-8"
     :items="items"
-    class="m-0 px-6 mb-5"
-  />
+  >
+    <template #default="{ item }">
+      <div class="md:text-xl">
+        {{ item.label }}
+      </div>
+    </template>
+  </UTabs>
 </template>

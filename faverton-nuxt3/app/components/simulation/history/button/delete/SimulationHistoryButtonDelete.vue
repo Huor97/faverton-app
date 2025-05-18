@@ -2,7 +2,9 @@
 const props = defineProps<{
   simulationId?: string
 }>();
-const emit = defineEmits([`simulationDeleted`]);
+
+const emit = defineEmits([`deleted`]);
+
 const isLoading = ref(false);
 const error = ref<unknown | null>(null);
 async function deleteSimulation() {
@@ -14,11 +16,26 @@ async function deleteSimulation() {
     await $fetch(`/api/simulation/history/${props.simulationId}`, {
       method: `DELETE`,
     });
-    emit(`simulationDeleted`, props.simulationId);
+
+    emit(`deleted`, props.simulationId);
+
+    useToast?.().add({
+      title: `Suppression réussie`,
+      description: `La simulation a été supprimée de votre historique`,
+      color: `green`,
+      timeout: 3000,
+    });
   }
   catch (e) {
     console.error(`Erreur lors de la suppression de la simulation:`, e);
     error.value = e;
+
+    useToast?.().add({
+      title: `Erreur`,
+      description: `Impossible de supprimer la simulation`,
+      color: `red`,
+      timeout: 3000,
+    });
   }
   finally {
     isLoading.value = false;
