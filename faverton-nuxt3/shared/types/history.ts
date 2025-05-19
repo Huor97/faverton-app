@@ -2,7 +2,7 @@ export interface SimulationResponse {
   simulations: SimulationHistory[]
 }
 
-interface SimulationHistory {
+export interface SimulationHistory {
   simulation_id: string
   simulation_date: Date
   solar_energy_id: string
@@ -25,6 +25,8 @@ export interface SimulationHistoryItem {
 interface SimulationSolarEnergy {
   city: string
   postal_code: string
+  orientation: number
+  inclination: number
   yearly_energy: number
   month_1_energy: number
   month_2_energy: number

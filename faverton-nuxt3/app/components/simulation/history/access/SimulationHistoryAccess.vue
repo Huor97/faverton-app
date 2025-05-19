@@ -3,13 +3,13 @@ const user = useSupabaseUser();
 
 const { formatDate } = useFormatters();
 
-const { data, refresh } = await useFetch<Simulations>(`/api/simulation/history`);
+const { data, refresh } = await useFetch<SimulationResponse>(`/api/simulation/history`);
 
 const simulations = computed(() => {
   if (!data.value) return [];
   return data.value.simulations.map(sim => ({
     ...sim,
-    label: `${sim.solar_energy.postal_code} ${sim.solar_energy.city} - ${formatDate(sim.simulation_date)} `,
+    label: `${sim.solar_energy?.postal_code} ${sim.solar_energy?.city} - ${formatDate(sim.simulation_date)} `,
   }));
 });
 

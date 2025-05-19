@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import type { SimulationList } from '~~/shared/types/simulation/simulation-list';
 import type { AmountEurosPerYear } from '~~/shared/types/amount-euros-per-year';
 
 const props = defineProps<{
-  item: SimulationList
+  item: SimulationHistory
 }>();
 
 const co2Savings = computed(() => {
-  if (!props.item?.solar_energy.yearly_energy) return 0;
+  if (!props.item?.solar_energy?.yearly_energy) return 0;
 
   const emissionFactor = 0.5;
   const annualSavings = props.item.solar_energy.yearly_energy * emissionFactor / 1000;
@@ -15,7 +14,7 @@ const co2Savings = computed(() => {
 });
 
 const queryParams = computed(() => ({
-  solarEnergyId: props.item.solar_energy.solar_energy_id ?? 0,
+  solarEnergyId: props.item?.solar_energy?.solar_energy_id ?? 0,
   surface: props.item.surface,
   panelEfficiency: props.item.panel.efficiency ?? 0,
 }));
@@ -26,7 +25,7 @@ const { data: amountPerYear } = useLazyFetch<AmountEurosPerYear>(`/api/simulatio
 });
 
 const yearlyEconomies = computed(() => {
-  if (!props.item?.solar_energy.yearly_energy) return 0;
+  if (!props.item?.solar_energy?.yearly_energy) return 0;
 
   // Prix moyen de l'électricité en France (€/kWh)
   const electricityPrice = 0.1740;
@@ -81,14 +80,14 @@ const getValueForType = (title: string, index: number) => {
     case `Installation`:
       switch (index) {
         case 0: return props.item.surface ? `${props.item.surface} m²` : `--`;
-        case 1: return props.item.solar_energy.orientation || `--`; // NOTE: add orientation JRC
-        case 2: return props.item.solar_energy.inclination ? `${props.item.solar_energy.inclination}°` : `--`; // NOTE: add inclination JRC
+        case 1: return props.item?.solar_energy?.orientation || `--`; // NOTE: add orientation JRC
+        case 2: return props.item?.solar_energy?.inclination ? `${props.item.solar_energy.inclination}°` : `--`; // NOTE: add inclination JRC
         default: return `--`;
       }
     case `Production`:
       switch (index) {
-        case 0: return props.item.solar_energy.yearly_energy ? `${props.item.solar_energy.yearly_energy} kWh/an` : `--`;
-        case 1: return props.item.solar_energy.yearly_energy ? `${Math.round(props.item.solar_energy.yearly_energy / 365)} kWh/jour` : `--`;
+        case 0: return props.item?.solar_energy?.yearly_energy ? `${props.item.solar_energy.yearly_energy} kWh/an` : `--`;
+        case 1: return props.item?.solar_energy?.yearly_energy ? `${Math.round(props.item.solar_energy.yearly_energy / 365)} kWh/jour` : `--`;
         case 2: return co2Savings.value ? `${co2Savings.value} kg` : `--`;
         default: return `--`;
       }
