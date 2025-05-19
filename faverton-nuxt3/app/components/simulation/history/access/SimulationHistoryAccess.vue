@@ -56,7 +56,7 @@ function handleSimulationDeleted() {
       </div>
     </div>
     <template v-else>
-      <p v-if="!simulations">
+      <p v-if="simulations.length === 0">
         Aucun historique
       </p>
       <UAccordion
