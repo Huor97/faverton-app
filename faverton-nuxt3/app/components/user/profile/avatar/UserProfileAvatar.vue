@@ -68,7 +68,7 @@ watch(
 </script>
 
 <template>
-  <div>
+  <div class="border rounded-full w-48 h-48">
     <img
       v-if="src"
       :src="src"

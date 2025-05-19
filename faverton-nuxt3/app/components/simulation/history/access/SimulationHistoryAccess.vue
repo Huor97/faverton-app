@@ -69,10 +69,12 @@ function handleSimulationDeleted() {
             <SimulationHistoryCard
               :item
             />
-            <SimulationHistoryButtonDelete
-              :simulation-id="item?.simulation_id"
-              @deleted="handleSimulationDeleted"
-            />
+            <div class="mb-10">
+              <SimulationHistoryButtonDelete
+                :simulation-id="item?.simulation_id"
+                @deleted="handleSimulationDeleted"
+              />
+            </div>
           </div>
         </template>
       </UAccordion>

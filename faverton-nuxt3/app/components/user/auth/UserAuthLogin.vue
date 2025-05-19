@@ -20,20 +20,16 @@ const login = async () => {
     navigateTo(`/simulator`);
   }
 };
-
-const gotToRegister = () => {
-  navigateTo(`/user/register`);
-};
 </script>
 
 <template>
-  <div class="flex flex-col justify-center h-screen items-center gap-3">
+  <div class="flex flex-col justify-center bg-yellow-100 h-screen items-center gap-3">
     <h1>
       Se connecter
     </h1>
 
     <form
-      class="gap-4 flex flex-col"
+      class="gap-4 flex flex-col w-1/4"
       @submit.prevent="login"
     >
       <UInput
@@ -42,6 +38,7 @@ const gotToRegister = () => {
         variant="outline"
         type="email"
         placeholder="Email"
+        size="xl"
       />
       <UInput
         v-model="password"
@@ -49,11 +46,14 @@ const gotToRegister = () => {
         variant="outline"
         type="password"
         placeholder="Password"
+        size="xl"
       />
-      <UButton
-        label="Continuer"
-        type="submit"
-      />
+      <div>
+        <UButton
+          label="Continuer"
+          type="submit"
+        />
+      </div>
     </form>
     <p
       class="text-xs"
@@ -61,11 +61,13 @@ const gotToRegister = () => {
     >
       {{ message }}
     </p>
-    <UButton
-      variant="link"
-      label="Inscription"
-      type="submit"
-      @click="gotToRegister"
-    />
+    <NuxtLink
+      to="/user/register"
+    >
+      Pas encore de compte ?
+      <span class="text-blue-500">
+        Inscrivez-vous
+      </span>
+    </NuxtLink>
   </div>
 </template>

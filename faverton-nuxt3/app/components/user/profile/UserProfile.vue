@@ -82,52 +82,77 @@ const signOut = async () => {
 </script>
 
 <template>
-  <UContainer class="h-screen flex flex-col justify-center items-center">
+  <div class="bg-yellow-100 h-screen flex flex-col justify-center items-center">
     <form
-      class="flex flex-col gap-4"
+      class="flex flex-col gap-4 w-1/4"
       @submit.prevent="updateProfile"
     >
-      <div class="w-48 h-48">
+      <div class="flex flex-col items-center gap-2 justify-center">
         <UserProfileAvatar
           v-model:path="avatar_path"
           @upload="updateProfile"
         />
+        <div>
+          <label
+            class="cursor-pointer bg-green-500 text-white text-center p-2 rounded"
+            for="single"
+          >
+            {{ uploading ? "Téléchargement en cours ..." : "Choisir photo" }}
+          </label>
+        </div>
       </div>
-      <label
-        class="cursor-pointer bg-green-500 text-white text-center py-2 rounded"
-        for="single"
-      >
-        {{ uploading ? "Uploading ..." : "Choisir photo" }}
-      </label>
-      <label for="email">Email</label>
-      <!-- @vue-expect-error -->
-      <input
-        id="email"
-        type="text"
-        :value="user.email"
-        disabled
-      >
-      <label for="username">Profile name</label>
-      <input
+
+      <div>
+        <label
+          for="email"
+          class="flex items-center gap-2"
+        >
+          Votre email est :
+        </label>
+
+        <div class="bg-gray-50 p-2 border border-gray-300 rounded-md flex items-center">
+          <UIcon
+            name="i-heroicons-lock-closed"
+            class="text-gray-400 w-5 h-5"
+          />
+          <span class="text-gray-700 flex-grow">{{ user.email }}</span>
+
+          <UTooltip text="L'adresse email ne peut pas être modifiée">
+            <UButton
+              color="gray"
+              variant="ghost"
+              icon="i-heroicons-information-circle"
+            />
+          </UTooltip>
+        </div>
+      </div>
+
+      <label for="username">Nom du profil :</label>
+      <UInput
         id="username"
         v-model="username"
-        placeholder="Nom"
+        placeholder="Choisir votre nom"
         type="text"
         class="focus:outline-hidden"
-      >
-      <input
-        type="submit"
-        class="cursor-pointer bg-green-500 text-white text-center py-2 rounded"
-        :value="loading ? 'Loading ...' : 'Enregistrer'"
-        :disabled="loading"
-      >
+        size="xl"
+      />
+      <div>
+        <UButton
+          type="submit"
+          class="cursor-pointer bg-green-500 text-white text-center py-2 rounded"
+          :disabled="loading"
+          size="xl"
+        >
+          {{ loading ? 'Chargement ...' : 'Enregistrer' }}
+        </UButton>
+      </div>
     </form>
-    <div class="flex gap-2 mt-5">
+    <div class="flex gap-2 mt-10 p-10">
       <UButton
         label="Déconnexion"
         @click="signOut"
       />
       <FavertonModal />
     </div>
-  </UContainer>
+  </div>
 </template>
