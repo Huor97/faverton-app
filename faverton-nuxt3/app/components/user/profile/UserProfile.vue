@@ -83,6 +83,20 @@ const signOut = async () => {
 
 <template>
   <div class="bg-yellow-100 h-screen flex flex-col justify-center items-center">
+    <div class="z-index-[999] fixed left-32 top-4">
+      <UBreadcrumb
+        :links="[{ label: 'Introduction', to: '/introduction' }, { label: 'Profile' }]"
+      >
+        <template #default="{ link, isActive }">
+          <UBadge
+            :color="isActive ? 'primary' : 'gray'"
+            class="rounded-full truncate"
+          >
+            {{ link.label }}
+          </UBadge>
+        </template>
+      </UBreadcrumb>
+    </div>
     <form
       class="flex flex-col gap-4 w-1/4"
       @submit.prevent="updateProfile"

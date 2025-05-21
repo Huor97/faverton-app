@@ -37,6 +37,20 @@ watch(jrcResponse, (newJrc) => {
 
 <template>
   <div>
+    <div class="z-[9000] fixed top-2 left-5">
+      <UBreadcrumb
+        :links="[{ label: 'Introduction', to: '/introduction' }, { label: 'Simulator' }]"
+      >
+        <template #default="{ link, isActive }">
+          <UBadge
+            :color="isActive ? 'primary' : 'gray'"
+            class="rounded-full truncate"
+          >
+            {{ link.label }}
+          </UBadge>
+        </template>
+      </UBreadcrumb>
+    </div>
     <FavertonCard>
       <h1 class="text-xl text-center p-6 text-white">
         Étapes de l'estimation

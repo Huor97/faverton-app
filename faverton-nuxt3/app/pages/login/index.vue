@@ -26,6 +26,20 @@ const gotToRegister = () => {
 
 <template>
   <UContainer class="h-screen flex flex-col justify-center items-center">
+    <div class="z-index-[999] fixed left-32 top-4">
+      <UBreadcrumb
+        :links="[{ label: 'Introduction', to: '/introduction' }, { label: 'Se connecter' }]"
+      >
+        <template #default="{ link, isActive }">
+          <UBadge
+            :color="isActive ? 'primary' : 'gray'"
+            class="rounded-full truncate"
+          >
+            {{ link.label }}
+          </UBadge>
+        </template>
+      </UBreadcrumb>
+    </div>
     <div>
       <h1 class=" h-10">
         Se connecter

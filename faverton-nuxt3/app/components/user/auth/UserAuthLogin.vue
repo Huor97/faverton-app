@@ -24,6 +24,21 @@ const login = async () => {
 
 <template>
   <div class="flex flex-col justify-center bg-yellow-100 h-screen items-center gap-3">
+    <div class="z-index-[999] fixed left-32 top-4">
+      <UBreadcrumb
+        :links="[{ label: 'Introduction', to: '/introduction' }, { label: 'Se connecter' }]"
+      >
+        <template #default="{ link, isActive }">
+          <UBadge
+            :color="isActive ? 'primary' : 'gray'"
+            class="rounded-full truncate"
+          >
+            {{ link.label }}
+          </UBadge>
+        </template>
+      </UBreadcrumb>
+    </div>
+
     <h1>
       Se connecter
     </h1>

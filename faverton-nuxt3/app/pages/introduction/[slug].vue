@@ -41,6 +41,20 @@ const article = articles.find(a => a.articlesId === slug);
 <template>
   <div>
     <AppHeader />
+    <div class="z-index-[999] absolute left-32 top-4">
+      <UBreadcrumb
+        :links="[{ label: 'Introduction', to: '/introduction' }, { label: article.title }]"
+      >
+        <template #default="{ link, isActive }">
+          <UBadge
+            :color="isActive ? 'primary' : 'gray'"
+            class="rounded-full truncate"
+          >
+            {{ link.label }}
+          </UBadge>
+        </template>
+      </UBreadcrumb>
+    </div>
     <div class="bg-[url('../Ventilateurs.jpg')] bg-cover flex flex-col justify-center h-screen">
       <div
         ref="titleSection1"

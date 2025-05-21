@@ -46,6 +46,20 @@ onUnmounted(() => {
         </template>
       </ClientOnly>
       <div class="flex justify-end w-full ">
+        <div class="z-index-[999] absolute left-32 top-4">
+          <UBreadcrumb
+            :links="[{ label: 'Introduction' }]"
+          >
+            <template #default="{ link, isActive }">
+              <UBadge
+                :color="isActive ? 'primary' : 'gray'"
+                class="rounded-full truncate"
+              >
+                {{ link.label }}
+              </UBadge>
+            </template>
+          </UBreadcrumb>
+        </div>
         <div class="flex justify-center lg:w-[93.75%] xl:w-[95%]">
           <div class="text-white flex flex-col items-center gap-3 h-screen md:gap-3 w-[40%] sm:w-[47%] lg:w-[47%] xl:w-[55%]">
             <div class="mt-20 flex justify-center w-[35%] sm:mt-[5%] sm:w-[20%] lg:w-[20%] xl:w-[20%]">
