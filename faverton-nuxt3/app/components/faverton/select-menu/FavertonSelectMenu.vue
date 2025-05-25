@@ -3,23 +3,30 @@ const modelValue = defineModel(`modelValue`);
 const selected = ref();
 const query = ref<string | undefined>();
 
-const { data: allPanels } = await useFetch(`/api/panels`);
-const panels = allPanels.value || [];
-
-const selectedModel = computed(() => selected.value?.model || null);
-
-const { data: onePanel } = await useFetch(`/api/panel`, {
-  query: { model: selectedModel },
-  watch: [selectedModel],
+const { data: allPanels } = await useFetch<Panel[]>(`/api/panels`, {
+  server: false,
 });
 
-const panelId = computed(() => onePanel.value?.[0]?.panel_id || null);
+const panels = computed(() => {
+  if (!allPanels.value?.length) return [];
 
-watch(panelId, (newPanel) => {
-  if (newPanel) {
-    modelValue.value = newPanel;
+  return allPanels.value.map(panel => ({
+    ...panel,
+    displayLabel: `${panel.model} - rendement ${panel.efficiency}% - ${panel.detail} `,
+  }));
+});
+
+const { data: onePanel } = await useFetch<Panel[]>(`/api/panel`, {
+  query: computed(() => ({ model: selected.value?.model })),
+  watch: [() => selected.value?.model],
+  server: false,
+});
+
+watch(() => onePanel.value?.[0]?.panel_id, (newPanelId) => {
+  if (newPanelId) {
+    modelValue.value = newPanelId;
   }
-});
+}, { immediate: true });
 </script>
 
 <template>
@@ -29,6 +36,7 @@ watch(panelId, (newPanel) => {
     :options="panels"
     placeholder="Select panel"
     size="xl"
-    option-attribute="model"
+    option-attribute="displayLabel"
+    :search-attributes="['model', 'efficiency']"
   />
 </template>
