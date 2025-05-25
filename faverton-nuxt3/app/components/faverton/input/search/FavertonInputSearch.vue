@@ -3,57 +3,63 @@ import type { FeatureCollection } from "~~/shared/types/address/base-address-nat
 import type { NewFeatureCollection } from "~~/shared/types/address/new-base-address-national";
 import { useAddressStore } from '~/stores/address';
 
-const model = defineModel();
+interface AddressOption {
+  name: string
+  featureCollection: NewFeatureCollection[`featureCollection`]
+}
 
-const selected = ref();
+const model = defineModel<NewFeatureCollection>();
+const selected = ref<AddressOption>();
 const searchAddress = ref(``);
 
 const { data: resultAddress } = await useFetch<FeatureCollection>(`api/address`, {
   query: { q: searchAddress },
   watch: [searchAddress],
+  server: false,
 });
 
-// Formater les résultats pour qu'ils soient compatibles avec UInputMenu
-const proposition = computed(() => {
-  if (!resultAddress.value || !resultAddress.value.features) return [];
+const proposition = computed<AddressOption[]>(() => {
+  if (!resultAddress.value?.features?.length) return [];
 
-  return resultAddress.value.features.map((feature) => {
-    return {
-      name: feature.properties.label || `${feature.properties.city} ${feature.properties.postcode}`,
-
-      featureCollection: {
-        type: `FeatureCollection`,
-        features: [
-          {
-            type: `Feature`,
-            geometry: {
-              type: `Point`,
-              coordinates: feature.geometry.coordinates,
-            },
-            properties: {
-              postcode: feature.properties.postcode,
-              city: feature.properties.city,
-            },
-          },
-        ],
-      },
-    };
-  });
+  return resultAddress.value.features.map(feature => ({
+    name: feature.properties.label || `${feature.properties.city} ${feature.properties.postcode}`,
+    featureCollection: {
+      type: `FeatureCollection`,
+      features: [{
+        type: `Feature`,
+        geometry: {
+          type: `Point`,
+          coordinates: feature.geometry.coordinates,
+        },
+        properties: {
+          postcode: feature.properties.postcode,
+          city: feature.properties.city,
+        },
+      }],
+    },
+  }));
 });
 
 const emit = defineEmits<{
-  (e: `update:modelValue`, value: NewFeatureCollection): void
-  (e: `clickClear`): void
+  'update:modelValue': [value: NewFeatureCollection]
+  'clickClear': []
 }>();
 
 const addressStore = useAddressStore();
 
-function onSelect(item: NewFeatureCollection) {
-  model.value = item;
-  searchAddress.value = item?.name;
+function onSelect(item: AddressOption | null) {
+  if (!item) return;
+
+  const selectedData: NewFeatureCollection = {
+    name: item.name,
+    featureCollection: item.featureCollection,
+  };
+
+  model.value = selectedData;
+  searchAddress.value = item.name;
   selected.value = item;
-  emit(`update:modelValue`, item);
-  addressStore.setSavedAddress(item);
+  emit(`update:modelValue`, selectedData);
+  addressStore.setSavedAddress(selectedData);
 }
 </script>
 
@@ -66,6 +72,7 @@ function onSelect(item: NewFeatureCollection) {
       option-attribute="name"
       placeholder="Rechercher une adresse..."
       size="xl"
+      :search="() => proposition"
       @update:model-value="onSelect"
     />
   </div>
