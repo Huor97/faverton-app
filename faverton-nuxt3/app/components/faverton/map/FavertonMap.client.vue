@@ -160,20 +160,15 @@ watch(() => mapStore.activateDrawing, (activate) => {
     />
     <LControlLayers position="bottomright" />
     <LControlZoom position="topright" />
-    <LCircle
-      v-if="featureCollection?.features[0]?.geometry?.coordinates"
-      :lat-lng="getCoordinates(featureCollection)"
-      :radius="500"
-      :options="{
-        color: '#3388ff',
-        fillColor: '#3388ff',
-        fillOpacity: 0.2,
-        weight: 2,
-      }"
-    >
-      <LPopup>
-        Code postal: {{ featureCollection?.features[0]?.properties?.postcode }}
-      </LPopup>
-    </LCircle>
+    <LLayerGroup v-if="featureCollection">
+      <LMarker :lat-lng="getCoordinates(featureCollection)">
+        <LPopup>
+          {{ addressStore.savedAddress?.name || 'Adresse sélectionnée' }}
+          <p>
+            Coordonnées: {{ getCoordinates(featureCollection) }}
+          </p>
+        </LPopup>
+      </LMarker>
+    </LLayerGroup>
   </LMap>
 </template>
