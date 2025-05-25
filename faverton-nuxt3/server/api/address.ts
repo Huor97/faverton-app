@@ -1,18 +1,21 @@
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   const address = query.q as string;
-  const url = `https://api-adresse.data.gouv.fr/search`;
+  const url = `https://data.geopf.fr/geocodage/search`;
+  // NOTE: api version
+  // https://data.geopf.fr/geocodage/search (la nouvelle)
+  // https://api-adresse.data.gouv.fr/search (l'ancien)
 
   if (!address) {
     return [];
   }
 
-  if (address.length <= 2) {
+  if (address.length < 4) {
     return [];
   }
 
   const response = await $fetch(url, {
-    query: { q: encodeURIComponent(address as string), limit: 5 },
+    query: { q: address, limit: 7, autocomplete: 1 },
   });
   return response;
 });
