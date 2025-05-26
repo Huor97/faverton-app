@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { FeatureCollection } from "~~/shared/types/address/base-address-national";
 import type { NewFeatureCollection } from "~~/shared/types/address/new-base-address-national";
-import { useAddressStore } from '~/stores/address';
 
 interface AddressOption {
   name: string
@@ -9,16 +8,18 @@ interface AddressOption {
 }
 
 const model = defineModel<NewFeatureCollection>();
-const selected = ref<AddressOption>();
-const searchAddress = ref(``);
+const loading = ref(false);
+const selected = ref();
 
-const { data: resultAddress } = await useFetch<FeatureCollection>(`api/address`, {
-  query: { q: searchAddress },
-  watch: [searchAddress],
-  server: false,
-});
+async function search(q: string) {
+  loading.value = true;
 
-const proposition = computed<AddressOption[]>(() => {
+  const { data: resultAddress } = await useFetch<FeatureCollection>(`api/address`, {
+    params: { q },
+    server: false,
+  });
+
+  loading.value = false;
   if (!resultAddress.value?.features?.length) return [];
 
   return resultAddress.value.features.map(feature => ({
@@ -38,7 +39,7 @@ const proposition = computed<AddressOption[]>(() => {
       }],
     },
   }));
-});
+}
 
 const emit = defineEmits<{
   'update:modelValue': [value: NewFeatureCollection]
@@ -56,7 +57,7 @@ function onSelect(item: AddressOption | null) {
   };
 
   model.value = selectedData;
-  searchAddress.value = item.name;
+  selected.value = item.name;
   selected.value = item;
   emit(`update:modelValue`, selectedData);
   addressStore.setSavedAddress(selectedData);
@@ -67,12 +68,12 @@ function onSelect(item: AddressOption | null) {
   <div>
     <UInputMenu
       v-model="selected"
-      v-model:query="searchAddress"
-      :options="proposition"
-      option-attribute="name"
+      :search="search"
+      :loading="loading"
       placeholder="Rechercher une adresse..."
+      option-attribute="name"
+      trailing
       size="xl"
-      :search="() => proposition"
       @update:model-value="onSelect"
     />
   </div>
