@@ -1,0 +1,80 @@
+@startuml Architecture_Faverton_Vue_Ensemble
+
+' Configuration optimisée pour impression A4
+skinparam dpi 300
+skinparam componentFontSize 14
+skinparam interfaceFontSize 12
+skinparam fontSize 13
+skinparam packageFontSize 16
+skinparam packageFontStyle bold
+skinparam minClassWidth 220
+skinparam nodesep 60
+skinparam ranksep 100
+skinparam padding 5
+skinparam roundcorner 20
+skinparam shadowing true
+skinparam backgroundColor white
+
+' Définition des couleurs harmonieuses
+!define INTERFACE_COLOR #B8E6B8
+!define CORE_COLOR #FFE5B4
+!define DATABASE_COLOR #B4D4F1
+!define EXTERNAL_COLOR #E6B8E6
+
+skinparam package {
+    BackgroundColor<<interface>> INTERFACE_COLOR
+    BorderColor<<interface>> #4CAF50
+    BackgroundColor<<core>> CORE_COLOR
+    BorderColor<<core>> #FF9800
+    BackgroundColor<<database>> DATABASE_COLOR
+    BorderColor<<database>> #2196F3
+    BackgroundColor<<external>> EXTERNAL_COLOR
+    BorderColor<<external>> #9C27B0
+}
+
+' Organisation verticale pour format A4 portrait
+top to bottom direction
+
+' Couche Interface
+package "Interface Utilisateur" <<interface>> {
+    component "Application Web\nNuxt 3 / Vue 3" as WebApp <<interface>>
+    component "Cartographie Interactive\nLeaflet" as Map <<interface>>
+}
+
+' Core Service
+package "Services Métier" <<core>> {
+    component "Simulateur Solaire" as Simulator <<core>>
+    component "Calculateur de Rendement" as Calculator <<core>>
+    component "Gestion des Utilisateurs" as UserMgmt <<core>>
+}
+
+' Base de données
+package "Persistance des Données" <<database>> {
+    database "PostgreSQL\n(via Supabase)" as DB <<database>> {
+        component "Utilisateurs & Historique" as UserData
+        component "Données Techniques" as TechData
+    }
+}
+
+' Services externes
+package "APIs Externes" <<external>> {
+    component "Géolocalisation\n(API Adresse)" as GeoAPI <<external>>
+    component "Données Solaires\n(JRC Europa)" as SolarAPI <<external>>
+}
+
+' Relations principales avec cardinalités
+WebApp --> Simulator : "1    →    0..*\ndemande simulation"
+WebApp --> UserMgmt : "1    →    1\nauthentification"
+Map --> Simulator : "1    →    1\nfournit coordonnées"
+
+Simulator --> Calculator : "1    →    1\ndélègue calcul"
+Simulator --> UserData : "1    →    0..*\nsauvegarde"
+Calculator --> TechData : "1    →    1..*\nconsulte panneaux"
+
+Simulator --> GeoAPI : "1    →    1\nlocalise adresse"
+Calculator --> SolarAPI : "1    →    1\nrécupère ensoleillement"
+
+' Note explicative sur Supabase
+note bottom of DB : Supabase fournit l'authentification intégrée\net l'accès temps réel aux données
+
+@enduml
