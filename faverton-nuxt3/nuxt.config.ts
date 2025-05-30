@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     `@nuxtjs/leaflet`,
     `@pinia/nuxt`,
     `@nuxtjs/cloudinary`,
+    `@nuxt/test-utils/module`,
   ],
 
   devtools: { enabled: true },
