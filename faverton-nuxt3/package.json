@@ -9,7 +9,10 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "test:unit": "vitest tests/unit/",
+    "test:e2e": "vitest tests/e2e/",
+    "test:all": "vitest"
   },
   "dependencies": {
     "@nuxt/ui": "^2.21.1",
