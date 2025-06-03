@@ -5,14 +5,13 @@ on:
     branches: [ main, develop ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch:  # Pour déclencher manuellement
+  workflow_dispatch:
 
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     
-    # Définir le répertoire de travail par défaut
     defaults:
       run:
         working-directory: ./faverton-nuxt3
@@ -24,8 +23,6 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-        cache: 'pnpm'
-        cache-dependency-path: './faverton-nuxt3/pnpm-lock.yaml'
     
     - name: Install pnpm
       uses: pnpm/action-setup@v4
@@ -43,9 +40,6 @@ jobs:
     
     - name: Run Playwright tests
       run: pnpm test:e2e
-      env:
-        NODE_ENV: test
-        CI: true
     
     - name: Upload test results
       uses: actions/upload-artifact@v4
@@ -54,11 +48,3 @@ jobs:
         name: playwright-report
         path: ./faverton-nuxt3/playwright-report/
         retention-days: 30
-    
-    - name: Upload test screenshots
-      uses: actions/upload-artifact@v4
-      if: failure()
-      with:
-        name: test-results
-        path: ./faverton-nuxt3/test-results/
-        retention-days: 7
