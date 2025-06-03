@@ -38,8 +38,13 @@ jobs:
     - name: Build application
       run: pnpm build
     
-    - name: Run Playwright tests
-      run: pnpm test:e2e
+    - name: Start server and run tests
+      run: |
+        pnpm preview &
+        sleep 30
+        pnpm test:e2e
+      env:
+        CI: true
     
     - name: Upload test results
       uses: actions/upload-artifact@v4
