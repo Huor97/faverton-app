@@ -1,0 +1,64 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # Pour déclencher manuellement
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    
+    # Définir le répertoire de travail par défaut
+    defaults:
+      run:
+        working-directory: ./faverton-nuxt3
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'pnpm'
+        cache-dependency-path: './faverton-nuxt3/pnpm-lock.yaml'
+    
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9.5.0
+    
+    - name: Install dependencies
+      run: pnpm install
+    
+    - name: Install Playwright Browsers
+      run: pnpm exec playwright install --with-deps
+    
+    - name: Build application
+      run: pnpm build
+    
+    - name: Run Playwright tests
+      run: pnpm test:e2e
+      env:
+        NODE_ENV: test
+        CI: true
+    
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: playwright-report
+        path: ./faverton-nuxt3/playwright-report/
+        retention-days: 30
+    
+    - name: Upload test screenshots
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: test-results
+        path: ./faverton-nuxt3/test-results/
+        retention-days: 7
