@@ -1,79 +1,84 @@
 import { test, expect } from '@playwright/test';
 
-test.describe(`Page de Login`, () => {
+test.describe(`Page de Login - Workflows utilisateur`, () => {
   test.beforeEach(async ({ page }) => {
-    // S'assurer qu'aucune session n'existe
     await page.context().clearCookies();
     await page.goto(`/user/login`);
+    await page.waitForLoadState(`networkidle`);
   });
 
-  test.only(`devrait afficher le composant UserAuthLogin`, async ({ page }) => {
-    // Attendre que la page soit chargée
-    await page.waitForLoadState(`networkidle`);
+  test(`éléments de la page de login sont présents`, async ({ page }) => {
+    // Vérifier que nous sommes sur la page de login
+    await expect(page).toHaveURL(/.*\/user\/login/);
 
-    // Vérifier que le composant de login est présent
-    await expect(page.locator(`form`)).toBeVisible();
+    // Vérifier que les éléments sont présents
     await expect(page.locator(`input[type="email"]`)).toBeVisible();
     await expect(page.locator(`input[type="password"]`)).toBeVisible();
+    await expect(page.locator(`button[type="submit"]`)).toBeVisible();
+    await expect(page.locator(`text=Continuer`)).toBeVisible();
+
+    // Vérifier le titre de la page
+    await expect(page.locator(`h1:has-text("Se connecter")`)).toBeVisible();
+
+    // Vérifier le breadcrumb
+    await expect(page.locator(`text=Introduction`)).toBeVisible();
   });
 
-  //   test(`devrait rester sur login si utilisateur non connecté`, async ({ page }) => {
-  //     // S'assurer qu'aucun utilisateur n'est connecté
-  //     await page.context().clearCookies();
+  test(`interaction avec les champs de saisie`, async ({ page }) => {
+    const email = `test@example.com`;
+    const password = `monPassword123`;
 
-  //     await page.goto(`/user/login`);
+    // Test de saisie dans le champ email
+    await page.fill(`input[type="email"]`, email);
+    await expect(page.locator(`input[type="email"]`)).toHaveValue(email);
 
-  //     // Vérifier qu'on reste sur la page login
-  //     await expect(page).toHaveURL(`/user/login`);
-  //     await expect(page.locator(`form`)).toBeVisible();
-  //   });
+    // Test de saisie dans le champ password
+    await page.fill(`input[type="password"]`, password);
+    await expect(page.locator(`input[type="password"]`)).toHaveValue(password);
 
-  //   test(`devrait rediriger vers login depuis la page d'accueil si non connecté`, async ({ page }) => {
-  //     // S'assurer qu'aucun utilisateur n'est connecté
-  //     await page.context().clearCookies();
+    // Vérifier que le bouton reste cliquable
+    await expect(page.locator(`button[type="submit"]`)).toBeEnabled();
+  });
 
-  //     // Essayer d'aller sur la page d'accueil
-  //     await page.goto(`/`);
+  test(`soumission du formulaire et affichage du message`, async ({ page }) => {
+    // Remplir le formulaire
+    await page.fill(`input[type="email"]`, `test@example.com`);
+    await page.fill(`input[type="password"]`, `password123`);
 
-  //     // Devrait être redirigé vers login
-  //     await expect(page).toHaveURL(`/user/login`);
-  //   });
+    // Soumettre le formulaire
+    await page.click(`button[type="submit"]`);
 
-  //   test(`devrait rediriger vers profile si utilisateur connecté essaie d'accéder au login`, async ({ page }) => {
-  //     // Simuler un utilisateur connecté avec Supabase
-  //     // Vous devrez adapter ces cookies selon votre configuration Supabase
-  //     await page.context().addCookies([
-  //       {
-  //         name: `sb-access-token`, // Cookie Supabase typique
-  //         value: `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjkwMDAwMDAwLCJzdWIiOiIxMjM0NTY3OC05MGFiLWNkZWYtMTIzNC01Njc4OTBhYmNkZWYiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6e30sInJvbGUiOiJhdXRoZW50aWNhdGVkIn0.fake-signature`,
-  //         domain: `localhost`,
-  //         path: `/`,
-  //       },
-  //       {
-  //         name: `sb-refresh-token`,
-  //         value: `fake-refresh-token`,
-  //         domain: `localhost`,
-  //         path: `/`,
-  //       },
-  //     ]);
+    // Attendre qu'un message apparaisse (peu importe succès ou erreur)
+    await expect(page.locator(`p`).last()).toBeVisible({ timeout: 5000 });
 
-  //     await page.goto(`/user/login`);
+    // Vérifier qu'on reste sur la page login
+    await expect(page).toHaveURL(/.*\/user\/login/);
+  });
 
-  //     // Devrait être redirigé vers profile
-  //     await expect(page).toHaveURL(`/user/profile`);
-  //   });
+  test(`navigation vers register`, async ({ page }) => {
+    await page.click(`text=Inscrivez-vous`);
+    await expect(page).toHaveURL(/.*\/user\/register/);
+  });
 
-  //   // Test de base sans middleware
-  //   test.skip(`devrait permettre la connexion avec identifiants valides`, async ({ page }) => {
-  //     // Remplir le formulaire
-  //     await page.fill(`input[type="email"]`, `test@example.com`);
-  //     await page.fill(`input[type="password"]`, `password123`);
+  test(`navigation vers introduction`, async ({ page }) => {
+    await page.click(`text=Introduction`);
+    await expect(page).toHaveURL(/.*\/introduction/);
+  });
 
-  //     // Soumettre le formulaire
-  //     await page.click(`button[type="submit"]`);
+  test(`test responsive sur mobile`, async ({ page }) => {
+    // Changer la taille d'écran pour mobile
+    await page.setViewportSize({ width: 375, height: 667 });
 
-//     // Attendre la redirection après connexion réussie
-//     await page.waitForURL(`/user/profile`, { timeout: 10000 });
-//     await expect(page).toHaveURL(`/user/profile`);
-//   });
+    // Vérifier que tous les éléments sont encore visibles
+    await expect(page.locator(`input[type="email"]`)).toBeVisible();
+    await expect(page.locator(`input[type="password"]`)).toBeVisible();
+    await expect(page.locator(`button[type="submit"]`)).toBeVisible();
+    await expect(page.locator(`h1`)).toBeVisible();
+  });
+
+  test(`test des placeholders et labels`, async ({ page }) => {
+    // Vérifier les placeholders
+    await expect(page.locator(`input[placeholder="Email"]`)).toBeVisible();
+    await expect(page.locator(`input[placeholder="Password"]`)).toBeVisible();
+  });
 });
