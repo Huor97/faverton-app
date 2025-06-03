@@ -121,18 +121,21 @@ Thumbs.db
 # test files
 *.potentialSolar.json
 
-# Playwright Test Results
+# Playwright Test Results (plus spécifique)
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
 playwright-report/
 test-results/
+**/playwright-report/
+**/test-results/
 
 # Test artifacts
 *.trace.zip
 test-results.json
 playwright.config.ts.timestamp-*
+playwright-*.json
 
 # E2E test generated files
 /tests/e2e/results/
