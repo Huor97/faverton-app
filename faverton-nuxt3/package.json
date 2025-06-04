@@ -17,6 +17,8 @@
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:report": "exec playwright show-report",
+    "test:e2e:clean": "rm -rf test-results playwright-report blob-report",
+    "test:e2e:clean-git": "git rm --cached -r playwright-report/ test-results/ 2>/dev/null || true",
     "test:all": "pnpm test:unit && pnpm test:integration && pnpm test:e2e"
   },
   "dependencies": {

@@ -33,8 +33,8 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: process.env.CI ? `pnpm preview` : `pnpm run dev`,
-    url: `http://localhost:3000`,
+    command: `pnpm run dev`,
+    port: 3000,
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
   },
