@@ -17,45 +17,46 @@ start
 :Accéder à l'application;
 :Consulter la page d'accueil;
 
+:Choisir l'option simulateur\ndans le menu;
+
 :Rechercher une adresse;
 note right: API Géocodage
 
 if (Adresse trouvée ?) then (oui)
     :Afficher position sur carte;
 else (non)
-    :Afficher message d'erreur;
-    :Proposer saisie manuelle;
+    :Rechercher une adresse;
 endif
 
-:Dessiner zone sur carte;
-note right: Outil Leaflet Draw
+:Définir la surface;
+note right: Deux options possibles :\n- Saisie directe de la valeur\n- Dessin sur la carte
 
-:Calculer superficie;
-
-if (Surface valide ?) then (oui)
-    :Afficher surface en m²;
-else (non)
-    :Afficher alerte;
-    :Demander nouveau dessin;
-    stop
+if (Méthode choisie ?) then (Dessin)
+    :Dessiner zone sur carte;
+    note right: Outil Leaflet Draw
+    :Calculer superficie automatiquement;
+    :Remplir le champ surface;
+else (Saisie directe)
+    :Saisir la surface en m²;
+    note left: Seules les valeurs\nnumériques acceptées
 endif
 
 :Sélectionner type de panneau;
-:Configurer paramètres techniques;
 
 :Lancer simulation;
-note left: API PVGIS
+note left: Récupération des données\ntechniques en BDD\net API PVGIS
 
 fork
     :Calculer production mensuelle;
 fork again
-    :Calculer rendement financier;
+    :Calculer production annuelle totale;
 fork again
-    :Estimer retour sur investissement;
+    :Calculer rendement financier;
 end fork
 
 :Afficher résultats;
-:Présenter graphiques;
+:Présenter graphiques mensuels;
+:Afficher production totale annuelle;
 
 if (Utilisateur connecté ?) then (oui)
     :Proposer sauvegarde;

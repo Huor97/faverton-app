@@ -11,101 +11,119 @@ skinparam stereotypeCBorderColor #FF9800
 
 title Diagramme de classes - Modèle métier Faverton
 
-' Classes principales
-class User {
+' Classes principales basées sur le MCD fourni
+class Profile {
     -id: UUID
-    -email: string
     -username: string
-    -createdAt: Date
-    -updatedAt: Date
+    -avatar_url: string
+    -updated_at: Date
     --
-    +register(): Promise<User>
-    +login(): Promise<Session>
     +updateProfile(): Promise<void>
-    +deleteAccount(soft: boolean): Promise<void>
-}
-
-class Address {
-    -id: UUID
-    -label: string
-    -street: string
-    -postalCode: string
-    -city: string
-    -latitude: number
-    -longitude: number
-    --
-    +geocode(): Promise<Coordinates>
-    +formatDisplay(): string
+    +uploadAvatar(file: File): Promise<string>
 }
 
 class Simulation {
-    -simulationId: UUID
-    -userId: UUID
+    -simulation_id: UUID
+    -user_id: UUID
+    -panel_id: UUID
+    -solar_energy_id: UUID
     -surface: number
-    -simulationDate: Date
+    -simulation_date: Date
     -history: boolean
-    -solarEnergyId: UUID
-    -panelId: UUID
     --
     +calculate(): Promise<SimulationResult>
-    +save(): Promise<void>
-    +compareWith(other: Simulation): Comparison
-    +export(format: string): File
+    +saveToHistory(): Promise<void>
+    +delete(): Promise<void>
 }
 
 class Panel <<entity>> {
-    -panelId: UUID
+    -panel_id: UUID
+    -panel_type_id: UUID
     -model: string
     -efficiency: number
-    -power: number
     -company: string
-    -technology: PanelType
+    -country: string
+    -detail: string
     --
-    +getYearlyProduction(area: number): number
     +getEfficiencyRate(): number
+    +getDescription(): string
+}
+
+class PanelType <<entity>> {
+    -panel_type_id: UUID
+    -label: string
+    --
+    +getLabel(): string
 }
 
 class SolarEnergy <<entity>> {
-    -solarEnergyId: UUID
-    -postalCode: string
+    -solar_energy_id: UUID
+    -postal_code: string
     -city: string
-    -yearlyEnergy: number
-    -monthlyData: MonthlyProduction[]
+    -yearly_energy: number
+    -month_1_energy: number
+    -month_2_energy: number
+    -month_3_energy: number
+    -month_4_energy: number
+    -month_5_energy: number
+    -month_6_energy: number
+    -month_7_energy: number
+    -month_8_energy: number
+    -month_9_energy: number
+    -month_10_energy: number
+    -month_11_energy: number
+    -month_12_energy: number
     --
-    +fetchFromAPI(coords: Coordinates): Promise<void>
+    +fetchFromJRC(lat: number, lon: number): Promise<void>
     +getMonthlyAverage(): number
-    +getSeasonalVariation(): object
+    +getYearlyTotal(): number
 }
 
-class MonthlyProduction {
-    -month: number
-    -energy: number
-    -radiation: number
+class Alocate {
+    -alocate_id: UUID
+    -profile_id: UUID
+    -panel_id: UUID
     --
-    +calculateRevenue(price: number): number
+    +assignPanel(): Promise<void>
 }
 
 class SimulationResult {
     -yearlyProduction: number
     -yearlyRevenue: number
     -monthlyBreakdown: MonthlyData[]
-    -roiYears: number
+    -surfaceArea: number
     --
     +generateChartData(): ChartData
-    +calculateROI(): number
+    +calculateTotalRevenue(): number
 }
 
-enum PanelType {
-    MONOCRYSTALLINE
-    POLYCRYSTALLINE
-    THIN_FILM
+class MonthlyData {
+    -month: string
+    -energy: number
+    -euros: number
+    --
+    +formatForDisplay(): string
 }
 
-' Relations
-User "1" -- "0..*" Simulation : owns >
-Simulation "0..*" -- "1" Panel : uses >
-Simulation "0..*" -- "1" SolarEnergy : based on >
-Simulation "1" -- "1" Address : located at >
-Simulation "1" -- "1" SimulationResult : produces >
-SolarEnergy "1" *-- "12" MonthlyProduction : contains >
-Panel -- PanelType
+' Relations basées sur le MCD
+Profile "1" -- "0..*" Simulation : performs
+Profile "0..1" -- "0..*" Alocate : allocates
+Alocate "0..*" -- "1" Panel : references
+Simulation "0..*" -- "1" Panel : uses
+Simulation "0..*" -- "1" SolarEnergy : calculates from
+Panel "1..*" -- "1" PanelType : belongs to
+Simulation "1" -- "1" SimulationResult : produces
+SimulationResult "1" *-- "12" MonthlyData : contains
+
+note right of Profile
+  Géré par Supabase Auth
+  Accessible via la table profiles
+end note
+
+note left of SolarEnergy
+  Données mises en cache
+  pour éviter les appels
+  répétés à l'API JRC
+end note
+
+@enduml
