@@ -5,5 +5,14 @@ export default defineVitestConfig({
   test: {
     environment: `nuxt`,
     exclude: [`app/tests/e2e/**/*`],
+    globals: true,
+    environmentOptions: {
+      nuxt: {
+        mock: {
+          intersectionObserver: true,
+          indexedDb: true,
+        },
+      },
+    },
   },
 });
