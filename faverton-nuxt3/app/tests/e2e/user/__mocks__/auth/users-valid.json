@@ -1,7 +1,7 @@
 {
   "admin": {
     "email": "exemple@email.fr",
-    "password": "password",
+    "password": "not_a_real_password",
     "expectedRole": "admin",
     "redirectUrl": "/simulator",
     "displayName": "Admin User"
