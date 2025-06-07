@@ -61,14 +61,4 @@ describe(`UserAuthLogin Component`, () => {
     expect(navigateToMock).toHaveBeenCalledWith(`/simulator`);
     expect(navigateToMock).toHaveBeenCalledTimes(1);
   });
-
-  test.todo(`transmet les bonnes données à signInWithPassword`, async () => {
-  // Action: remplir email/password et soumettre
-  // Assertion: signInWithPassword appelé avec { email, password }
-  });
-
-  test.todo(`met à jour correctement les variables error et message`, async () => {
-  // Cas échec: error = "Erreur d'authentification", message = "Login ne peut pas..."
-  // Cas succès: error = "", message = "Connexion réussie"
-  });
 });
