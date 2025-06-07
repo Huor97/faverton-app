@@ -3,10 +3,6 @@ import { flushPromises, shallowMount } from '@vue/test-utils';
 import UserAuthLogin from './UserAuthLogin.vue';
 
 describe(`UserAuthLogin Component`, () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   test(`rend le formulaire avec les champs requis`, () => {
     const wrapper = shallowMount(UserAuthLogin, {
       global: { stubs: { UInput: false, UButton: false } },
@@ -60,9 +56,7 @@ describe(`UserAuthLogin Component`, () => {
     expect(vm.error).toBe(``);
     expect(vm.message).toBe(`Connexion réussie`);
     await nextTick();
-    await nextTick();
-    await nextTick();
-    await nextTick();
+
     // TODO: Erreur à résudre
     expect(navigateToMock).toHaveBeenCalledWith(`/simulator`);
     expect(navigateToMock).toHaveBeenCalledTimes(1);
