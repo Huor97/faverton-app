@@ -1,0 +1,23 @@
+{
+  "admin": {
+    "email": "exemple@email.fr",
+    "password": "not_a_real_password",
+    "expectedRole": "admin",
+    "redirectUrl": "/simulator",
+    "displayName": "Admin User"
+  },
+  "regularUser": {
+    "email": "user@faverton.fr",
+    "password": "userPassword123",
+    "expectedRole": "user", 
+    "redirectUrl": "/simulator",
+    "displayName": "Regular User"
+  },
+  "testUser": {
+    "email": "test@faverton.fr",
+    "password": "testPassword123",
+    "expectedRole": "user",
+    "redirectUrl": "/simulator", 
+    "displayName": "Test User"
+  }
+}
