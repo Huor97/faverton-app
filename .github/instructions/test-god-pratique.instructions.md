@@ -310,7 +310,7 @@ C'est pourquoi vous pouvez écrire [expect(mockSignIn).toHaveBeenCalledWith(...
 ---
 ## Handling events
 
-- `vm.$emit()` always followed by a $nextTick()
+- `vm.$emit()` always followed by a nextTick()
 - `trigger()` always awaited
 
 ```ts
@@ -325,8 +325,8 @@ describe(`Test page`, () => {
     const inputComponent = wrapper.findComponent(UInput);
     expect(inputComponent.exists()).toBe(true);
     inputComponent.vm.$emit(`update:modelValue`, `my input value`);
-    // mandatory `await wrapper.vm.$nextTick();`
-    await wrapper.vm.$nextTick();
+    // mandatory `await nextTick();`
+    await nextTick();
     const button = wrapper.find(`button`);
     expect(button.exists()).toBe(true);
     // mandatory `await` before trigger
@@ -375,7 +375,7 @@ it(`can delete a property`, async (context) => {
   const confirmBtn = wrapper.findAllComponents(UButton).at(-1);
   context.mockDelete(PROPERTY_API_URL);
   confirmBtn?.vm.$emit(`click`);
-  await wrapper.vm.$nextTick();
+  await nextTick();
   // so we need to “find” again to be update-to-date with the DOM
   expect(wrapper.findAllComponents(UButton).at(-1)?.props(`loading`)).toBe(true);
   await flushPromises();
@@ -678,7 +678,7 @@ test(`update success`, async (context) => {
   const wrapper = shallowMount(ValuationFileCard);
   await context.flushPromises();
   wrapper.findComponent(UButton).vm.$emit(`files`, FILES);
-  await wrapper.vm.$nextTick();
+  await nextTick();
   // first requests
   context.mockPost(VALUATION_API_URL, { data: FILE_UPLOADED });
   context.mockPut(PROPERTY_API_URL, { data: propertyResponseWithValuation });
