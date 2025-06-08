@@ -186,3 +186,6 @@ types/generated/
 # Error logs
 error.log
 access.log
+
+# doc test starter
+/doc/testing*
