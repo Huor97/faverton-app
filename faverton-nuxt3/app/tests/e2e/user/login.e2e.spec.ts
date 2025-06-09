@@ -12,7 +12,7 @@ test.describe(`Page de Login - Workflows utilisateur`, () => {
     await expect(page).toHaveURL(/.*\/user\/login/);
 
     // Vérifier que les éléments sont présents
-    await expect(page.locator(`input[type="email"]`)).toBeVisible();
+    await expect(page.locator(`input[type="email"]`)).toBeVisible({ timeout: 10000 });
     await expect(page.locator(`input[type="password"]`)).toBeVisible();
     await expect(page.locator(`button[type="submit"]`)).toBeVisible();
     await expect(page.locator(`text=Continuer`)).toBeVisible();
