@@ -15,4 +15,10 @@ export default defineVitestConfig({
       },
     },
   },
+  resolve: {
+    alias: {
+      '~/': new URL(`./app/`, import.meta.url).pathname,
+      '@/': new URL(`./app/`, import.meta.url).pathname,
+    },
+  },
 });
