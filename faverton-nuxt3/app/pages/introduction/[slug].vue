@@ -43,7 +43,7 @@ const article = articles.find(a => a.articlesId === slug);
     <AppHeader />
     <div class="z-index-[999] absolute left-32 top-4">
       <UBreadcrumb
-        :links="[{ label: 'Introduction', to: '/introduction' }, { label: article.title }]"
+        :links="[{ label: 'Accueil', to: '/introduction' }, { label: article.title }]"
       >
         <template #default="{ link, isActive }">
           <UBadge

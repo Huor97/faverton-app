@@ -48,7 +48,7 @@ onUnmounted(() => {
       <div class="flex justify-end w-full ">
         <div class="z-index-[999] absolute left-32 top-4">
           <UBreadcrumb
-            :links="[{ label: 'Introduction' }]"
+            :links="[{ label: 'Accueil' }]"
           >
             <template #default="{ link, isActive }">
               <UBadge
@@ -74,10 +74,10 @@ onUnmounted(() => {
               <h1
                 class="text-nowrap font-extrabold text-2xl sm:text-3xl lg:text-4xl xl:text-6xl 2xl:text-7xl"
               >
-                GO GREEN & SAVE THE PLANET
+                Votre Transition Énergétique Commence Ici
               </h1>
               <p class="text-justify font-medium text-xl xl:text-2xl">
-                Bienvenue dans le monde serein des maisons de ferme vertes, où durabilité et charme de la vie à la campagne se rencontrent. Une maison de ferme verte n'est pas simplement un logement ; c'est l'incarnation de la conscience écologique, d'une vie harmonieuse avec la nature et de l'engagement envers la préservation de l'environnement.
+                Bienvenue chez Faverton, votre partenaire pour évaluer le potentiel solaire de vos terres agricoles. Notre simulateur gratuit vous permet de visualiser en quelques clics les opportunités de production d'énergie renouvelable sur votre exploitation.
               </p>
             </div>
             <div class="mt-20 max-md:mt-4">

@@ -11,31 +11,31 @@ const toggleMenu = () => {
 
 const items = [
   {
-    title: `Simulator`,
+    title: `Simulateur`,
     link: `/simulator`,
   },
   {
-    title: `Énergie Durable`,
+    title: `Énergies Renouvelables`,
     link: `/introduction/green-energy`,
   },
   {
-    title: `Conservation de l'Eau`,
+    title: `Gestion de l'Eau`,
     link: `/introduction/organic-waste-recycling`,
   },
   {
-    title: `Récoltes Fraîches et Durables`,
+    title: `Agriculture Durable`,
     link: `/introduction/sustainable-agriculture`,
   },
   {
-    title: `Apprendre et Inspirer`,
+    title: `Formation & Sensibilisation`,
     link: `/introduction/education-workshops`,
   },
   {
-    title: `Restaurant and Cultural`,
+    title: `Restauration Locale`,
     link: `/introduction/restaurants-cultural-activities`,
   },
   {
-    title: `Séjourner, Se Connecter`,
+    title: `Hébergement Écologique`,
     link: `/introduction/coworking-accommodation`,
   },
 ];

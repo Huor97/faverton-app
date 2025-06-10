@@ -40,7 +40,7 @@ function animateTextEntry() {
 
 const detailProgram = [
   {
-    title: `Solutions d'Énergie Durable.`,
+    title: `Énergies Renouvelables`,
     subtitle: `Les maisons de ferme vertes sont équipées de solutions énergétiques durables pour réduire leur empreinte carbone. Cela peut inclure l'utilisation de panneaux solaires pour la production d'électricité, de systèmes de chauffage géothermiques pour le chauffage et la climatisation, ainsi que la mise en place de systèmes de gestion de l'énergie pour optimiser la consommation. L'objectif est de minimiser la dépendance aux combustibles fossiles et de promouvoir l'utilisation d'énergies renouvelables.`,
     link: `green-energy`,
     coverImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1743028555/Top_Right_Faverton_mi2csg.png`,
@@ -48,43 +48,43 @@ const detailProgram = [
   },
 
   {
-    title: `Pratiques de Conservation de l'Eau.`,
+    title: `Gestion de l'Eau`,
     subtitle: `La gestion de l'eau est un aspect crucial des maisons de ferme vertes. Des systèmes de collecte des eaux pluviales et de recyclage des eaux grises sont mis en place pour réduire la consommation d'eau potable. De plus, des aménagements paysagers intelligents et des méthodes d'irrigation économes en eau sont utilisés pour préserver les ressources hydriques et favoriser la croissance de plantes adaptées à l'environnement local.`,
     link: `organic-waste-recycling`,
     coverImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1743028555/Top_Middle_Faverton_nm9vsd.png`,
-    characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1743166412/HydroPower_Faverton_tpnxay.png`,
+    characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1749517100/23514-removebg-preview_xnr6rp.png`,
   },
 
   {
-    title: `Des Récoltes Fraîches et Durables.`,
+    title: `Agriculture Durable`,
     subtitle: `Grâce à nos systèmes hydroponiques, nous cultivons des légumes frais avec un minimum de gaspillage d’eau, enrichis par du compost organique et l'énergie de la nature.`,
     link: `sustainable-agriculture`,
     coverImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1743028555/Top_Right_Faverton_mi2csg.png`,
-    characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1747181176/4_cbgeqj.png`,
+    characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1749518403/2303_i105_026_s_m005_c13_isometric_save_earth_isolated-removebg-preview_xyhaj7_c_pad_w_400_h_500_d7opu3.png`,
   },
 
   {
-    title: `Apprendre et Inspirer.`,
+    title: `Formation & Sensibilisation`,
     subtitle: `Participez à nos ateliers et programmes de formation pour découvrir comment adopter des pratiques agricoles durables et renouvelables dans votre propre communauté.`,
     link: `education-workshops`,
     coverImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1743028554/Bottom_Left_Faverton_htilsr.png`,
-    characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1747181177/8_odhv6f.png`,
+    characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/c_pad,w_300,h_600/v1749518674/6198279-removebg-preview_fevphr.png`,
   },
 
   {
-    title: `Restaurant et Activités Culturelles.`,
+    title: `Restauration Locale`,
     subtitle: `Savourez des repas de la ferme à l’assiette, assistez à des cours de cuisine et participez à des festivals culturels célébrant la nature, la gastronomie et la communauté.`,
     link: `restaurants-cultural-activities`,
     coverImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1743028554/Bottom_Center_Faverton_ojl2zi.png`,
-    characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1747181178/5_jvbn9r.jpg`,
+    characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/c_pad,w_350,h_600/v1749519294/2008.i101.017.catering_banquets_service_isometric-removebg-preview_zobfuf.png`,
   },
 
   {
-    title: `Travailler, Séjourner, Se Connecter.`,
+    title: `Hébergement Écologique`,
     subtitle: `Profitez d’espaces de coworking modernes et d’hébergements éco-responsables, alliant productivité et sérénité au cœur de la nature.`,
     link: `coworking-accommodation`,
     coverImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1743028554/Bottom_Right_Faverton_ux8jvb.png`,
-    characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1747181177/6II_zuqetz.png`,
+    characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1749519753/23053-removebg-preview_ygrmeh_c_pad_w_350_h_600_w1j0f4.png`,
   },
 ];
 </script>
