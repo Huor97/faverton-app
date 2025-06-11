@@ -408,3 +408,6 @@ Ce projet est sous licence MIT.
 - LinkedIn : rouh.karimi
 
 Développé avec 💚 pour la transition écologique
+
+## Licence
+This software is published under the [MIT License](./faverton-nuxt3/LICENSE).
