@@ -16,13 +16,32 @@ const hasMonthlyData = computed(() =>
   && amountEurosPerMonth.value.monthlyResults.length > 0,
 );
 
+const formatMonthLabel = (month: string): string => {
+  const monthAbbreviations: Record<string, string> = {
+    Janvier: `Jan`,
+    Février: `Fév`,
+    Mars: `Mar`,
+    Avril: `Avr`,
+    Mai: `Mai`,
+    Juin: `Jun`,
+    Juillet: `Jul`,
+    Août: `Aoû`,
+    Septembre: `Sep`,
+    Octobre: `Oct`,
+    Novembre: `Nov`,
+    Décembre: `Déc`,
+  };
+
+  return monthAbbreviations[month] || month.substring(0, 3);
+};
+
 const chartData = computed(() => {
   if (!hasMonthlyData.value) {
     return { labels: [], datasets: [] };
   }
   const monthlyData = amountEurosPerMonth.value.monthlyResults;
   return {
-    labels: monthlyData.map(item => item.month),
+    labels: monthlyData.map(item => formatMonthLabel(item.month)),
     datasets: [
       {
         label: `Revenus mensuels (€)`,
@@ -38,15 +57,56 @@ const chartData = computed(() => {
   };
 });
 
-const chartOptions = ref({
+const { isMobile } = useDevice();
+
+const chartOptions = computed(() => ({
   responsive: true,
   maintainAspectRatio: false,
-  scales: {
-    y: {
-      beginAtZero: true,
+  layout: {
+    padding: {
+      bottom: isMobile ? 50 : 40,
+      top: 20,
+      left: 10,
+      right: 10,
     },
   },
-});
+  scales: {
+    x: {
+      ticks: {
+        maxRotation: isMobile ? 90 : 45,
+        minRotation: isMobile ? 90 : 45,
+        font: {
+          size: isMobile ? 9 : 10,
+        },
+        color: `#6B7280`,
+      },
+      grid: {
+        display: false,
+      },
+    },
+    y: {
+      beginAtZero: true,
+      ticks: {
+        font: {
+          size: isMobile ? 9 : 10,
+        },
+        color: `#6B7280`,
+      },
+    },
+  },
+  plugins: {
+    legend: {
+      position: `top`,
+      labels: {
+        boxWidth: isMobile ? 10 : 12,
+        font: {
+          size: isMobile ? 10 : 11,
+        },
+        padding: 15,
+      },
+    },
+  },
+}));
 </script>
 
 <template>
