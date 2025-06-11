@@ -10,6 +10,8 @@ export default defineNuxtConfig({
     `@pinia/nuxt`,
     `@nuxtjs/cloudinary`,
     `@nuxt/test-utils/module`,
+    `@nuxt/image`,
+    `@nuxtjs/device`,
   ],
 
   devtools: { enabled: true },

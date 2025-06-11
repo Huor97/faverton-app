@@ -58,7 +58,7 @@ const detailProgram = [
   {
     title: `Agriculture Durable`,
     subtitle: `Grâce à nos systèmes hydroponiques, nous cultivons des légumes frais avec un minimum de gaspillage d’eau, enrichis par du compost organique et l'énergie de la nature.`,
-    link: `sustainable-agriculture`,
+    link: `sustainable-farming`,
     coverImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1743028555/Top_Right_Faverton_mi2csg.png`,
     characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1749518403/2303_i105_026_s_m005_c13_isometric_save_earth_isolated-removebg-preview_xyhaj7_c_pad_w_400_h_500_d7opu3.png`,
   },
@@ -82,7 +82,7 @@ const detailProgram = [
   {
     title: `Hébergement Écologique`,
     subtitle: `Profitez d’espaces de coworking modernes et d’hébergements éco-responsables, alliant productivité et sérénité au cœur de la nature.`,
-    link: `coworking-accommodation`,
+    link: `eco-hosting`,
     coverImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1743028554/Bottom_Right_Faverton_ux8jvb.png`,
     characterImage: `https://res.cloudinary.com/dizwmnpet/image/upload/v1749519753/23053-removebg-preview_ygrmeh_c_pad_w_350_h_600_w1j0f4.png`,
   },

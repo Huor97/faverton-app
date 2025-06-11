@@ -4,18 +4,6 @@ import logo from '~/assets/favertonLogo.png';
 const chang = ref(false);
 const isScrolled = ref(false);
 const targetSection = ref<HTMLElement | null>(null);
-const isSmallScreen = ref(false);
-
-const mediaQuery = window.matchMedia(`(max-width: 639px)`);
-
-const updateScreenSize = (e: MediaQueryListEvent): void => {
-  isSmallScreen.value = e.matches;
-};
-
-onMounted(() => {
-  isSmallScreen.value = mediaQuery.matches;
-  mediaQuery.addEventListener(`change`, updateScreenSize);
-});
 
 function scrollToSection() {
   targetSection.value?.scrollIntoView({ behavior: `smooth` });
@@ -27,9 +15,8 @@ onMounted(() => {
   });
 });
 
-onUnmounted(() => {
-  mediaQuery.removeEventListener(`change`, updateScreenSize);
-});
+const { isMobile } = useDevice();
+const isSmallScreen = computed(() => isMobile);
 </script>
 
 <template>
@@ -46,7 +33,10 @@ onUnmounted(() => {
         </template>
       </ClientOnly>
       <div class="flex justify-end w-full ">
-        <div class="z-index-[999] absolute left-32 top-4">
+        <div
+          class="z-index-[999] absolute top-4"
+          :class="!isSmallScreen? 'left-32' : 'left-16'"
+        >
           <UBreadcrumb
             :links="[{ label: 'Accueil' }]"
           >
@@ -61,7 +51,7 @@ onUnmounted(() => {
           </UBreadcrumb>
         </div>
         <div class="flex justify-center lg:w-[93.75%] xl:w-[95%]">
-          <div class="text-white flex flex-col items-center gap-3 h-screen md:gap-3 w-[40%] sm:w-[47%] lg:w-[47%] xl:w-[55%]">
+          <div class="text-white flex flex-col items-center gap-3  h-screen">
             <div class="mt-20 flex justify-center w-[35%] sm:mt-[5%] sm:w-[20%] lg:w-[20%] xl:w-[20%]">
               <FavertonLogo v-if="!isSmallScreen" />
               <img
@@ -70,13 +60,13 @@ onUnmounted(() => {
                 alt="faverton"
               >
             </div>
-            <div class="flex flex-col items-center gap-6 text-balance">
+            <div class="text-center flex flex-col items-center gap-6 text-balance max-w-[83%]">
               <h1
-                class="text-nowrap font-extrabold text-2xl sm:text-3xl lg:text-4xl xl:text-6xl 2xl:text-7xl"
+                class="font-extrabold text-4xl xl:text-6xl 2xl:text-7xl"
               >
                 Votre Transition Énergétique Commence Ici
               </h1>
-              <p class="text-justify font-medium text-xl xl:text-2xl">
+              <p class="text-justify font-medium text-xl xl:text-2xl p-2">
                 Bienvenue chez Faverton, votre partenaire pour évaluer le potentiel solaire de vos terres agricoles. Notre simulateur gratuit vous permet de visualiser en quelques clics les opportunités de production d'énergie renouvelable sur votre exploitation.
               </p>
             </div>
