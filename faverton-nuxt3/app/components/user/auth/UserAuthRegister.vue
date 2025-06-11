@@ -56,7 +56,7 @@ const register = async () => {
     </h1>
 
     <form
-      class="gap-4 flex flex-col w-1/4"
+      class="gap-4 flex flex-col sm:w-1/4"
       @submit.prevent="register"
     >
       <UInput

@@ -79,11 +79,16 @@ const signOut = async () => {
     loading.value = false;
   }
 };
+const { isMobile } = useDevice();
+const isSmallScreen = computed(() => isMobile);
 </script>
 
 <template>
   <div class="bg-yellow-100 h-screen flex flex-col justify-center items-center">
-    <div class="z-index-[999] fixed left-32 top-4">
+    <div
+      class="z-index-[999] fixed top-4"
+      :class="!isSmallScreen? 'left-32':'left-16'"
+    >
       <UBreadcrumb
         :links="[{ label: 'Introduction', to: '/introduction' }, { label: 'Profile' }]"
       >
@@ -98,7 +103,7 @@ const signOut = async () => {
       </UBreadcrumb>
     </div>
     <form
-      class="flex flex-col gap-4 w-1/4"
+      class="flex flex-col gap-4 md:w-1/4"
       @submit.prevent="updateProfile"
     >
       <div class="flex flex-col items-center gap-2 justify-center">
@@ -129,7 +134,7 @@ const signOut = async () => {
             name="i-heroicons-lock-closed"
             class="text-gray-400 w-5 h-5"
           />
-          <span class="text-gray-700 flex-grow">{{ user.email }}</span>
+          <span class="text-gray-700 flex-grow">{{ user?.email }}</span>
 
           <UTooltip text="L'adresse email ne peut pas être modifiée">
             <UButton
@@ -161,7 +166,7 @@ const signOut = async () => {
         </UButton>
       </div>
     </form>
-    <div class="flex gap-2 mt-10 p-10">
+    <div class="flex gap-2 mt-0 md:mt-10 p-10">
       <UButton
         label="Déconnexion"
         @click="signOut"
