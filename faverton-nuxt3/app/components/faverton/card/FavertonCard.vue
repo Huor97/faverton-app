@@ -7,20 +7,25 @@ const toggleMenu = () => {
 
 <template>
   <div
-    class="fixed z-[9000] bottom-0 md:h-[90vh] md:w-[33vw] md:top-10 md:left-3 overflow-auto"
+    class="fixed z-[9000] bottom-0 md:h-[90vh] md:w-[33vw] md:top-10 md:left-3 overflow-auto transition-all duration-500 ease-in-out"
     :class="isOpen? 'h-[50vh]' : 'h-[100%]'"
     style="background: linear-gradient(to bottom, rgba(149, 215, 183, 0.8), #E8FFD7);"
   >
-    <UButton
-      class="md:hidden"
-      @click="toggleMenu"
+    <div
+      class="md:hidden rounded-b-lg flex justify-center p-2"
     >
-      <UIcon
-        :name="isOpen ? 'i-tabler-arrows-diagonal' : 'i-tabler-arrows-diagonal-minimize-2'"
-        class="text-lg"
-      />
-      {{ isOpen ? 'Agrandir' : 'Réduire' }}
-    </UButton>
+      <UButton
+        class="transition-transform duration-300 ease-in-out"
+        :class="{ 'rotate-180': isOpen }"
+        @click="toggleMenu"
+      >
+        <UIcon
+          name="i-tabler-chevron-up"
+          class="text-lg"
+        />
+      </UButton>
+    </div>
+
     <slot />
   </div>
 </template>
