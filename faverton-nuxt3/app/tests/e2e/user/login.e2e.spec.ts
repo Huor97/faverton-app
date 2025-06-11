@@ -21,7 +21,7 @@ test.describe(`Page de Login - Workflows utilisateur`, () => {
     await expect(page.locator(`h1:has-text("Se connecter")`)).toBeVisible();
 
     // Vérifier le breadcrumb
-    await expect(page.locator(`text=Introduction`)).toBeVisible();
+    await expect(page.locator(`text=Accueil`)).toBeVisible();
   });
 
   test(`interaction avec les champs de saisie`, async ({ page }) => {
@@ -61,7 +61,7 @@ test.describe(`Page de Login - Workflows utilisateur`, () => {
   });
 
   test(`navigation vers introduction`, async ({ page }) => {
-    await page.click(`text=Introduction`);
+    await page.click(`text=Accueil`);
     await expect(page).toHaveURL(/.*\/introduction/);
   });
 
@@ -79,6 +79,6 @@ test.describe(`Page de Login - Workflows utilisateur`, () => {
   test(`test des placeholders et labels`, async ({ page }) => {
     // Vérifier les placeholders
     await expect(page.locator(`input[placeholder="Email"]`)).toBeVisible();
-    await expect(page.locator(`input[placeholder="Password"]`)).toBeVisible();
+    await expect(page.locator(`input[placeholder="Mot de passe"]`)).toBeVisible();
   });
 });
