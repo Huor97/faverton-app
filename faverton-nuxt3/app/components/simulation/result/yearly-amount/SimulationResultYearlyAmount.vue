@@ -44,7 +44,7 @@ const amountEurosPerYear = computed<AmountEurosPerYear | null>(() => props.amoun
             name="i-solar-wallet-money-linear"
             class="h-8 w-8 mx-auto text-green-600 mb-2"
           />
-          Revenu Estimé
+          Revenus annuels estimés
         </h3>
         <p class="text-2xl font-semibold">
           {{ amountEurosPerYear?.amountEurosPerYear?.toFixed(2) }} €/an

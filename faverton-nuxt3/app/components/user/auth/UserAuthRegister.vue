@@ -39,7 +39,7 @@ const register = async () => {
   <div class="flex flex-col justify-center bg-yellow-100 h-screen items-center gap-3">
     <div class="z-index-[999] fixed left-32 top-4">
       <UBreadcrumb
-        :links="[{ label: 'Introduction', to: '/introduction' }, { label: 'Crée un compte' }]"
+        :links="[{ label: 'Accueil', to: '/introduction' }, { label: 'Créer un compte' }]"
       >
         <template #default="{ link, isActive }">
           <UBadge
@@ -52,7 +52,7 @@ const register = async () => {
       </UBreadcrumb>
     </div>
     <h1>
-      Crée un compte
+      Créer un compte
     </h1>
 
     <form
@@ -72,7 +72,7 @@ const register = async () => {
         color="primary"
         variant="outline"
         type="password"
-        placeholder="Password"
+        placeholder="Mot de passe"
         size="xl"
       />
       <div>

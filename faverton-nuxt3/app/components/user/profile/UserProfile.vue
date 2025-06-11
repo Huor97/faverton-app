@@ -86,11 +86,11 @@ const isSmallScreen = computed(() => isMobile);
 <template>
   <div class="bg-yellow-100 h-screen flex flex-col justify-center items-center">
     <div
-      class="z-index-[999] fixed top-4"
+      class="z-[999] fixed top-4"
       :class="!isSmallScreen? 'left-32':'left-16'"
     >
       <UBreadcrumb
-        :links="[{ label: 'Introduction', to: '/introduction' }, { label: 'Profile' }]"
+        :links="[{ label: 'Accueil', to: '/introduction' }, { label: 'Profile' }]"
       >
         <template #default="{ link, isActive }">
           <UBadge

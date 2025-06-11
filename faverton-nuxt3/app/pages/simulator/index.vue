@@ -39,7 +39,7 @@ watch(jrcResponse, (newJrc) => {
   <div>
     <div class="z-[9000] fixed top-2 left-5">
       <UBreadcrumb
-        :links="[{ label: 'Accueil', to: '/introduction' }, { label: 'Simulator' }]"
+        :links="[{ label: 'Accueil', to: '/introduction' }, { label: 'Simulateur' }]"
       >
         <template #default="{ link, isActive }">
           <UBadge

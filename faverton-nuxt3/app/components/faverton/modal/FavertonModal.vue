@@ -50,7 +50,7 @@ const confirmDelete = async () => {
         <p>
           Êtes-vous sûr de vouloir supprimer définitivement votre compte ?
           Cette action est irréversible. Toutes vos données seront supprimées.
-          conserve des données anonymisées pendant 3 mois après la suppression.
+          Nous conservons des données anonymisées pendant 3 mois après la suppression.
         </p>
         <div>
           <UButton

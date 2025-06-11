@@ -134,7 +134,7 @@ onMounted(() => {
             class="text-lg"
           >
             <span class="leading-normal">
-              Modernisation du Cloud Analytics
+              Modernisation de l'analyse en nuage
             </span>
           </h3>
         </div>
