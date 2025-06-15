@@ -15,7 +15,7 @@ const emit = defineEmits([`update:simulation`]);
 const goToResults = () => {
   modelValue.value = 1;
 };
-const surface = ref<number>(1);
+const surface = ref<number>(250);
 const panelId = ref<string | null>(null);
 
 const handleStart = async () => {
@@ -57,7 +57,7 @@ watch(() => mapStore.drawnArea, (newArea) => {
     surface.value = newArea;
   }
   else if (newArea === 0) {
-    surface.value = 1;
+    surface.value = 250;
   }
 });
 

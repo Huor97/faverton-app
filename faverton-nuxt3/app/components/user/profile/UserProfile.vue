@@ -90,7 +90,7 @@ const isSmallScreen = computed(() => isMobile);
       :class="!isSmallScreen? 'left-32':'left-16'"
     >
       <UBreadcrumb
-        :links="[{ label: 'Accueil', to: '/introduction' }, { label: 'Profile' }]"
+        :links="[{ label: 'Accueil', to: '/introduction' }, { label: 'Mon Espace' }]"
       >
         <template #default="{ link, isActive }">
           <UBadge

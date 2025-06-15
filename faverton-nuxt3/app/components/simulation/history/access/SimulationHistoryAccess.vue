@@ -9,7 +9,7 @@ const simulations = computed(() => {
   if (!data.value) return [];
   return data.value.simulations.map(sim => ({
     ...sim,
-    label: `${sim.solar_energy?.postal_code} ${sim.solar_energy?.city} - ${formatDate(sim.simulation_date)} `,
+    label: `${sim.surface}m² - Efficacité ${sim.panel.efficiency}% - ${formatDate(sim.simulation_date)} `,
   }));
 });
 
