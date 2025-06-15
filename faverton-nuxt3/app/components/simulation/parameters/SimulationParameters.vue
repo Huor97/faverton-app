@@ -10,12 +10,13 @@ const props = defineProps<{
   responseSolarEnergyId: SolarEnergyResponse | null
 }>();
 
+const DEFAULT_SURFACE: number = 250;
 const modelValue = defineModel<number>();
 const emit = defineEmits([`update:simulation`]);
 const goToResults = () => {
   modelValue.value = 1;
 };
-const surface = ref<number>(250);
+const surface = ref<number>(DEFAULT_SURFACE);
 const panelId = ref<string | null>(null);
 
 const handleStart = async () => {
@@ -57,7 +58,7 @@ watch(() => mapStore.drawnArea, (newArea) => {
     surface.value = newArea;
   }
   else if (newArea === 0) {
-    surface.value = 250;
+    surface.value = DEFAULT_SURFACE;
   }
 });
 
