@@ -26,7 +26,6 @@ const { data: amountPerYear } = useLazyFetch<AmountEurosPerYear>(`/api/simulatio
 
 const yearlyEconomies = computed(() => {
   if (!props.item?.solar_energy?.yearly_energy) return 0;
-
   // Prix moyen de l'électricité en France (€/kWh)
   const electricityPrice = 0.1740;
   // Taux d'autoconsommation estimé (pourcentage de l'électricité produite qui est consommée)
@@ -58,11 +57,11 @@ const ItemLabels = [
   },
   {
     title: `Production`,
-    type: [`Production annuelle`, ` Moyenne journalière`, ` CO2 économisé`],
+    type: [`Production annuelle PV`, ` Moyenne journalière PV`, ` CO2 économisé`],
   },
   {
     title: `Financier`,
-    type: [` Investissement annuelles`, ` Économies annuelles`, ` Retour sur investissement`],
+    type: [`Gains annuels`, ` Production valorisée`, `Rentabilité`],
   },
 ];
 
@@ -86,8 +85,10 @@ const getValueForType = (title: string, index: number) => {
       }
     case `Production`:
       switch (index) {
-        case 0: return props.item?.solar_energy?.yearly_energy ? `${props.item.solar_energy.yearly_energy} kWh/an` : `--`;
-        case 1: return props.item?.solar_energy?.yearly_energy ? `${Math.round(props.item.solar_energy.yearly_energy / 365)} kWh/jour` : `--`;
+        case 0: return props.item?.solar_energy?.yearly_energy
+          ? `${props.item.solar_energy.yearly_energy} kWh/kWc`
+          : `--`;
+        case 1: return props.item?.solar_energy?.yearly_energy ? `${Math.round(props.item.solar_energy.yearly_energy / 365)} kWh/kWc` : `--`;
         case 2: return co2Savings.value ? `${co2Savings.value} kg` : `--`;
         default: return `--`;
       }

@@ -6,6 +6,8 @@ const props = defineProps<{
 }>();
 
 const amountEurosPerYear = computed<AmountEurosPerYear | null>(() => props.amountPerYear ? props.amountPerYear as AmountEurosPerYear : null);
+
+const savedAddress = useAddressStore();
 </script>
 
 <template>
@@ -15,15 +17,26 @@ const amountEurosPerYear = computed<AmountEurosPerYear | null>(() => props.amoun
       class="grid grid-cols-3 gap-4"
     >
       <div class="text-center">
-        <h3 class="font-bold flex flex-col text-xl text-blue-600">
+        <h3 class="font-bold flex flex-col text-xl text-blue-600 text-balance">
           <UIcon
             name="i-solar-pie-chart-bold"
             class="h-8 w-8 mx-auto text-blue-600 mb-2"
           />
-          Production Annuelle
+          <span>
+
+            Production Annuelle
+            <UTooltip
+              :delay-duration="0"
+              text="Quantité produite par kW de panneaux solaires installés"
+              content="always"
+            >
+              PV
+            </UTooltip>
+            (lieu : {{ savedAddress?.savedAddress?.featureCollection?.features[0]?.properties.postcode }})
+          </span>
         </h3>
         <p class="text-2xl font-semibold">
-          {{ amountEurosPerYear?.yearlyEnergy?.toFixed(2) }} kWh
+          {{ amountEurosPerYear?.yearlyEnergy?.toFixed(2) }} kWh/kWc
         </p>
       </div>
       <div class="text-center">
