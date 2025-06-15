@@ -36,14 +36,13 @@ const navigateToIntroduction = () => {
       </h1>
     </div>
     <div class="flex justify-center items-center w-full h-screen">
-      <div class="z-10 flex flex-col items-start p-6 w-1/5">
-        <p class="text-xl font-bold text-white text-balance text-shadow-lg/30">
+      <div class="z-10 flex flex-col items-center md:items-start p-6 md:w-1/5">
+        <p class="text-s text-center md:text-start md:text-xl font-bold text-white text-balance text-shadow-lg/30">
           Votre partenaire en transition énergétique agricole
         </p>
         <div>
           <UButton
             class="mt-5 shadow-lg"
-            size="xl"
             @click="navigateToIntroduction"
           >
             Découvrir nos services
