@@ -39,15 +39,20 @@ watch(queryParams, (newParams) => {
   }
 }, { immediate: true });
 const isLoading = computed(() => !amountPerYear.value && !amountPerMonth.value);
+
+const savedAddress = useAddressStore();
 </script>
 
 <template>
-  <div class="flex flex-col gap-5 p-6">
+  <div class="flex flex-col gap-5 px-6">
     <FavertonLoading v-if="isLoading" />
     <div
       v-else
-      class="flex flex-col gap-5"
+      class="flex flex-col gap-2"
     >
+      <p class="text-gray-600">
+        Simulation pour : {{ savedAddress?.savedAddress?.name }}
+      </p>
       <SimulationResultYearlyAmount
         v-if="amountPerYear"
         :amount-per-year

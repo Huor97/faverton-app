@@ -34,7 +34,7 @@ watch(() => onePanel.value?.[0]?.panel_id, (newPanelId) => {
     v-model="selected"
     v-model:query="query"
     :options="panels"
-    placeholder="Select panel"
+    placeholder="Sélectionner un panneau"
     size="xl"
     option-attribute="displayLabel"
     :search-attributes="['model', 'efficiency']"
