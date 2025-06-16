@@ -13,7 +13,7 @@ const login = async () => {
   error.value = authError ? `Erreur d'authentification` : ``;
 
   if (authError) {
-    message.value = `Login ne peut pas être effectué, une erreur s'est produite`;
+    message.value = `L'authentification n'a pas pu s'effectuer. Une erreur s'est produite. Vous pouvez nous contacter au support via le lien ci-dessous.`;
   }
   else {
     message.value = `Connexion réussie`;
@@ -71,11 +71,18 @@ const login = async () => {
       </div>
     </form>
     <p
-      class="text-xs"
+      class="text-xs text-balance w-1/3 text-center"
       :class="error?'text-red-500' : 'text-green-500'"
     >
       {{ message }}
     </p>
+    <NuxtLink
+      v-if="error"
+      to="/contact"
+      class="text-xs text-blue-500 underline decoration-1"
+    >
+      Contacter le support
+    </NuxtLink>
     <NuxtLink
       to="/user/register"
     >

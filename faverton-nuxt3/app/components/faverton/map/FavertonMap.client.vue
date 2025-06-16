@@ -5,6 +5,117 @@ import 'leaflet-draw';
 import type { DrawMap, LatLngExpression } from 'leaflet';
 import type { FeatureCollection } from "~~/shared/types/address/new-base-address-national";
 
+// Configuration des textes français pour Leaflet Draw
+const setFrenchDrawTexts = () => {
+  Object.assign(L.drawLocal, {
+    draw: {
+      toolbar: {
+        actions: {
+          title: `Annuler le dessin`,
+          text: `Annuler`,
+        },
+        finish: {
+          title: `Terminer le dessin`,
+          text: `Terminer`,
+        },
+        undo: {
+          title: `Supprimer le dernier point dessiné`,
+          text: `Supprimer le dernier point`,
+        },
+        buttons: {
+          polyline: `Dessiner une ligne`,
+          polygon: `Dessiner un polygone`,
+          rectangle: `Dessiner un rectangle`,
+          circle: `Dessiner un cercle`,
+          marker: `Ajouter un marqueur`,
+          circlemarker: `Ajouter un marqueur circulaire`,
+        },
+      },
+      handlers: {
+        circle: {
+          tooltip: {
+            start: `Cliquez et faites glisser pour dessiner un cercle`,
+          },
+          radius: `Rayon`,
+        },
+        circlemarker: {
+          tooltip: {
+            start: `Cliquez sur la carte pour placer un marqueur circulaire`,
+          },
+        },
+        marker: {
+          tooltip: {
+            start: `Cliquez sur la carte pour placer un marqueur`,
+          },
+        },
+        polygon: {
+          error: `<strong>Erreur :</strong> les bords de la forme ne peuvent pas se croiser !`,
+          tooltip: {
+            start: `Cliquez pour commencer à dessiner une forme`,
+            cont: `Cliquez pour continuer à dessiner une forme`,
+            end: `Cliquez sur le premier point pour fermer cette forme`,
+          },
+        },
+        polyline: {
+          error: `<strong>Erreur :</strong> les bords de la ligne ne peuvent pas se croiser !`,
+          tooltip: {
+            start: `Cliquez pour commencer à dessiner une ligne`,
+            cont: `Cliquez pour continuer à dessiner une ligne`,
+            end: `Cliquez sur le dernier point pour terminer la ligne`,
+          },
+        },
+        rectangle: {
+          tooltip: {
+            start: `Cliquez et faites glisser pour dessiner un rectangle`,
+          },
+        },
+        simpleshape: {
+          tooltip: {
+            end: `Relâchez la souris pour terminer le dessin`,
+          },
+        },
+      },
+    },
+    edit: {
+      toolbar: {
+        actions: {
+          save: {
+            title: `Enregistrer les modifications`,
+            text: `Enregistrer`,
+          },
+          cancel: {
+            title: `Annuler l'édition, annule toutes les modifications`,
+            text: `Annuler`,
+          },
+          clearAll: {
+            title: `Effacer toutes les couches`,
+            text: `Tout effacer`,
+          },
+        },
+        buttons: {
+          edit: `Modifier les couches`,
+          editDisabled: `Aucune couche à modifier`,
+          remove: `Supprimer les couches`,
+          removeDisabled: `Aucune couche à supprimer`,
+        },
+      },
+      handlers: {
+        edit: {
+          tooltip: {
+            text: `Faites glisser les poignées ou les marqueurs pour modifier les formes`,
+            subtext: `Cliquez sur Annuler pour annuler les modifications`,
+          },
+        },
+        remove: {
+          tooltip: {
+            text: `Cliquez sur une forme pour la supprimer`,
+          },
+        },
+      },
+    },
+  });
+};
+
 const addressStore = useAddressStore();
 const mapStore = useMapStore();
 
@@ -58,6 +169,9 @@ const onMapReady = (mapInstance: L.Map) => {
   isMapReady.value = true;
 
   if (import.meta.client) {
+    // Configurer les textes français AVANT de créer le contrôle de dessin
+    setFrenchDrawTexts();
+
     drawnItems = new L.FeatureGroup();
     mapInstance.addLayer(drawnItems);
     drawControl = new L.Control.Draw({
@@ -82,6 +196,7 @@ const onMapReady = (mapInstance: L.Map) => {
         featureGroup: drawnItems,
       },
     });
+
     mapInstance.addControl(drawControl);
     // @ts-expect-error Leaflet Draw event type mismatch with LeafletEventHandlerFn
     mapInstance.on(`draw:created`, (e: L.DrawEvents.Created) => {
