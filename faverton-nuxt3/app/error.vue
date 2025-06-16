@@ -105,7 +105,7 @@ useHead({
 
     <UButton
       size="xl"
-      label="Retour à la page précédante"
+      label="Retour à la page précédente"
       class="z-10"
       @click="$router.back()"
     />
