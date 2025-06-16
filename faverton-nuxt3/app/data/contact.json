@@ -13,7 +13,7 @@
   },
   "project": {
     "description": "Faverton est un simulateur web open-source permettant d'évaluer le potentiel de production d'énergie solaire pour les exploitations agricoles et les propriétaires terriens.",
-    "repository": "https://github.com/Huor97/faverton",
+    "repository": "https://github.com/Huor97/faverton-app",
     "infrastructure": {
       "app": "Vercel",
       "database": "Supabase",

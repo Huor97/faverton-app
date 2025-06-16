@@ -116,19 +116,38 @@
 
           <!-- Colonne 4 - Contact enrichi -->
           <div class="md:col-span-2 lg:col-span-1">
-            <h4 class="text-lg font-semibold mb-6">Contact & Réseaux</h4>
-            
+            <h4 class="text-lg font-semibold mb-6">
+              Contact & Réseaux
+            </h4>
+
             <!-- Réseaux sociaux avec contexte -->
             <div class="mb-6">
-              <h5 class="text-sm font-medium text-gray-400 mb-3">Suivez notre actualité</h5>
+              <h5 class="text-sm font-medium text-gray-400 mb-3">
+                Suivez notre actualité
+              </h5>
               <div class="flex space-x-3">
-                <UButton color="gray" variant="ghost" size="sm" square>
+                <UButton
+                  color="gray"
+                  variant="ghost"
+                  size="sm"
+                  square
+                >
                   <UIcon name="i-simple-icons-facebook" />
                 </UButton>
-                <UButton color="gray" variant="ghost" size="sm" square>
+                <UButton
+                  color="gray"
+                  variant="ghost"
+                  size="sm"
+                  square
+                >
                   <UIcon name="i-simple-icons-twitter" />
                 </UButton>
-                <UButton color="gray" variant="ghost" size="sm" square>
+                <UButton
+                  color="gray"
+                  variant="ghost"
+                  size="sm"
+                  square
+                >
                   <UIcon name="i-simple-icons-linkedin" />
                 </UButton>
               </div>
@@ -136,11 +155,20 @@
 
             <!-- Support client -->
             <div class="space-y-3">
-              <h5 class="text-sm font-medium text-gray-400">Support client</h5>
+              <h5 class="text-sm font-medium text-gray-400">
+                Support client
+              </h5>
               <p class="text-xs text-gray-400">
                 Réponse sous 24h<br>
                 support@faverton.fr
               </p>
+              <div>
+                <NuxtLink
+                  to="/contact"
+                >
+                  Contact
+                </NuxtLink>
+              </div>
             </div>
           </div>
         </div>
