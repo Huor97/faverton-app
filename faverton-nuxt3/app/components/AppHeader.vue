@@ -159,7 +159,7 @@ onMounted(() => {
             to="/user/login"
             class="text-l font-bold text-white p-2 w-64"
           >
-            Login
+            Se connecter
           </NuxtLink>
           <NuxtLink
             v-else
