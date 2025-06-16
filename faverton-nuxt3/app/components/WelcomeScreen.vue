@@ -38,7 +38,6 @@ const isSmallScreen = computed(() => isMobile);
 <template>
   <TresCanvas window-size>
     <TresPerspectiveCamera :position="!isSmallScreen? [0, 0, 5] : [0, 0, 8]" />
-    <OrbitControls />
     <TresGroup>
       <TresGroup ref="boxGroupRef">
         <RoundedBox

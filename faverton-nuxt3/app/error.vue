@@ -77,11 +77,11 @@ useHead({
   <div
     class="flex flex-col items-center justify-center h-screen gap-3"
   >
-    <NuxtImg
+    <img
       src="https://res.cloudinary.com/dizwmnpet/image/upload/e_background_removal/f_png/v1750009839/134291_aiyqvl.jpg"
-      alt="Article image"
-      class="fixed -top-5"
-    />
+      alt="plant designed"
+      class="fixed -top-5 md:w-1/4"
+    >
 
     <img
       ref="imageAnime"
