@@ -1,7 +1,3 @@
-<script lang="ts" setup>
-
-</script>
-
 <template>
   <div>
     <!-- Footer comme dans votre image -->
@@ -159,7 +155,6 @@
                 Support client
               </h5>
               <p class="text-xs text-gray-400">
-                Réponse sous 24h<br>
                 support@faverton.fr
               </p>
               <div>

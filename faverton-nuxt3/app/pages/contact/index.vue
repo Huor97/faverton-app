@@ -1,7 +1,16 @@
+<script setup lang="ts">
+import contactData from '~/data/contact.json';
+
+useSeoMeta({
+  title: `Contact - Faverton`,
+  description: `Contactez l'équipe Faverton pour toute question sur notre simulateur de potentiel solaire open-source.`,
+});
+</script>
+
 <template>
   <div class="min-h-screen bg-gray-50">
     <UContainer class="py-12">
-      <FavertonHeaderConcat
+      <FavertonHeaderContact
         :title="contactData.title"
         :description="contactData.project.description"
       />
@@ -133,14 +142,3 @@
     </UContainer>
   </div>
 </template>
-
-<script setup lang="ts">
-// Import des données externalisées
-import contactData from '~/data/contact.json';
-
-// Métadonnées
-useSeoMeta({
-  title: `Contact - Faverton`,
-  description: `Contactez l'équipe Faverton pour toute question sur notre simulateur de potentiel solaire open-source.`,
-});
-</script>

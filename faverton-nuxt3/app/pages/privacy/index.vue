@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import contactData from '~/data/contact.json';
+
 // Métadonnées SEO
 useSeoMeta({
   title: `Politique de Confidentialité - Faverton`,
@@ -46,10 +48,10 @@ const formatDate = (date: Date) => {
                 Faverton
               </p>
               <p class="text-gray-700">
-                Email : support@faverton.fr
+                Email : {{ contactData.support.email }}
               </p>
               <p class="text-gray-700">
-                Développeur : Rouh (faverton@proton.me)
+                Développeur : {{ contactData.developer.name }} ({{ contactData.developer.email }})
               </p>
             </div>
 
@@ -203,7 +205,6 @@ const formatDate = (date: Date) => {
                   >
                     support@faverton.fr
                   </a>
-                  (réponse sous 24h)
                 </p>
                 <p class="text-gray-700">
                   Vous pouvez également exercer votre droit de réclamation auprès de la

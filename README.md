@@ -409,4 +409,4 @@ Ce projet est sous licence MIT.
 Développé avec 💚 pour la transition écologique
 
 ## Licence
-This software is published under the [MIT License](https://github.com/Huor97/faverton-app?tab=MIT-1-ov-file).
+This software is published under the [MIT License](./LICENSE).
