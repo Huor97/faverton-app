@@ -58,6 +58,7 @@ const isSmallScreen = computed(() => isMobile);
                 v-else
                 :src="logo"
                 alt="faverton"
+                width="50%"
               >
             </div>
             <div class="text-center flex flex-col items-center gap-6 text-balance max-w-[83%]">
