@@ -49,7 +49,7 @@ const formatDate = (date: Date) => {
                 Email : support@faverton.fr
               </p>
               <p class="text-gray-700">
-                Développeur : Rouhullah Karimi (karimi.rouh@proton.me)
+                Développeur : Rouh (faverton@proton.me)
               </p>
             </div>
 

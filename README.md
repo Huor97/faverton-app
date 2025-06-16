@@ -403,11 +403,10 @@ pnpm run test:watch
 Ce projet est sous licence MIT.
 
 ## 📨 Contact
-- Email : karimi.rouh@proton.me
-- GitHub : @Huor97
-- LinkedIn : rouh.karimi
+- [GitHub](https://github.com/Huor97)
+- [LinkedIn](https://www.linkedin.com/in/rouhkarimi/)
 
 Développé avec 💚 pour la transition écologique
 
 ## Licence
-This software is published under the [MIT License](./faverton-nuxt3/LICENSE).
+This software is published under the [MIT License](https://github.com/Huor97/faverton-app?tab=MIT-1-ov-file).
