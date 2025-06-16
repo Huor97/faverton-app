@@ -14,7 +14,7 @@ async function deleteSimulation() {
     isLoading.value = true;
 
     await $fetch(`/api/simulation/history/${props.simulationId}`, {
-      method: `DELETE`,
+      method: `PATCH`,
     });
 
     emit(`deleted`, props.simulationId);
