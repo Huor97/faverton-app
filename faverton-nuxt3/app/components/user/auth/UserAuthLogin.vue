@@ -81,7 +81,7 @@ const login = async () => {
       to="/contact"
       class="text-xs text-blue-500 underline decoration-1"
     >
-      support
+      Contacter le support
     </NuxtLink>
     <NuxtLink
       to="/user/register"

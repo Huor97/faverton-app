@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import contactData from '~/data/contact.json';
+</script>
+
 <template>
   <div>
     <!-- Footer comme dans votre image -->
@@ -155,7 +159,7 @@
                 Support client
               </h5>
               <p class="text-xs text-gray-400">
-                support@faverton.fr
+                {{ contactData.support.email }}
               </p>
               <div>
                 <NuxtLink
