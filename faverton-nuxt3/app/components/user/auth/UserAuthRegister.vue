@@ -37,7 +37,7 @@ const register = async () => {
 
 <template>
   <div class="flex flex-col justify-center bg-yellow-100 h-screen items-center gap-3">
-    <div class="z-index-[999] fixed left-32 top-4">
+    <div class="z-index-[999] fixed left-2 md:left-32 top-4">
       <UBreadcrumb
         :links="[{ label: 'Accueil', to: '/introduction' }, { label: 'Créer un compte' }]"
       >
@@ -85,7 +85,7 @@ const register = async () => {
       </div>
     </form>
     <p
-      class="text-s flex w-1/4"
+      class="text-s flex w-1/2 md:w-1/4"
       :class="isSuccess === false? 'text-red-500' : 'text-green-500'"
     >
       {{ message }}
