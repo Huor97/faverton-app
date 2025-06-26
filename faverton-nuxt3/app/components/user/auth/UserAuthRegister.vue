@@ -20,7 +20,9 @@ const register = async () => {
       isSuccess.value = false;
     }
     else {
-      message.value = `Un email de confirmation a été envoyé à ${email.value}. Veuillez vérifier votre boîte de réception pour activer votre compte.`;
+      message.value = `Email de confirmation envoyé à ${email.value}. 
+Veuillez vérifier votre boîte de réception et dossier courriers indésirables, puis cliquer sur le lien pour activer votre compte.`;
+
       isSuccess.value = true;
     }
   }
