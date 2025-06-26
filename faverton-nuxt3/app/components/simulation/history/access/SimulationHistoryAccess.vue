@@ -16,10 +16,10 @@ function handleSimulationDeleted() {
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center px-6 text-white">
+  <div class="flex flex-col items-center justify-center px-6 text-[#4F4F4F]">
     <div
       v-if="!user?.id"
-      class="flex flex-col items-center justify-center text-white"
+      class="flex flex-col items-center justify-center "
     >
       <UIcon
         name="i-heroicons-lock-closed"
