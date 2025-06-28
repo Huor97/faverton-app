@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { FeatureCollection } from "~~/shared/types/address/base-address-national";
-import type { NewFeatureCollection } from "~~/shared/types/address/new-base-address-national";
+import type { FeatureCollection } from '~~/shared/types/address/base-address-national';
+import type { NewFeatureCollection } from '~~/shared/types/address/new-base-address-national';
 
 interface AddressOption {
   name: string
-  featureCollection: NewFeatureCollection[`featureCollection`]
+  featureCollection: NewFeatureCollection['featureCollection']
 }
 
 const model = defineModel<NewFeatureCollection>();
@@ -14,7 +14,7 @@ const selected = ref();
 async function search(q: string) {
   loading.value = true;
 
-  const { data: resultAddress } = await useFetch<FeatureCollection>(`api/address`, {
+  const { data: resultAddress } = await useFetch<FeatureCollection>('api/address', {
     params: { q },
     server: false,
   });
@@ -25,11 +25,11 @@ async function search(q: string) {
   return resultAddress.value.features.map(feature => ({
     name: feature.properties.label || `${feature.properties.city} ${feature.properties.postcode}`,
     featureCollection: {
-      type: `FeatureCollection`,
+      type: 'FeatureCollection',
       features: [{
-        type: `Feature`,
+        type: 'Feature',
         geometry: {
-          type: `Point`,
+          type: 'Point',
           coordinates: feature.geometry.coordinates,
         },
         properties: {
@@ -59,7 +59,7 @@ function onSelect(item: AddressOption | null) {
   model.value = selectedData;
   selected.value = item.name;
   selected.value = item;
-  emit(`update:modelValue`, selectedData);
+  emit('update:modelValue', selectedData);
   addressStore.setSavedAddress(selectedData);
 }
 </script>
@@ -74,15 +74,7 @@ function onSelect(item: AddressOption | null) {
       option-attribute="name"
       trailing
       size="xl"
-      class="custom-input-search"
       @update:model-value="onSelect"
     />
   </div>
 </template>
-
-<style scoped>
-.custom-input-search :deep(input::placeholder) {
-  color: var(--placeholder-color, #595959) !important;
-  opacity: 1;
-}
-</style>
