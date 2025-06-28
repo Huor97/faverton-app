@@ -19,7 +19,7 @@ const queryParams = computed(() => ({
   panelEfficiency: props.item.panel.efficiency ?? 0,
 }));
 
-const { data: amountPerYear } = useLazyFetch<AmountEurosPerYear>(`/api/simulation/price-year`, {
+const { data: amountPerYear } = useLazyFetch<AmountEurosPerYear>('/api/simulation/price-year', {
   query: queryParams,
   // key: `amountPerYear-${props.item.solar_energy.postal_code}-${props.item.simulation_date}`,
 });
@@ -48,59 +48,59 @@ const paybackPeriod = computed(() => {
 
 const ItemLabels = [
   {
-    title: `Panneau solaire`,
-    type: [`Type`, ` Efficacité`, ` Marque`],
+    title: 'Panneau solaire',
+    type: ['Type', ' Efficacité', ' Marque'],
   },
   {
-    title: `Installation`,
-    type: [`Surface`, ` Orientation`, ` Inclinaison`],
+    title: 'Installation',
+    type: ['Surface', ' Orientation', ' Inclinaison'],
   },
   {
-    title: `Production`,
-    type: [`Production annuelle PV`, ` Moyenne journalière PV`, ` CO2 économisé`],
+    title: 'Production',
+    type: ['Production annuelle PV', ' Moyenne journalière PV', ' CO2 économisé'],
   },
   {
-    title: `Financier`,
-    type: [`Gains annuels`, ` Production valorisée`, `Rentabilité`],
+    title: 'Financier',
+    type: ['Gains annuels', ' Production valorisée', 'Rentabilité'],
   },
 ];
 
 const getValueForType = (title: string, index: number) => {
-  if (!props.item) return `--`;
+  if (!props.item) return '--';
 
   switch (title) {
-    case `Panneau solaire`:
+    case 'Panneau solaire':
       switch (index) {
-        case 0: return props.item.panel.model || `--`;
-        case 1: return props.item.panel.efficiency ? `${props.item.panel.efficiency}%` : `--`;
-        case 2: return props.item.panel.company || `--`;
-        default: return `--`;
+        case 0: return props.item.panel.model || '--';
+        case 1: return props.item.panel.efficiency ? `${props.item.panel.efficiency}%` : '--';
+        case 2: return props.item.panel.company || '--';
+        default: return '--';
       }
-    case `Installation`:
+    case 'Installation':
       switch (index) {
-        case 0: return props.item.surface ? `${props.item.surface} m²` : `--`;
-        case 1: return props.item?.solar_energy?.orientation || `--`; // NOTE: add orientation JRC
-        case 2: return props.item?.solar_energy?.inclination ? `${props.item.solar_energy.inclination}°` : `--`; // NOTE: add inclination JRC
-        default: return `--`;
+        case 0: return props.item.surface ? `${props.item.surface} m²` : '--';
+        case 1: return props.item?.solar_energy?.azimuth !== undefined && props.item?.solar_energy?.azimuth !== null ? `${props.item?.solar_energy?.azimuth}°` : '--';
+        case 2: return props.item?.solar_energy?.tilt_angle !== undefined && props.item?.solar_energy?.tilt_angle !== null ? `${props.item.solar_energy.tilt_angle}°` : '--';
+        default: return '--';
       }
-    case `Production`:
+    case 'Production':
       switch (index) {
         case 0: return props.item?.solar_energy?.yearly_energy
           ? `${props.item.solar_energy.yearly_energy} kWh/kWc`
-          : `--`;
-        case 1: return props.item?.solar_energy?.yearly_energy ? `${Math.round(props.item.solar_energy.yearly_energy / 365)} kWh/kWc` : `--`;
-        case 2: return co2Savings.value ? `${co2Savings.value} kg` : `--`;
-        default: return `--`;
+          : '--';
+        case 1: return props.item?.solar_energy?.yearly_energy ? `${Math.round(props.item.solar_energy.yearly_energy / 365)} kWh/kWc` : '--';
+        case 2: return co2Savings.value ? `${co2Savings.value} kg` : '--';
+        default: return '--';
       }
-    case `Financier`:
+    case 'Financier':
       switch (index) {
-        case 0: return amountPerYear.value ? `${amountPerYear.value.amountEurosPerYear.toFixed(2)} €` : `--`;
-        case 1: return yearlyEconomies.value ? `${yearlyEconomies.value} €/an` : `--`;
-        case 2: return paybackPeriod.value ? `${paybackPeriod.value} ans` : `--`;
-        default: return `--`;
+        case 0: return amountPerYear.value ? `${amountPerYear.value.amountEurosPerYear.toFixed(2)} €` : '--';
+        case 1: return yearlyEconomies.value ? `${yearlyEconomies.value} €/an` : '--';
+        case 2: return paybackPeriod.value ? `${paybackPeriod.value} ans` : '--';
+        default: return '--';
       }
     default:
-      return `--`;
+      return '--';
   }
 };
 </script>

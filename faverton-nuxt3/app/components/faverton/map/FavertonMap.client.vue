@@ -243,7 +243,7 @@ watch(() => mapStore.activateDrawing, (activate) => {
 
 <template>
   <LMap
-    style="height: 100vh"
+    style="height: 100%; width: 100%"
     :zoom="6"
     :center="[46, 10]"
     :use-global-leaflet="true"

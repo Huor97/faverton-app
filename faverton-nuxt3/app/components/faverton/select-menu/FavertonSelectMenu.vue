@@ -1,9 +1,9 @@
 <script setup lang="ts">
-const modelValue = defineModel(`modelValue`);
+const modelValue = defineModel<string | null>('modelValue');
 const selected = ref();
 const query = ref<string | undefined>();
 
-const { data: allPanels } = await useFetch<Panel[]>(`/api/panels`, {
+const { data: allPanels } = await useFetch<Panel[]>('/api/panels', {
   server: false,
 });
 
@@ -12,11 +12,11 @@ const panels = computed(() => {
 
   return allPanels.value.map(panel => ({
     ...panel,
-    displayLabel: `${panel.model} - rendement ${panel.efficiency}% - ${panel.detail} `,
+    displayLabel: `${panel.model} - rendement ${panel.efficiency}% - ${panel.detail}`,
   }));
 });
 
-const { data: onePanel } = await useFetch<Panel[]>(`/api/panel`, {
+const { data: onePanel } = await useFetch<Panel[]>('/api/panel', {
   query: computed(() => ({ model: selected.value?.model })),
   watch: [() => selected.value?.model],
   server: false,
