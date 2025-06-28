@@ -25,8 +25,8 @@ export interface SimulationHistoryItem {
 interface SimulationSolarEnergy {
   city: string
   postal_code: string
-  orientation: number
-  inclination: number
+  azimuth: number
+  tilt_angle: number
   yearly_energy: number
   month_1_energy: number
   month_2_energy: number

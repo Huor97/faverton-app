@@ -52,7 +52,7 @@ watch(jrcResponse, (newJrc) => {
       </UBreadcrumb>
     </div>
     <FavertonCard>
-      <h1 class="text-xl text-center p-6 text-white">
+      <h1 class="text-xl text-center p-6">
         Étapes de l'estimation
       </h1>
       <FavertonTabs
