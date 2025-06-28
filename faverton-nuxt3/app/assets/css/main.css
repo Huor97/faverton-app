@@ -2,4 +2,4 @@
 :root {
     --card-height: 200px;
     --card-width: calc(var(--card-height) / 1.5);
-}
+  }
