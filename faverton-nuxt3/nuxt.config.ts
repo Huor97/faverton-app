@@ -19,9 +19,18 @@ export default defineNuxtConfig({
     pageTransition: { name: `page`, mode: `out-in` },
   },
 
+  css: [
+    `~/assets/css/main.css`,
+  ],
+
   colorMode: {
     preference: `light`,
   },
+
+  ui: {
+    global: true,
+  },
+
   future: { compatibilityVersion: 4 },
   compatibilityDate: `2024-04-03`,
   eslint: {
