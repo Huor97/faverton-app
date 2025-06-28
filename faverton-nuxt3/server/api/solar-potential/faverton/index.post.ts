@@ -1,4 +1,5 @@
-import { serverSupabaseClient } from "#supabase/server";
+import { serverSupabaseClient } from '#supabase/server';
+import { SOLAR_DEFAULTS } from '~~/shared/constants/solar-parameters';
 
 export default defineEventHandler (async (event) => {
   try {
@@ -8,10 +9,11 @@ export default defineEventHandler (async (event) => {
     if (!body.postalCode || !body.city) {
       throw createError({
         statusCode: 400,
-        message: `Zip code and city are required`,
+        message: 'Postal code and city are required',
       });
     }
 
+    // Inclus tilt (inclinaison) et azimuth (orientation)
     const solarPotentialData = {
       postal_code: body.postalCode,
       city: body.city,
@@ -28,17 +30,21 @@ export default defineEventHandler (async (event) => {
       month_11_energy: body.month11Energy,
       month_12_energy: body.month12Energy,
       yearly_energy: body.yearlyEnergy,
+      tilt_angle: body.tiltAngle ?? SOLAR_DEFAULTS.INCLINATION,
+      azimuth: body.azimuth ?? SOLAR_DEFAULTS.AZIMUT,
     };
 
-    // Vérifier si l'entrée existe déjà
+    // Vérifier si l'entrée existe déjà avec les mêmes paramètres d'installation
     const { data: existingData, error: checkError } = await client
-      .from(`solar_energy`)
-      .select(`solar_energy_id`)
-      .eq(`postal_code`, solarPotentialData.postal_code)
-      .eq(`city`, solarPotentialData.city)
+      .from('solar_energy')
+      .select('solar_energy_id')
+      .eq('postal_code', solarPotentialData.postal_code)
+      .eq('city', solarPotentialData.city)
+      .eq('tilt_angle', solarPotentialData.tilt_angle)
+      .eq('azimuth', solarPotentialData.azimuth)
       .single();
 
-    if (checkError && checkError.code !== `PGRST116`) {
+    if (checkError && checkError.code !== 'PGRST116') {
       throw createError({
         statusCode: 500,
         message: checkError.message,
@@ -50,9 +56,9 @@ export default defineEventHandler (async (event) => {
     // Si l'entrée n'existe pas, l'insérer
     if (!existingData) {
       const { data, error } = await client
-        .from(`solar_energy`)
+        .from('solar_energy')
         .insert(solarPotentialData)
-        .select(`solar_energy_id`);
+        .select('solar_energy_id');
 
       if (error) {
         throw createError({
@@ -63,7 +69,7 @@ export default defineEventHandler (async (event) => {
 
       result = {
         success: true,
-        message: `Solar data inserted successfully`,
+        message: 'Solar data inserted successfully',
         solarEnergyId: data[0].solar_energy_id,
       };
     }
@@ -71,7 +77,7 @@ export default defineEventHandler (async (event) => {
       // Si l'entrée existe déjà, retourner un message
       result = {
         success: true,
-        message: `Existing data for this location`,
+        message: 'Existing data for this location',
         solarEnergyId: existingData.solar_energy_id,
       };
     }
@@ -79,11 +85,11 @@ export default defineEventHandler (async (event) => {
     return result;
   }
   catch (error: unknown) {
-    console.error(`Error while saving solar data:`, error);
-    if (error instanceof Error && !(`statusCode` in error)) {
+    console.error('Error while saving solar data:', error);
+    if (error instanceof Error && !('statusCode' in error)) {
       throw createError({
         statusCode: 500,
-        statusMessage: `Server error while saving data`,
+        statusMessage: 'Server error while saving data',
       });
     }
     throw error;
