@@ -74,15 +74,7 @@ function onSelect(item: AddressOption | null) {
       option-attribute="name"
       trailing
       size="xl"
-      class="custom-input-search"
       @update:model-value="onSelect"
     />
   </div>
 </template>
-
-<style scoped>
-.custom-input-search :deep(input::placeholder) {
-  color: var(--placeholder-color, #595959) !important;
-  opacity: 1;
-}
-</style>
