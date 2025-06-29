@@ -3,25 +3,25 @@
  * Persiste les préférences dans le localStorage
  */
 export const useMapPreferences = () => {
-  const MAP_PREFERENCES_KEY = `faverton-map-preferences`;
+  const MAP_PREFERENCES_KEY = 'faverton-map-preferences';
 
   // États réactifs
   const isMapVisible = ref(true);
-  const mapSize = ref<`small` | `medium` | `large`>(`small`);
+  const mapSize = ref<'small' | 'medium' | 'large'>('large');
 
   // Classes CSS pour les différentes tailles
   const mapSizeClasses = computed(() => {
     const sizes = {
-      small: `h-[30vh]`, // 30% de la hauteur de l'écran
-      medium: `h-[50vh]`, // 50% de la hauteur de l'écran
-      large: `h-[70vh]`, // 70% de la hauteur de l'écran
+      small: 'h-[30vh]', // 30% de la hauteur de l'écran
+      medium: 'h-[50vh]', // 50% de la hauteur de l'écran
+      large: 'h-[70vh]', // 70% de la hauteur de l'écran
     };
     return sizes[mapSize.value];
   });
 
   // Sauvegarder les préférences
   const savePreferences = () => {
-    if (typeof localStorage !== `undefined`) {
+    if (typeof localStorage !== 'undefined') {
       const preferences = {
         isMapVisible: isMapVisible.value,
         mapSize: mapSize.value,
@@ -32,17 +32,17 @@ export const useMapPreferences = () => {
 
   // Charger les préférences sauvegardées
   const loadPreferences = () => {
-    if (typeof localStorage !== `undefined`) {
+    if (typeof localStorage !== 'undefined') {
       try {
         const saved = localStorage.getItem(MAP_PREFERENCES_KEY);
         if (saved) {
           const preferences = JSON.parse(saved);
           isMapVisible.value = preferences.isMapVisible ?? true;
-          mapSize.value = preferences.mapSize ?? `small`;
+          mapSize.value = preferences.mapSize ?? 'small';
         }
       }
       catch (error) {
-        console.warn(`Erreur lors du chargement des préférences de carte:`, error);
+        console.warn('Erreur lors du chargement des préférences de carte:', error);
       }
     }
   };
@@ -53,7 +53,7 @@ export const useMapPreferences = () => {
     savePreferences();
   };
 
-  const setMapSize = (size: `small` | `medium` | `large`) => {
+  const setMapSize = (size: 'small' | 'medium' | 'large') => {
     mapSize.value = size;
     if (!isMapVisible.value) {
       isMapVisible.value = true; // Afficher la carte si elle était cachée
