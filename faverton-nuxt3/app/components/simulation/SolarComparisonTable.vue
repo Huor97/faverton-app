@@ -77,6 +77,24 @@ const geocodeCache = new Map<string, {
   lon: number
 }>();
 
+// Fonction pour mapper les IDs de compagnies vers des noms lisibles
+const getBrandNameFromId = (companyId?: string): string => {
+  if (!companyId) return 'Générique';
+
+  // Si c'est déjà un nom (pas un UUID), le retourner tel quel
+  if (!companyId.includes('-') || companyId.length !== 36) {
+    return companyId;
+  }
+
+  // Mapping des IDs vers les noms de marques connues
+  const brandMapping: Record<string, string> = {
+    '8a644cc5-18fe-4dce-9529-d3fae7bea4a8': 'SunPower',
+    // Ajouter d'autres mappings si nécessaire
+  };
+
+  return brandMapping[companyId] || 'Marque Inconnue';
+};
+
 // Fonction pour obtenir les coordonnées depuis l'adresse
 const getCoordinatesFromAddress = async (address: string): Promise<{
   lat: number
@@ -137,7 +155,6 @@ const fetchJRCData = async (params: JRCRequest): Promise<JRCResponse> => {
   }
 
   // ✅ CORRECTION : Utiliser l'API interne au lieu d'appeler directement l'API JRC externe
-  // Avantages : validation centralisée, gestion d'erreurs uniforme, paramètres cohérents
   const internalApiPromise = $fetch<{
     outputs: {
       totals: {
@@ -161,9 +178,6 @@ const fetchJRCData = async (params: JRCRequest): Promise<JRCResponse> => {
     const monthlyData = jrcResponse.outputs.totals.fixed.E_m;
 
     // ✅ IMPORTANT : L'API interne retourne des valeurs par kWc
-    // Si vous voulez la valeur brute JRC (ex: 955.73 kWh/kWc), ne pas multiplier
-    // Si vous voulez la production totale de l'installation, multiplier par peakpower
-
     // Pour correspondre à votre attente (955.73), on retourne la valeur brute
     const scaleFactor = 1; // Pas de multiplication pour avoir la valeur brute JRC
 
@@ -201,35 +215,27 @@ const fetchJRCData = async (params: JRCRequest): Promise<JRCResponse> => {
 };
 
 // Debounce pour les mises à jour JRC
-const debounceTimeouts = new Map<string, NodeJS.Timeout>();
-
-// ⚠️ SUPPRIMÉ : Plus de sauvegarde en base de données
+const debounceTimeouts = new Map<string, NodeJS.Timeout>();// ⚠️ SUPPRIMÉ : Plus de sauvegarde en base de données
 // Les modifications sont uniquement temporaires pour les simulations "what-if"
 
-// ✅ Fonction pour recalculer les données JRC temporairement (SANS sauvegarder en base)
+// Fonction pour recalculer les données JRC temporairement (SANS sauvegarder en base)
 const updateJRCDataDebounced = async (simulationId: string, simulation: Simulation) => {
-  console.log(`🕐 updateJRCDataDebounced appelée pour simulation ${simulationId}`);
-
   // Annuler le timeout précédent pour cette simulation
   if (debounceTimeouts.has(simulationId)) {
-    console.log(`🕐 Annulation du timeout précédent pour simulation ${simulationId}`);
     clearTimeout(debounceTimeouts.get(simulationId)!);
   }
 
   // Programmer une nouvelle mise à jour dans 1.5 secondes
   const timeout = setTimeout(async () => {
-    console.log(`🚀 Démarrage du recalcul JRC pour simulation ${simulationId}`);
     try {
       // Marquer comme en cours de chargement
       simulation.isLoading = true;
 
       // Calculer la puissance crête estimée
       const estimatedPowerKWc = simulation.surface * (simulation.panelEfficiency / 100) * 0.15;
-      console.log(`💡 Puissance estimée: ${estimatedPowerKWc} kWc (surface: ${simulation.surface}m², efficacité: ${simulation.panelEfficiency}%)`);
 
       // Obtenir les coordonnées depuis l'adresse
       const coordinates = await getCoordinatesFromAddress(simulation.address);
-      console.log(`📍 Coordonnées: lat=${coordinates.lat}, lon=${coordinates.lon}`);
 
       const jrcParams: JRCRequest = {
         lat: coordinates.lat,
@@ -239,25 +245,10 @@ const updateJRCDataDebounced = async (simulationId: string, simulation: Simulati
         azimuth: simulation.orientation,
       };
 
-      console.log('📡 Paramètres envoyés à /api/solar-potential/jrc:', {
-        lat: jrcParams.lat,
-        lon: jrcParams.lon,
-        angle: jrcParams.inclination,
-        aspect: jrcParams.azimuth,
-        peakpower_for_scaling: jrcParams.peakpower, // Utilisé pour le facteur d'échelle
-        surface: simulation.surface,
-        efficiency: simulation.panelEfficiency,
-        originalEnergy: simulation.originalYearlyEnergy,
-      });
-
       const jrcResult = await fetchJRCData(jrcParams);
-      console.log(`📊 Résultat JRC: ${Math.round(jrcResult.yearly_energy)} kWh/an`);
 
-      // ✅ MODIFICATION LOCALE UNIQUEMENT - AUCUNE SAUVEGARDE EN BASE
-      // Ces modifications sont temporaires pour permettre les simulations "what-if"
-      const oldEnergy = simulation.yearlyEnergy;
+      // Modification locale uniquement - aucune sauvegarde en base
       simulation.yearlyEnergy = Math.round(jrcResult.yearly_energy);
-      console.log(`⚡ Mise à jour yearlyEnergy via JRC: ${oldEnergy} → ${simulation.yearlyEnergy} kWh/an`);
 
       simulation.monthlyEnergy = [
         jrcResult.month_1_energy,
@@ -275,9 +266,6 @@ const updateJRCDataDebounced = async (simulationId: string, simulation: Simulati
       ];
       simulation.lastUpdated = new Date();
       simulation.isSavedToDatabase = false; // Marquer comme modification temporaire
-
-      console.log(`✅ Données JRC recalculées localement pour simulation ${simulationId} (modification temporaire)`);
-      console.log(`📊 Valeur finale: yearlyEnergy=${simulation.yearlyEnergy}, isLoading sera false`);
     }
     catch (error) {
       console.error('Erreur lors du recalcul JRC temporaire:', error);
@@ -290,7 +278,6 @@ const updateJRCDataDebounced = async (simulationId: string, simulation: Simulati
   }, 1500); // Attendre 1.5 secondes après la dernière modification
 
   debounceTimeouts.set(simulationId, timeout);
-  console.log(`⏰ Timeout programmé pour simulation ${simulationId} dans 1.5s`);
 };
 
 // Conversion des données historiques vers le format du tableau
@@ -308,7 +295,7 @@ watch(historyData, (newData) => {
       orientation: sim.solar_energy?.azimuth || SOLAR_DEFAULTS.AZIMUT, // 0° = Sud optimum
       // Données JRC réelles
       yearlyEnergy: sim.solar_energy?.yearly_energy || 0,
-      originalYearlyEnergy: sim.solar_energy?.yearly_energy || 0, // ✅ Stocker la valeur originale
+      originalYearlyEnergy: sim.solar_energy?.yearly_energy || 0, // Stocker la valeur originale
       monthlyEnergy: [
         sim.solar_energy?.month_1_energy || 0,
         sim.solar_energy?.month_2_energy || 0,
@@ -325,7 +312,7 @@ watch(historyData, (newData) => {
       ],
       panelModel: sim.panel?.model || 'Standard',
       panelEfficiency: sim.panel?.efficiency || 18,
-      panelBrand: sim.panel?.company || 'Générique',
+      panelBrand: getBrandNameFromId(sim.panel?.company) || 'Générique',
       panelType: sim.panel?.panel_type_id || 'monocristallin',
       // États pour l'UI - données originales sont considérées comme sauvegardées
       isLoading: false,
@@ -348,7 +335,6 @@ const calculateData = (simulation: Simulation) => {
   };
 
   // ✅ CORRECTION : Utiliser la valeur JRC réelle uniquement, pas d'estimation
-  // L'estimation rapide créait des valeurs aberrantes (ex: 7168 au lieu de 955.73)
   const currentYearlyEnergy = simulation.yearlyEnergy;
 
   // Données JRC réelles (déjà en kWh/an)
@@ -363,7 +349,7 @@ const calculateData = (simulation: Simulation) => {
   const selfConsumptionRate = 0.7; // 70% d'autoconsommation
   const feedInTariff = 0.10; // Tarif de rachat surplus (€/kWh)
 
-  // 💰 REPRODUCTION EXACTE de l'API /api/simulation/price-year (même si elle est incorrecte)
+  // 💰 REPRODUCTION EXACTE de l'API /api/simulation/price-year
   const EDF_PRICE = 0.1269; // Prix utilisé par l'API (différent du calcul local !)
   const HIGH_PERFORMANCE_PANEL = Number((simulation.panelEfficiency / 100).toFixed(2));
   // ⚠️ FORMULE PROBLÉMATIQUE de l'API (multiplie par surface ET efficacité)
@@ -393,51 +379,6 @@ const calculateData = (simulation: Simulation) => {
   const paybackPeriod = yearlyGains > 0
     ? Math.round((yearlyEconomiesEffective / yearlyGains) * 10) / 10
     : 0;
-
-  // Debug pour comprendre la rentabilite
-  if (simulation.id && simulation.id.includes('sim_')) {
-    console.log(`� ANALYSE DÉTAILLÉE des calculs pour simulation ${simulation.id}:`, {
-      // === DONNÉES BRUTES ===
-      currentYearlyEnergy: `${currentYearlyEnergy} kWh/kWc`,
-      surface: `${simulation.surface} m²`,
-      efficiency: `${simulation.panelEfficiency}%`,
-
-      // === GAINS API (ce qui correspond à amountPerYear dans l'historique) ===
-      yearlyGains: `${yearlyGains} €/an (gains API)`,
-      detailGainsAPI: {
-        formule: `${currentYearlyEnergy} × ${simulation.surface} × ${EDF_PRICE} × ${HIGH_PERFORMANCE_PANEL}`,
-        calcul: `${currentYearlyEnergy} × ${simulation.surface} × ${EDF_PRICE} × ${HIGH_PERFORMANCE_PANEL} = ${yearlyGains}`,
-      },
-
-      // === ÉCONOMIES RÉELLES (ce qui correspond à yearlyEconomies dans l'historique) ===
-      yearlyEconomiesEffective: `${yearlyEconomiesEffective} €/an (économies réelles)`,
-      detailEconomiesReelles: {
-        effectiveProduction: `${effectiveProduction.toFixed(1)} kWh (avec efficacité)`,
-        autoconsommation: `${Math.round(selfConsumptionSavingsEffective)} € (70% × ${electricityPrice} €/kWh)`,
-        venteReseau: `${Math.round(gridSaleIncomeEffective)} € (30% × ${feedInTariff} €/kWh)`,
-        total: `${yearlyEconomiesEffective} €`,
-      },
-
-      // === RENTABILITÉ : DEUX OPTIONS ===
-      option1_gainsAPI_div_economies: `${yearlyGains} ÷ ${yearlyEconomiesEffective} = ${(yearlyGains / yearlyEconomiesEffective).toFixed(1)}`,
-      option2_economies_div_gainsAPI: `${yearlyEconomiesEffective} ÷ ${yearlyGains} = ${(yearlyEconomiesEffective / yearlyGains).toFixed(1)}`,
-
-      // === RÉSULTAT ACTUEL ===
-      paybackPeriod: `${paybackPeriod} ans (actuellement option2)`,
-
-      // === QUESTION ===
-      question: 'Laquelle des deux options donne ~41.8 ans comme attendu ?',
-    });
-  }
-
-  // Log temporaire pour debug rentabilite
-  console.log('Debug rentabilite:', {
-    yearlyGains,
-    yearlyEconomiesEffective,
-    option1_gains_div_economies: (yearlyGains / yearlyEconomiesEffective).toFixed(1),
-    option2_economies_div_gains: (yearlyEconomiesEffective / yearlyGains).toFixed(1),
-    paybackPeriod_actuel: paybackPeriod,
-  });
 
   return {
     ...panel,
@@ -515,20 +456,14 @@ const sortedData = computed(() => {
 
 // Actions CRUD - Permettre l'édition pour les simulations "what-if"
 const updateSimulation = (id: string, field: keyof Simulation, value: string | number) => {
-  console.log(`🔧 updateSimulation appelée: ${field} = ${value} pour simulation ${id}`);
-
   const index = simulations.value.findIndex(sim => sim.id === id);
   if (index !== -1) {
     const simulation = simulations.value[index];
     if (!simulation) return;
 
-    // Log de débogage des valeurs avant modification
-    console.log(`📊 Avant modification - ${field}: ${simulation[field]}, inclination: ${simulation.inclination}, orientation: ${simulation.orientation}`);
-
-    // ✅ IMPORTANT : Stocker la valeur originale si c'est la première modification
+    // Stocker la valeur originale si c'est la première modification
     if (!simulation.originalYearlyEnergy && simulation.yearlyEnergy > 0) {
       simulation.originalYearlyEnergy = simulation.yearlyEnergy;
-      console.log(`💾 Stockage valeur originale: ${simulation.originalYearlyEnergy} kWh/an`);
     }
 
     if (typeof value === 'string' && typeof simulation[field] === 'string') {
@@ -537,9 +472,6 @@ const updateSimulation = (id: string, field: keyof Simulation, value: string | n
     else if (typeof value === 'number' && typeof simulation[field] === 'number') {
       (simulation[field] as number) = value;
     }
-
-    // Log de débogage des valeurs après modification
-    console.log(`📊 Après modification - ${field}: ${simulation[field]}, inclination: ${simulation.inclination}, orientation: ${simulation.orientation}`);
 
     // Mise à jour automatique de l'efficacité du panneau selon le type sélectionné
     if (field === 'panelConfig' && typeof value === 'string') {
@@ -566,16 +498,12 @@ const updateSimulation = (id: string, field: keyof Simulation, value: string | n
 
     // Recalcul avec l'API JRC si les paramètres physiques changent
     if (['surface', 'inclination', 'orientation', 'panelConfig', 'address'].includes(field)) {
-      console.log(`🚀 Déclenchement updateJRCDataDebounced pour champ: ${field}`);
       // Déclencher une mise à jour JRC en temps réel (avec debounce)
       updateJRCDataDebounced(id, simulation);
-
-      // ✅ SUPPRESSION : Plus d'estimation rapide - elle créait des valeurs aberrantes
-      // On attend directement la réponse de l'API JRC qui donne la valeur exacte
     }
   }
   else {
-    console.error(`❌ Simulation avec ID ${id} non trouvée`);
+    console.error(`Simulation avec ID ${id} non trouvée`);
   }
 };
 
@@ -675,14 +603,13 @@ const resetToOriginalValues = () => {
       ],
       panelModel: sim.panel?.model || 'Standard',
       panelEfficiency: sim.panel?.efficiency || 18,
-      panelBrand: sim.panel?.company || 'Générique',
+      panelBrand: getBrandNameFromId(sim.panel?.company) || 'Générique',
       panelType: sim.panel?.panel_type_id || 'monocristallin',
       // États pour l'UI - données originales sont considérées comme sauvegardées
       isLoading: false,
       lastUpdated: new Date(),
       isSavedToDatabase: true, // ✅ Les données originales sont sauvegardées en base
     }));
-    console.log('✅ Toutes les simulations réinitialisées aux valeurs originales');
   }
 };
 </script>
@@ -745,42 +672,34 @@ const resetToOriginalValues = () => {
             </UButton>
           </div>
           <div v-else>
-            <div class="flex gap-2">
-              <UButton
-                to="/simulator"
-                color="green"
-                variant="solid"
-                size="sm"
-              >
-                <Icon
-                  name="i-heroicons-plus"
-                  class="w-4 h-4 mr-2"
-                />
-                Nouvelle simulation
-              </UButton>
+            <div class="flex flex-col sm:flex-row gap-2">
               <UButton
                 color="blue"
                 variant="outline"
                 size="sm"
+                class="w-full sm:w-auto"
                 @click="addSimulation"
               >
                 <Icon
                   name="i-heroicons-pencil"
                   class="w-4 h-4 mr-2"
                 />
-                Ajouter une ligne de test
+                <span class="hidden sm:inline">Ajouter une ligne de test</span>
+                <span class="sm:hidden">Ajouter</span>
               </UButton>
               <UButton
                 color="orange"
                 variant="outline"
                 size="sm"
+                class="w-full sm:w-auto"
                 @click="resetToOriginalValues"
               >
                 <Icon
                   name="i-heroicons-arrow-path"
                   class="w-4 h-4 mr-2"
                 />
-                Réinitialiser
+                <span class="hidden sm:inline">Réinitialiser</span>
+                <span class="sm:hidden">Reset</span>
               </UButton>
             </div>
           </div>
@@ -792,10 +711,10 @@ const resetToOriginalValues = () => {
           </div>
         </div>
 
-        <!-- Tableau - Affiché seulement s'il y a des données -->
+        <!-- Vue Desktop/Tablet - Tableau -->
         <div
           v-if="simulations.length > 0"
-          class="overflow-x-auto"
+          class="hidden md:block overflow-x-auto"
         >
           <table class="w-full text-xs">
             <!-- En-têtes groupés -->
@@ -814,10 +733,16 @@ const resetToOriginalValues = () => {
                   </div>
                 </th>
                 <th
-                  class="px-2 py-2 text-center font-semibold text-gray-700 bg-green-50"
+                  class="px-2 py-2 text-center font-semibold text-gray-700 bg-green-50 hidden lg:table-cell"
                   colspan="3"
                 >
                   🔆 Panneau solaire
+                </th>
+                <th
+                  class="px-2 py-2 text-center font-semibold text-gray-700 bg-green-50 lg:hidden table-cell"
+                  colspan="2"
+                >
+                  🔆 Panneau
                 </th>
                 <th
                   class="px-2 py-2 text-center font-semibold text-gray-700 bg-blue-50"
@@ -826,14 +751,26 @@ const resetToOriginalValues = () => {
                   🏗️ Installation
                 </th>
                 <th
-                  class="px-2 py-2 text-center font-semibold text-gray-700 bg-yellow-50"
+                  class="px-2 py-2 text-center font-semibold text-gray-700 bg-yellow-50 hidden lg:table-cell"
                   colspan="3"
                 >
                   ⚡ Production
                 </th>
                 <th
-                  class="px-2 py-2 text-center font-semibold text-gray-700 bg-purple-50"
+                  class="px-2 py-2 text-center font-semibold text-gray-700 bg-yellow-50 lg:hidden table-cell"
+                  colspan="2"
+                >
+                  ⚡ Production
+                </th>
+                <th
+                  class="px-2 py-2 text-center font-semibold text-gray-700 bg-purple-50 hidden lg:table-cell"
                   colspan="3"
+                >
+                  💰 Financier
+                </th>
+                <th
+                  class="px-2 py-2 text-center font-semibold text-gray-700 bg-purple-50 lg:hidden table-cell"
+                  colspan="2"
                 >
                   💰 Financier
                 </th>
@@ -867,7 +804,7 @@ const resetToOriginalValues = () => {
                     />
                   </div>
                 </th>
-                <th class="px-2 py-2 text-left text-xs font-medium text-gray-600 bg-green-25">
+                <th class="px-2 py-2 text-left text-xs font-medium text-gray-600 bg-green-25 hidden lg:table-cell">
                   Marque
                 </th>
                 <th class="px-2 py-2 text-left text-xs font-medium text-gray-600 bg-blue-25">
@@ -891,7 +828,7 @@ const resetToOriginalValues = () => {
                     />
                   </div>
                 </th>
-                <th class="px-2 py-2 text-left text-xs font-medium text-gray-600 bg-yellow-25">
+                <th class="px-2 py-2 text-left text-xs font-medium text-gray-600 bg-yellow-25 hidden lg:table-cell">
                   Moy/jour
                 </th>
                 <th
@@ -918,7 +855,7 @@ const resetToOriginalValues = () => {
                     />
                   </div>
                 </th>
-                <th class="px-2 py-2 text-left text-xs font-medium text-gray-600 bg-purple-25">
+                <th class="px-2 py-2 text-left text-xs font-medium text-gray-600 bg-purple-25 hidden lg:table-cell">
                   Production valorisée
                 </th>
                 <th
@@ -976,7 +913,7 @@ const resetToOriginalValues = () => {
                     <span class="text-sm">{{ getRankEmoji(rankings.efficiency[row.id]) }}</span>
                   </div>
                 </td>
-                <td class="px-2 py-2 text-xs text-gray-600">
+                <td class="px-2 py-2 text-xs text-gray-600 hidden lg:table-cell">
                   {{ row.brand }}
                 </td>
                 <td class="px-2 py-2">
@@ -1036,13 +973,6 @@ const resetToOriginalValues = () => {
                       <span>{{ row.yearlyProduction.toLocaleString() }}</span>
                       <span class="text-sm">{{ getRankEmoji(rankings.yearlyProduction[row.id]) }}</span>
                       <span
-                        v-if="row.lastUpdated"
-                        class="text-xs text-green-600"
-                        :title="`Dernière mise à jour JRC: ${row.lastUpdated?.toLocaleTimeString()}`"
-                      >
-                        ✓
-                      </span>
-                      <span
                         v-if="!row.isSavedToDatabase"
                         class="text-xs text-orange-600"
                         title="Modification temporaire - Non sauvegardée en base"
@@ -1059,7 +989,7 @@ const resetToOriginalValues = () => {
                     </div>
                   </div>
                 </td>
-                <td class="px-2 py-2 text-gray-600 text-xs">
+                <td class="px-2 py-2 text-gray-600 text-xs hidden lg:table-cell">
                   {{ row.dailyProduction }} kWh
                 </td>
                 <td class="px-2 py-2 text-green-600">
@@ -1074,7 +1004,7 @@ const resetToOriginalValues = () => {
                     <span class="text-sm">{{ getRankEmoji(rankings.yearlyGains[row.id]) }}</span>
                   </div>
                 </td>
-                <td class="px-2 py-2 text-gray-600 text-xs">
+                <td class="px-2 py-2 text-gray-600 text-xs hidden lg:table-cell">
                   {{ row.valuePerYear }} €/m²/an
                 </td>
                 <td class="px-2 py-2 font-medium">
@@ -1094,6 +1024,212 @@ const resetToOriginalValues = () => {
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <!-- Vue Mobile - Format Cards -->
+        <div
+          v-if="simulations.length > 0"
+          class="md:hidden space-y-4"
+        >
+          <div
+            v-for="row in sortedData"
+            :key="row.id"
+            class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden"
+          >
+            <!-- En-tête de la carte -->
+            <div class="px-4 py-3 bg-gray-50 border-b border-gray-200 flex justify-between items-start">
+              <div class="flex-1 min-w-0">
+                <UInput
+                  :model-value="row.address"
+                  size="sm"
+                  placeholder="Adresse..."
+                  class="mb-2"
+                  @update:model-value="updateSimulation(row.id, 'address', $event)"
+                />
+                <div class="flex items-center gap-2 text-sm text-gray-600">
+                  <span class="font-medium">{{ row.brand }}</span>
+                  <span class="text-xs font-medium">{{ row.efficiency }}%</span>
+                  <span class="text-xs">{{ getRankEmoji(rankings.efficiency[row.id]) }}</span>
+                </div>
+              </div>
+              <UButton
+                color="red"
+                variant="ghost"
+                size="xs"
+                @click="removeSimulation(row.id)"
+              >
+                <Icon
+                  name="i-heroicons-trash"
+                  class="w-4 h-4"
+                />
+              </UButton>
+            </div>
+
+            <!-- Corps de la carte -->
+            <div class="p-4 space-y-4">
+              <!-- Section Configuration -->
+              <div>
+                <h4 class="text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+                  🏗️ Configuration
+                </h4>
+                <div class="grid grid-cols-3 gap-3">
+                  <div>
+                    <label class="text-xs text-gray-500 block mb-1">Surface</label>
+                    <div class="flex items-center gap-1">
+                      <UInput
+                        :model-value="row.surface"
+                        type="number"
+                        size="xs"
+                        min="1"
+                        @update:model-value="updateSimulation(row.id, 'surface', parseInt($event as string) || 0)"
+                      />
+                      <span class="text-xs text-gray-500">m²</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="text-xs text-gray-500 block mb-1">Inclinaison</label>
+                    <div class="flex items-center gap-1">
+                      <UInput
+                        :model-value="row.inclination"
+                        type="number"
+                        size="xs"
+                        min="0"
+                        max="90"
+                        @update:model-value="updateSimulation(row.id, 'inclination', parseInt($event as string) || 0)"
+                      />
+                      <span class="text-xs text-gray-500">°</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="text-xs text-gray-500 block mb-1">Orientation</label>
+                    <div class="flex items-center gap-1">
+                      <UInput
+                        :model-value="row.orientation"
+                        type="number"
+                        size="xs"
+                        min="0"
+                        max="360"
+                        @update:model-value="updateSimulation(row.id, 'orientation', parseInt($event as string) || 0)"
+                      />
+                      <span class="text-xs text-gray-500">°</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-2">
+                  <label class="text-xs text-gray-500 block mb-1">Type de panneau</label>
+                  <USelect
+                    :model-value="row.panelConfig"
+                    :options="panelConfigOptions"
+                    size="xs"
+                    @update:model-value="updateSimulation(row.id, 'panelConfig', $event)"
+                  />
+                </div>
+              </div>
+
+              <!-- Section Production -->
+              <div>
+                <h4 class="text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+                  ⚡ Production
+                </h4>
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="bg-yellow-50 rounded-lg p-3">
+                    <div class="text-xs text-gray-500 mb-1">
+                      Production annuelle
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <div
+                        v-if="row.isLoading"
+                        class="flex items-center gap-1"
+                      >
+                        <div class="w-3 h-3 border border-green-500 border-t-transparent rounded-full animate-spin" />
+                        <span class="text-xs text-gray-500">Calcul...</span>
+                      </div>
+                      <div
+                        v-else
+                        class="flex items-center gap-1"
+                      >
+                        <span class="font-semibold text-green-700">{{ row.yearlyProduction.toLocaleString() }}</span>
+                        <span class="text-xs text-gray-500">kWh</span>
+                        <span class="text-sm">{{ getRankEmoji(rankings.yearlyProduction[row.id]) }}</span>
+                      </div>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">
+                      {{ row.dailyProduction }} kWh/jour
+                    </div>
+                  </div>
+                  <div class="bg-green-50 rounded-lg p-3">
+                    <div class="text-xs text-gray-500 mb-1">
+                      CO2 économisé
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <span class="font-semibold text-green-600">{{ row.co2Saved }}</span>
+                      <span class="text-xs text-gray-500">t/an</span>
+                      <span class="text-sm">{{ getRankEmoji(rankings.co2Saved[row.id]) }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Section Financier -->
+              <div>
+                <h4 class="text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+                  💰 Aspect financier
+                </h4>
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="bg-blue-50 rounded-lg p-3">
+                    <div class="text-xs text-gray-500 mb-1">
+                      Gains annuels
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <span class="font-semibold text-blue-700">{{ row.yearlyGains.toLocaleString() }}</span>
+                      <span class="text-xs text-gray-500">€</span>
+                      <span class="text-sm">{{ getRankEmoji(rankings.yearlyGains[row.id]) }}</span>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">
+                      {{ row.valuePerYear }} €/m²/an
+                    </div>
+                  </div>
+                  <div class="bg-purple-50 rounded-lg p-3">
+                    <div class="text-xs text-gray-500 mb-1">
+                      Rentabilité
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <span
+                        class="font-semibold"
+                        :class="{
+                          'text-green-600': row.paybackPeriod <= 10,
+                          'text-orange-600': row.paybackPeriod > 10 && row.paybackPeriod <= 15,
+                          'text-red-600': row.paybackPeriod > 15,
+                        }"
+                      >
+                        {{ row.paybackPeriod }}
+                      </span>
+                      <span class="text-xs text-gray-500">ans</span>
+                      <span class="text-sm">{{ getRankEmoji(rankings.paybackPeriod[row.id]) }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Statut de sauvegarde -->
+              <div class="flex items-center justify-between pt-2 border-t border-gray-100">
+                <div class="flex items-center gap-2">
+                  <span
+                    v-if="!row.isSavedToDatabase"
+                    class="text-xs text-orange-600 flex items-center gap-1"
+                  >
+                    🔬 <span>Simulation temporaire</span>
+                  </span>
+                  <span
+                    v-else
+                    class="text-xs text-blue-600 flex items-center gap-1"
+                  >
+                    💾 <span>Données originales</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Footer avec explications -->
