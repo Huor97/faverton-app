@@ -1,13 +1,13 @@
 <script setup lang="ts">
 const user = useSupabaseUser();
 
-const { data, refresh } = await useFetch<SimulationResponse>(`/api/simulation/history`);
+const { data, refresh } = await useFetch<SimulationResponse>('/api/simulation/history');
 
 const simulations = computed(() => {
   if (!data.value) return [];
   return data.value.simulations.map(sim => ({
     ...sim,
-    label: `${sim.solar_energy?.city} • ${sim.surface} m² • ${sim.panel?.model || `Standard`} • ${Math.round(sim.solar_energy?.yearly_energy || 0).toLocaleString()} kWh/kWc`,
+    label: `${sim.solar_energy?.city} • ${sim.surface} m² • ${sim.panel?.model || 'Standard'} • ${Math.round(sim.solar_energy?.yearly_energy || 0).toLocaleString()} kWh/kWc`,
   }));
 });
 function handleSimulationDeleted() {
@@ -57,9 +57,10 @@ function handleSimulationDeleted() {
         Aucun historique
       </p>
       <UAccordion
-        variant="soft"
+        variant="outline"
         size="xl"
         :items="simulations"
+        color="black"
       >
         <template #item="{ item }">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -3,6 +3,7 @@ import { useAddressStore } from '~/stores/address';
 import { useFetchJrc } from '~/composables/useFetchJrc';
 import { useSaveJRCDataToFaverton } from '~/composables/useSaveJRCData';
 import { useMapPreferences } from '~/composables/useMapPreferences';
+import SolarComparisonTable from '~/components/simulation/SolarComparisonTable.vue';
 import type { Properties } from '~~/shared/types/address/new-base-address-national';
 import { SOLAR_DEFAULTS } from '~~/shared/constants/solar-parameters';
 
@@ -88,11 +89,11 @@ watch(jrcResponse, (newJrc) => {
         </template>
       </UBreadcrumb>
     </div>
-    <div class="flex">
+    <div class="flex flex-col-reverse md:flex-row">
       <FavertonCard
         :class="[
           'transition-all duration-500 ease-in-out',
-          isMapVisible ? 'w-1/2' : 'w-full',
+          isMapVisible ? 'md:w-1/2' : 'md:w-full',
         ]"
       >
         <h1 class="text-xl text-center p-6">
@@ -137,7 +138,7 @@ watch(jrcResponse, (newJrc) => {
             'relative overflow-hidden',
             isResizing ? 'ring-2 ring-blue-400 ring-opacity-50' : '',
           ]"
-          class="w-1/2 rounded-lg shadow-lg my-10 mx-5 p-5 bg-gradient-to-br from-blue-50 to-green-50 border border-blue-200"
+          class="md:w-1/2 rounded-lg shadow-lg my-10 mx-5 p-5 bg-gradient-to-br from-blue-50 to-green-50 border border-blue-200"
         >
           <!-- Indicateur de taille en haut à droite avec animation -->
           <Transition
@@ -229,6 +230,11 @@ watch(jrcResponse, (newJrc) => {
           </div>
         </div>
       </Transition>
+    </div>
+
+    <!-- Tableau comparatif des simulations solaires -->
+    <div class="mt-8">
+      <SolarComparisonTable />
     </div>
 
     <!-- Bouton flottant pour contrôler la carte -->
