@@ -90,7 +90,7 @@ const getValueForType = (title: string, index: number) => {
     case 'Production':
       switch (index) {
         case 0: return props.item?.solar_energy?.yearly_energy
-          ? `${props.item.solar_energy.yearly_energy} kWh/kWc`
+          ? `${Math.round(props.item.solar_energy.yearly_energy)} kWh/kWc`
           : '--';
         case 1: return props.item?.solar_energy?.yearly_energy ? `${Math.round(props.item.solar_energy.yearly_energy / 365)} kWh/kWc` : '--';
         case 2: return co2Savings.value ? `${co2Savings.value} kg` : '--';
@@ -98,9 +98,9 @@ const getValueForType = (title: string, index: number) => {
       }
     case 'Financier':
       switch (index) {
-        case 0: return amountPerYear.value ? `${amountPerYear.value.amountEurosPerYear.toFixed(2)} €` : '--';
+        case 0: return amountPerYear.value ? `${Math.round(amountPerYear.value.amountEurosPerYear)} €` : '--';
         case 1: return yearlyEconomies.value ? `${yearlyEconomies.value} €/an` : '--';
-        case 2: return paybackPeriod.value ? `${paybackPeriod.value} ans` : '--';
+        case 2: return paybackPeriod.value ? `${Math.round(paybackPeriod.value)} ans` : '--';
         default: return '--';
       }
     default:
