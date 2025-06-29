@@ -149,16 +149,20 @@ const activateDrawing = () => {
               max="90"
               class="flex-1"
               placeholder="35"
+              size="xl"
             />
             <UButton
               variant="soft"
-              size="xs"
+              size="xl"
               @click="inclination = optimalInclination"
             >
               Optimal ({{ optimalInclination }}°)
             </UButton>
           </div>
-          <p class="text-xs text-gray-500">
+
+          <p
+            class="text-xs text-gray-500"
+          >
             0° = horizontal, 90° = vertical
             • Optimal pour la France : {{ optimalInclination }}°
           </p>
@@ -175,10 +179,12 @@ const activateDrawing = () => {
               :options="ORIENTATION_SUGGESTIONS"
               option-attribute="label"
               value-attribute="value"
+              size="xl"
               class="flex-1"
             />
             <UInput
               v-model.number="azimut"
+              size="xl"
               type="number"
               min="-180"
               max="180"

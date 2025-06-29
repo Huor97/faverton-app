@@ -50,18 +50,22 @@ const ItemLabels = [
   {
     title: 'Panneau solaire',
     type: ['Type', ' Efficacité', ' Marque'],
+    background: 'bg-green-50',
   },
   {
     title: 'Installation',
     type: ['Surface', ' Orientation', ' Inclinaison'],
+    background: 'bg-blue-50',
   },
   {
     title: 'Production',
     type: ['Production annuelle PV', ' Moyenne journalière PV', ' CO2 économisé'],
+    background: 'bg-yellow-50',
   },
   {
     title: 'Financier',
     type: ['Gains annuels', ' Production valorisée', 'Rentabilité'],
+    background: 'bg-purple-50',
   },
 ];
 
@@ -110,8 +114,11 @@ const getValueForType = (title: string, index: number) => {
     v-for="itemLabel in ItemLabels"
     :key="itemLabel.title"
   >
-    <div class="border rounded-lg p-4">
-      <h3 class="text-lg font-semibold mb-4 pb-2 border-b border-gray-200">
+    <div
+      class="border rounded-lg p-4"
+      :class="itemLabel.background"
+    >
+      <h3 class="text-lg text-black font-semibold mb-4 pb-2 border-b border-gray-200">
         {{ itemLabel.title }}
       </h3>
       <div
@@ -121,10 +128,10 @@ const getValueForType = (title: string, index: number) => {
           v-for="(type, index) in itemLabel.type"
           :key="type"
         >
-          <p class="text-gray-600">
+          <p class="text-gray-800">
             {{ type }}
           </p>
-          <p>
+          <p class="text-gray-800">
             {{ getValueForType(itemLabel.title, index) }}
           </p>
         </template>

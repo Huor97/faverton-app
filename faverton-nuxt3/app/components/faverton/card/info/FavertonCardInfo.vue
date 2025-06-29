@@ -8,7 +8,7 @@ defineProps<{
 <template>
   <div class="relative">
     <h2
-      class="absolute -left-2 -top-3 w-8 h-8 text-center rounded-full bg-[#FF7557] shadow-xl border border-white text-white text-xl"
+      class="absolute -left-2 -top-3 w-8 h-8 text-center rounded-full bg-[#FF7557] shadow-xl border border-white text-xl"
     >
       {{ infoBol }}
     </h2>
