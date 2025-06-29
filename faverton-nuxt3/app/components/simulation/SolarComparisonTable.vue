@@ -11,7 +11,7 @@ interface Simulation {
   orientation: number
   // Données JRC réelles
   yearlyEnergy: number
-  originalYearlyEnergy?: number // ✅ Stocker la valeur originale pour les calculs
+  originalYearlyEnergy?: number
   monthlyEnergy: number[]
   panelModel: string
   panelEfficiency: number
@@ -20,7 +20,7 @@ interface Simulation {
   // États pour l'UI
   isLoading?: boolean
   lastUpdated?: Date
-  isSavedToDatabase?: boolean // ⚠️ Nouveau : indique si sauvé en base
+  isSavedToDatabase?: boolean
 }
 
 interface JRCRequest {
@@ -65,9 +65,37 @@ interface CalculatedData extends Simulation {
   paybackPeriod: number
 }
 
-// Récupération des vraies données utilisateur
 const user = useSupabaseUser();
-const { data: historyData } = await useFetch<SimulationResponse>('/api/simulation/history');
+const historyData = ref<SimulationResponse | null>(null);
+const isLoading = ref(false);
+
+const loadSimulations = async () => {
+  if (!user.value) return;
+
+  isLoading.value = true;
+  try {
+    historyData.value = await $fetch<SimulationResponse>('/api/simulation/history');
+  }
+  catch (error) {
+    console.error('Erreur lors du chargement des simulations:', error);
+  }
+  finally {
+    isLoading.value = false;
+  }
+};
+
+watch(user, loadSimulations, { immediate: true });
+
+const refreshInterval = setInterval(loadSimulations, 5000);
+
+onUnmounted(() => {
+  clearInterval(refreshInterval);
+});
+
+// Exposer la fonction de rafraîchissement pour usage externe
+defineExpose({
+  refreshSimulations: loadSimulations,
+});
 
 // Cache pour éviter les appels API redondants
 const jrcCache = new Map<string, JRCResponse>();
@@ -215,8 +243,7 @@ const fetchJRCData = async (params: JRCRequest): Promise<JRCResponse> => {
 };
 
 // Debounce pour les mises à jour JRC
-const debounceTimeouts = new Map<string, NodeJS.Timeout>();// ⚠️ SUPPRIMÉ : Plus de sauvegarde en base de données
-// Les modifications sont uniquement temporaires pour les simulations "what-if"
+const debounceTimeouts = new Map<string, NodeJS.Timeout>();
 
 // Fonction pour recalculer les données JRC temporairement (SANS sauvegarder en base)
 const updateJRCDataDebounced = async (simulationId: string, simulation: Simulation) => {
@@ -265,17 +292,16 @@ const updateJRCDataDebounced = async (simulationId: string, simulation: Simulati
         jrcResult.month_12_energy,
       ];
       simulation.lastUpdated = new Date();
-      simulation.isSavedToDatabase = false; // Marquer comme modification temporaire
+      simulation.isSavedToDatabase = false;
     }
     catch (error) {
       console.error('Erreur lors du recalcul JRC temporaire:', error);
-      // En cas d'erreur, garder les valeurs existantes
     }
     finally {
       simulation.isLoading = false;
       debounceTimeouts.delete(simulationId);
     }
-  }, 1500); // Attendre 1.5 secondes après la dernière modification
+  }, 1500);
 
   debounceTimeouts.set(simulationId, timeout);
 };
@@ -283,7 +309,6 @@ const updateJRCDataDebounced = async (simulationId: string, simulation: Simulati
 // Conversion des données historiques vers le format du tableau
 const simulations = ref<Simulation[]>([]);
 
-// Initialisation des données à partir de l'historique
 watch(historyData, (newData) => {
   if (newData?.simulations && user.value) {
     simulations.value = newData.simulations.map(sim => ({
@@ -291,11 +316,11 @@ watch(historyData, (newData) => {
       address: `${sim.solar_energy?.city}, ${sim.solar_energy?.postal_code}`,
       surface: sim.surface || 0,
       panelConfig: sim.panel?.panel_type_id || 'unknown',
-      inclination: sim.solar_energy?.tilt_angle || SOLAR_DEFAULTS.INCLINATION, // 35° optimum France
-      orientation: sim.solar_energy?.azimuth || SOLAR_DEFAULTS.AZIMUT, // 0° = Sud optimum
+      inclination: sim.solar_energy?.tilt_angle || SOLAR_DEFAULTS.INCLINATION,
+      orientation: sim.solar_energy?.azimuth || SOLAR_DEFAULTS.AZIMUT,
       // Données JRC réelles
       yearlyEnergy: sim.solar_energy?.yearly_energy || 0,
-      originalYearlyEnergy: sim.solar_energy?.yearly_energy || 0, // Stocker la valeur originale
+      originalYearlyEnergy: sim.solar_energy?.yearly_energy || 0,
       monthlyEnergy: [
         sim.solar_energy?.month_1_energy || 0,
         sim.solar_energy?.month_2_energy || 0,
@@ -314,68 +339,47 @@ watch(historyData, (newData) => {
       panelEfficiency: sim.panel?.efficiency || 18,
       panelBrand: getBrandNameFromId(sim.panel?.company) || 'Générique',
       panelType: sim.panel?.panel_type_id || 'monocristallin',
-      // États pour l'UI - données originales sont considérées comme sauvegardées
       isLoading: false,
       lastUpdated: new Date(),
-      isSavedToDatabase: true, // ✅ Les données originales sont sauvegardées en base
+      isSavedToDatabase: true,
     }));
   }
 }, { immediate: true });
 
 const sortConfig = ref<SortConfig>({ key: null, direction: 'asc' });
 
-// Calculs basés sur les vraies données JRC
 const calculateData = (simulation: Simulation) => {
-  // Utilisation des données réelles du panneau
   const panel = {
     name: simulation.panelModel,
     type: simulation.panelType,
-    efficiency: simulation.panelEfficiency, // Utilise panelEfficiency de la simulation
+    efficiency: simulation.panelEfficiency,
     brand: simulation.panelBrand,
   };
 
-  // ✅ CORRECTION : Utiliser la valeur JRC réelle uniquement, pas d'estimation
   const currentYearlyEnergy = simulation.yearlyEnergy;
 
-  // Données JRC réelles (déjà en kWh/an)
   const yearlyProduction = Math.round(currentYearlyEnergy);
   const dailyProduction = Math.round((currentYearlyEnergy / 365) * 10) / 10;
 
-  // Calcul des économies CO2 (facteur d'émission électricité FR: 0.5 kg CO2/kWh)
   const co2Saved = Math.round((currentYearlyEnergy * 0.5) / 1000 * 10) / 10;
 
-  // ✅ CORRECTION : Calculs financiers IDENTIQUES à la page historique
   const electricityPrice = 0.1740; // Prix moyen électricité France (€/kWh)
   const selfConsumptionRate = 0.7; // 70% d'autoconsommation
   const feedInTariff = 0.10; // Tarif de rachat surplus (€/kWh)
 
-  // 💰 REPRODUCTION EXACTE de l'API /api/simulation/price-year
   const EDF_PRICE = 0.1269; // Prix utilisé par l'API (différent du calcul local !)
   const HIGH_PERFORMANCE_PANEL = Number((simulation.panelEfficiency / 100).toFixed(2));
-  // ⚠️ FORMULE PROBLÉMATIQUE de l'API (multiplie par surface ET efficacité)
   const apiAmount = currentYearlyEnergy * simulation.surface * EDF_PRICE * HIGH_PERFORMANCE_PANEL;
 
-  // 📊 CORRECTION : Cohérence avec le changement de type de panneau
-  // TOUS les calculs financiers doivent dépendre de l'efficacité du panneau
-
-  // ✅ Production effective tenant compte de l'efficacité
   const effectiveProduction = currentYearlyEnergy * (simulation.panelEfficiency / 100);
 
-  // ✅ Production valorisée corrigée (avec efficacité du panneau)
   const selfConsumptionSavingsEffective = effectiveProduction * selfConsumptionRate * electricityPrice;
   const gridSaleIncomeEffective = effectiveProduction * (1 - selfConsumptionRate) * feedInTariff;
   const yearlyEconomiesEffective = Math.round(selfConsumptionSavingsEffective + gridSaleIncomeEffective);
 
-  // 📊 Mapping cohérent avec l'historique :
-  // - Gains annuels = API (dépend de l'efficacité)
-  // - Production valorisée = calcul local effectif (dépend de l'efficacité)
-  // - Rentabilité = ratio économies réelles / gains API (inversé pour correspondre aux valeurs attendues)
-  const yearlyGains = Math.round(apiAmount * 100) / 100; // Gains annuels (API)
-  const valuePerYear = yearlyEconomiesEffective; // Production valorisée (CORRIGÉE avec efficacité)
+  const yearlyGains = Math.round(apiAmount * 100) / 100;
+  const valuePerYear = yearlyEconomiesEffective;
 
-  // ✅ Rentabilité COHÉRENTE avec l'historique : ratio économies réelles / gains API
-  // CORRECTION : L'historique fait amountPerYear / yearlyEconomies, mais pour avoir ~41.8 ans
-  // il faut inverser : yearlyEconomies / amountPerYear
   const paybackPeriod = yearlyGains > 0
     ? Math.round((yearlyEconomiesEffective / yearlyGains) * 10) / 10
     : 0;
@@ -520,7 +524,7 @@ const addSimulation = () => {
     inclination: SOLAR_DEFAULTS.INCLINATION, // 35° optimum France
     orientation: SOLAR_DEFAULTS.AZIMUT, // 0° = Sud optimum
     yearlyEnergy: defaultEnergy, // Valeur par défaut estimée
-    originalYearlyEnergy: defaultEnergy, // ✅ Définir aussi la valeur originale
+    originalYearlyEnergy: defaultEnergy,
     monthlyEnergy: Array(12).fill(200),
     panelModel: 'Standard',
     panelEfficiency: 18,
@@ -529,7 +533,7 @@ const addSimulation = () => {
     // États pour l'UI
     isLoading: false,
     lastUpdated: new Date(),
-    isSavedToDatabase: false, // ✅ Les nouvelles simulations ne sont pas sauvegardées
+    isSavedToDatabase: false,
   });
 };
 
@@ -586,7 +590,7 @@ const resetToOriginalValues = () => {
       orientation: sim.solar_energy?.azimuth || SOLAR_DEFAULTS.AZIMUT, // 0° = Sud optimum
       // Données JRC réelles
       yearlyEnergy: sim.solar_energy?.yearly_energy || 0,
-      originalYearlyEnergy: sim.solar_energy?.yearly_energy || 0, // ✅ Réinitialiser aussi la valeur originale
+      originalYearlyEnergy: sim.solar_energy?.yearly_energy || 0,
       monthlyEnergy: [
         sim.solar_energy?.month_1_energy || 0,
         sim.solar_energy?.month_2_energy || 0,
@@ -608,7 +612,7 @@ const resetToOriginalValues = () => {
       // États pour l'UI - données originales sont considérées comme sauvegardées
       isLoading: false,
       lastUpdated: new Date(),
-      isSavedToDatabase: true, // ✅ Les données originales sont sauvegardées en base
+      isSavedToDatabase: true,
     }));
   }
 };
