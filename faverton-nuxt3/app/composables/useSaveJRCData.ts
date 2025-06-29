@@ -1,11 +1,12 @@
-import type { PVGISData } from "~~/shared/types/jrc-potential-solar";
+import type { PVGISData } from '~~/shared/types/jrc-potential-solar';
 
 export async function useSaveJRCDataToFaverton(jrcData: Ref<PVGISData | null>, postalCode: Ref<string | null>, city: Ref<string | null>) {
   if (!jrcData.value || !postalCode?.value || !city?.value) {
-    console.error(`Missing location information`);
+    console.error('Missing location information');
     return null;
   }
 
+  // Inclus les paramètres d'installation solaire depuis PVGIS
   const dataToSave = {
     postalCode: postalCode.value,
     city: city.value,
@@ -22,26 +23,28 @@ export async function useSaveJRCDataToFaverton(jrcData: Ref<PVGISData | null>, p
     month11Energy: jrcData.value?.outputs.monthly.fixed[10]?.E_m,
     month12Energy: jrcData.value?.outputs.monthly.fixed[11]?.E_m,
     yearlyEnergy: jrcData.value?.outputs.totals.fixed.E_y,
+    tiltAngle: jrcData.value?.inputs.mounting_system.fixed.slope.value,
+    azimuth: jrcData.value?.inputs.mounting_system.fixed.azimuth.value,
   };
 
   try {
-    const result = await $fetch<SolarEnergyResponse>(`/api/solar-potential/faverton`, {
-      method: `POST`,
+    const result = await $fetch<SolarEnergyResponse>('/api/solar-potential/faverton', {
+      method: 'POST',
       body: dataToSave,
     });
 
     return {
       solarEnergyId: ref(result),
       error: null,
-      status: `success`,
+      status: 'success',
     };
   }
   catch (error) {
-    console.error(`Error saving JRC data in Faverton`, error);
+    console.error('Error saving JRC data in Faverton', error);
     return {
       solarEnergyId: null,
       error: error,
-      status: `error`,
+      status: 'error',
     };
   }
 };

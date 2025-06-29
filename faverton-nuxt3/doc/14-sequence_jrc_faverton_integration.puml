@@ -1,0 +1,157 @@
+@startuml JRC_Faverton_Integration_Sequence
+' Configuration
+skinparam participant {
+    BackgroundColor #F5F5F5
+    BorderColor #666666
+    FontSize 12
+}
+skinparam sequence {
+    ArrowColor #FF9800
+    LifeLineBackgroundColor #FFFFFF
+    LifeLineBorderColor #666666
+}
+
+title Diagramme de séquence - Intégration API JRC vers Faverton\navec Inclinaison et Orientation
+
+actor User as "Utilisateur"
+participant Frontend as "Frontend\n(Simulateur)"
+participant useFetchJrc as "useFetchJrc\n(Composable)"
+participant JrcAPI as "API JRC\n(/api/solar-potential/jrc)"
+participant PVGIS as "Service PVGIS\n(European Commission)"
+participant useSaveJRC as "useSaveJRCData\n(Composable)"
+participant FavertonAPI as "API Faverton\n(/api/solar-potential/faverton)"
+participant Database as "Base de données\n(Supabase)"
+
+== Phase 1: Récupération des données solaires ==
+
+User -> Frontend: Saisit adresse, surface,\ninclination, orientation
+activate Frontend
+
+Frontend -> useFetchJrc: useFetchJrc(lat, lon, inclination, azimut)
+activate useFetchJrc
+
+note right of useFetchJrc
+  Paramètres watchés:
+  - latitude
+  - longitude  
+  - inclination (angle)
+  - azimut (aspect)
+end note
+
+useFetchJrc -> JrcAPI: GET /api/solar-potential/jrc
+activate JrcAPI
+
+note right of JrcAPI
+  Query params:
+  - lat: latitude
+  - lon: longitude
+  - angle: inclination
+  - aspect: azimut
+end note
+
+JrcAPI -> PVGIS: Requête PVGIS avec paramètres\n(lat, lon, angle, aspect)
+activate PVGIS
+
+PVGIS --> JrcAPI: Données PVGISData\n(productions mensuelles + annuelles)
+deactivate PVGIS
+
+JrcAPI --> useFetchJrc: PVGISData
+deactivate JrcAPI
+
+useFetchJrc --> Frontend: data, status, error
+deactivate useFetchJrc
+
+== Phase 2: Sauvegarde dans Faverton ==
+
+Frontend -> useSaveJRC: useSaveJRCDataToFaverton(jrcData, postalCode, city)
+activate useSaveJRC
+
+note right of useSaveJRC
+  dataToSave inclut:
+  - postalCode, city
+  - month1Energy...month12Energy
+  - yearlyEnergy
+  - **À ajouter**: inclination, orientation
+end note
+
+useSaveJRC -> FavertonAPI: POST /api/solar-potential/faverton
+activate FavertonAPI
+
+note right of FavertonAPI
+  Body actuel:
+  - postalCode, city
+  - month1Energy...month12Energy
+  - yearlyEnergy
+  
+  **À ajouter**:
+  - inclination
+  - orientation
+end note
+
+FavertonAPI -> Database: SELECT solar_energy_id\nWHERE postal_code = ? AND city = ?
+activate Database
+
+note right of Database
+  **Logique à modifier**:
+  Vérification actuelle: postal_code + city
+  
+  **Nouvelle logique**:
+  WHERE postal_code = ? 
+  AND city = ?
+  AND inclination = ?
+  AND orientation = ?
+end note
+
+alt Données existantes avec mêmes paramètres
+
+    Database --> FavertonAPI: Enregistrement existant trouvé
+    
+    FavertonAPI --> useSaveJRC: {\n  success: true,\n  message: "Existing data",\n  solarEnergyId: existing_id\n}
+
+else Nouvelles données ou paramètres différents
+
+    Database --> FavertonAPI: Aucun enregistrement correspondant
+    
+    FavertonAPI -> Database: INSERT INTO solar_energy\n(postal_code, city, inclination, orientation,\nmonth_1_energy...month_12_energy, yearly_energy)
+    
+    note right of Database
+      **Nouvelles colonnes à ajouter**:
+      - inclination (DECIMAL)
+      - orientation (DECIMAL)
+      
+      Cela permettra de différencier
+      les simulations par paramètres
+      d'installation
+    end note
+    
+    Database --> FavertonAPI: solar_energy_id (nouveau)
+    
+    FavertonAPI --> useSaveJRC: {\n  success: true,\n  message: "Data inserted",\n  solarEnergyId: new_id\n}
+
+end
+
+deactivate Database
+deactivate FavertonAPI
+
+useSaveJRC --> Frontend: solarEnergyId, error, status
+deactivate useSaveJRC
+
+Frontend --> User: Affichage des résultats\navec données sauvegardées
+deactivate Frontend
+
+== Gestion des cas d'erreur ==
+
+note over Frontend, Database
+  **Cas d'erreur possibles**:
+  1. API PVGIS indisponible
+  2. Paramètres invalides (lat/lon hors limites)
+  3. Erreur base de données
+  4. Coordonnées manquantes
+  
+  **Amélioration future**:
+  - Cache des résultats PVGIS
+  - Validation des paramètres d'orientation
+  - Gestion des timeouts
+end note
+
+@enduml
