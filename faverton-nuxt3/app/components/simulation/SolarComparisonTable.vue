@@ -359,7 +359,7 @@ const calculateData = (simulation: Simulation) => {
   const currentYearlyEnergy = simulation.yearlyEnergy;
 
   const yearlyProduction = Math.round(currentYearlyEnergy);
-  const dailyProduction = Math.round((currentYearlyEnergy / 365) * 10) / 10;
+  const dailyProduction = Math.round(currentYearlyEnergy / 365);
 
   const co2Saved = Math.round((currentYearlyEnergy * 0.5) / 1000 * 10) / 10;
 
