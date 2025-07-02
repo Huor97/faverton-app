@@ -1,4 +1,4 @@
-import type { Panel } from "./panel";
+import type { Panel } from './panel';
 
 export interface Simulations {
   simulations: Simulation[]
