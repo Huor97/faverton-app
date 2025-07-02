@@ -18,12 +18,13 @@ export const useSimulationHistoryStore = defineStore('simulationHistory', () => 
   async function fetchHistory() {
     isLoading.value = true;
     error.value = null;
-    
+
     try {
-      const { data } = await useFetch<SimulationHistory[]>('/api/simulation/history');
-      historyList.value = data.value || [];
+      const data = await $fetch<{ simulations: SimulationHistory[] }>('/api/simulation/history');
+      historyList.value = data?.simulations || [];
     }
     catch (err) {
+      console.error('❌ Erreur lors de la récupération:', err);
       handleError(err);
     }
     finally {
