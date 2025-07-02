@@ -11,6 +11,7 @@ const responseSolarEnergyId = ref<SolarEnergyResponse | null>(null);
 const errorPost = ref<Error | null>(null);
 const activeTab = ref(0);
 const simulationResult = ref<propertySimulationResult | null>(null);
+const user = useSupabaseUser();
 
 // Utilisation du composable pour les préférences de carte
 const {
@@ -71,6 +72,12 @@ watch(jrcResponse, (newJrc) => {
     getSolarEnergy();
   }
 });
+
+const authPromptInfo = {
+  icon: 'i-heroicons-table-cells-20-solid',
+  title: 'Tableau de comparaison des simulations',
+  description: 'Connectez-vous pour accéder à votre historique de simulations, comparer les différentes configurations et optimiser votre projet solaire.',
+};
 </script>
 
 <template>
@@ -232,10 +239,18 @@ watch(jrcResponse, (newJrc) => {
       </Transition>
     </div>
 
-    <!-- Tableau comparatif des simulations solaires -->
-    <div class="mt-8">
-      <SolarComparisonTable />
-    </div>
+    <FavertonCard>
+      <template v-if="!user">
+        <UserAuthPrompt
+          :icon="authPromptInfo.icon"
+          :title="authPromptInfo.title"
+          :description="authPromptInfo.description"
+        />
+      </template>
+      <template v-else>
+        <SolarComparisonTable />
+      </template>
+    </FavertonCard>
 
     <!-- Bouton flottant pour contrôler la carte -->
     <Transition
