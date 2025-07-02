@@ -42,6 +42,13 @@ Dans un contexte de transition énergétique, Faverton répond à un besoin conc
 - **[API Adresse data.gouv.fr](https://geoservices.ign.fr/documentation/services/services-geoplateforme/geocodage)** : Géocodage gouvernemental fiable et gratuit
 - **[API PVGIS JRC Europa](https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis_en)** : Données scientifiques validées sur l'ensoleillement européen
 
+> **⚠️ Note importante sur l'API PVGIS JRC** : 
+> Suite à des problèmes de disponibilité de l'API v5.3, le projet utilise désormais la version v5.2 :
+> - **Endpoint utilisé** : `https://re.jrc.ec.europa.eu/api/v5_2/PVcalc` (au lieu de v5_3)
+> - **Base de données radiométrique** : `PVGIS-SARAH2` (au lieu de PVGIS-SARAH3)
+> 
+> Ces paramètres sont configurés dans `/server/api/solar-potential/jrc/index.get.ts`
+
 ### Diagramme d'architecture
 
 ```mermaid
@@ -373,40 +380,30 @@ pnpm run test:coverage
 pnpm run test:watch
 ```
 
-## 📚 Documentation
+## 🔧 Troubleshooting
 
-- Documentation technique complète : `/docs`
-- Documentation API : Commentaires inline dans `/server/api/`
-- Types TypeScript : `/app/types/` et `/server/types/`
+### Problèmes avec l'API PVGIS JRC
 
-## 🛣️ Roadmap
-### Phase 1 - MVP (✅ Complété)
-- [x] Architecture Nuxt 3 avec TypeScript
-- [x] Intégration API JRC Europa
-- [x] Cartographie interactive avec Leaflet
-- [x] Calculs de rendement énergétique
-- [x] Authentification Supabase
-- [x] Historique des simulations
-- [x] Interface responsive
-### Phase 2 - Optimisations (🔄 En cours)
-- [ ] Tests unitaires complets
-- [ ] Optimisation des performances
-- [ ] Mode hors ligne (PWA)
-- [ ] Export PDF des résultats
-### Phase 3 - Fonctionnalités avancées (🎯 Planifié)
-- [ ] Comparaison multi-scénarios
-- [ ] Prise en compte de l'ombrage
-- [ ] Types de panneaux étendus
-- [ ] API publique
+**Symptôme** : Erreurs lors des calculs de potentiel solaire, timeouts ou réponses vides de l'API JRC.
 
-## 📄 Licence
-Ce projet est sous licence MIT.
+**Cause** : L'API PVGIS JRC a plusieurs versions avec des disponibilités variables :
+- v5.3 : Souvent indisponible ou instable
+- v5.2 : Version stable recommandée
 
-## 📨 Contact
-- [GitHub](https://github.com/Huor97)
-- [LinkedIn](https://www.linkedin.com/in/rouhkarimi/)
+**Solution** : Le projet utilise la version v5.2 avec les paramètres suivants :
+```typescript
+// Dans server/api/solar-potential/jrc/index.get.ts
+const url = 'https://re.jrc.ec.europa.eu/api/v5_2/PVcalc';
+// ...
+query: {
+  // ...
+  raddatabase: 'PVGIS-SARAH2', // Pour v5.2
+  // raddatabase: 'PVGIS-SARAH3', // Pour v5.3 (non recommandé)
+}
+```
 
-Développé avec 💚 pour la transition écologique
+**Versions disponibles** :
+- **v5.2** : `PVGIS-SARAH2` (stable) ✅
+- **v5.3** : `PVGIS-SARAH3` (instable) ❌
 
-## Licence
-This software is published under the [MIT License](./LICENSE).
+Si vous rencontrez des problèmes de performance, vérifiez la disponibilité de l'API sur [status.jrc.ec.europa.eu](https://re.jrc.ec.europa.eu/api/).
