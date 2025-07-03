@@ -34,7 +34,7 @@ const savedAddress = useAddressStore();
             (lieu : {{ savedAddress?.savedAddress?.featureCollection?.features[0]?.properties.postcode }})
           </span>
         </h3>
-        <p class=" md:text-2xl font-semibold">
+        <p class="md:text-2xl font-semibold">
           {{ amountEurosPerYear?.yearlyEnergy?.toFixed(2) }} kWh/kWc
         </p>
       </div>
