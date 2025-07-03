@@ -1,29 +1,29 @@
 <script setup lang="ts">
 const supabase = useSupabaseClient();
-const email = ref(``);
-const password = ref(``);
-const message = ref(``);
-const error = ref(``);
+const email = ref('');
+const password = ref('');
+const message = ref('');
+const error = ref('');
 
 const login = async () => {
   const { error: authError } = await supabase.auth.signInWithPassword({
     email: email.value,
     password: password.value,
   });
-  error.value = authError ? `Erreur d'authentification` : ``;
+  error.value = authError ? 'Erreur d\'authentification' : '';
 
   if (authError) {
-    message.value = `L'authentification n'a pas pu s'effectuer. Une erreur s'est produite. Vous pouvez nous contacter au support via le lien ci-dessous.`;
+    message.value = 'L\'authentification n\'a pas pu s\'effectuer. Une erreur s\'est produite. Vous pouvez nous contacter au support via le lien ci-dessous.';
   }
   else {
-    message.value = `Connexion réussie`;
-    navigateTo(`/simulator`);
+    message.value = 'Connexion réussie';
+    navigateTo('/simulator');
   }
 };
 </script>
 
 <template>
-  <div class="flex flex-col justify-center bg-yellow-100 h-screen items-center gap-3">
+  <div class="flex flex-col h-screen items-center gap-3">
     <div class="z-index-[999] fixed left-2 md:left-32 top-4">
       <UBreadcrumb
         :links="[{ label: 'Accueil', to: '/introduction' }, { label: 'Se connecter' }]"
@@ -38,6 +38,8 @@ const login = async () => {
         </template>
       </UBreadcrumb>
     </div>
+
+    <FavertonBanner />
 
     <h1>
       Se connecter
