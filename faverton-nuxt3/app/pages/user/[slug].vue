@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: ['auth'],
+});
+
 const UserLogin = defineAsyncComponent(() => import('~/components/user/auth/UserAuthLogin.vue'));
 const UserRegister = defineAsyncComponent(() => import('~/components/user/auth/UserAuthRegister.vue'));
 

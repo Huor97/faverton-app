@@ -1,15 +1,13 @@
 export default defineNuxtRouteMiddleware((to) => {
   const user = useSupabaseUser();
 
-  if (to.path.startsWith(`/user/profile`) && !user.value) {
-    return navigateTo(`/user/login`);
+  const guestRoutes = ['/user/login', '/user/register'];
+
+  if (user.value && guestRoutes.includes(to.path)) {
+    return navigateTo('/user/profile');
   }
 
-  if (to.path === `/user/login` && user.value) {
-    return navigateTo(`/user/profile`);
-  }
-
-  if (to.path !== `/user/login` && !user.value) {
-    return navigateTo(`/user/login`);
+  if (!user.value && !guestRoutes.includes(to.path)) {
+    return navigateTo('/user/login');
   }
 });
