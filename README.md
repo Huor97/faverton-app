@@ -42,6 +42,13 @@ Dans un contexte de transition énergétique, Faverton répond à un besoin conc
 - **[API Adresse data.gouv.fr](https://geoservices.ign.fr/documentation/services/services-geoplateforme/geocodage)** : Géocodage gouvernemental fiable et gratuit
 - **[API PVGIS JRC Europa](https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis_en)** : Données scientifiques validées sur l'ensoleillement européen
 
+> **⚠️ Note importante sur l'API PVGIS JRC** : 
+> Le projet utilise par défaut la version v5.3 de l'API PVGIS :
+> - **Version principale** : `https://re.jrc.ec.europa.eu/api/v5_3/PVcalc` avec base `PVGIS-SARAH3`
+> - **Version de secours** : `https://re.jrc.ec.europa.eu/api/v5_2/PVcalc` avec base `PVGIS-SARAH2`
+> 
+> La logique est configurée dans `/server/api/solar-potential/jrc/index.get.ts`
+
 ### Diagramme d'architecture
 
 ```mermaid
@@ -372,6 +379,34 @@ pnpm run test:coverage
 # Tests en mode watch
 pnpm run test:watch
 ```
+
+## 🔧 Troubleshooting
+
+### Problèmes avec l'API PVGIS JRC
+
+**Symptôme** : Erreurs lors des calculs de potentiel solaire, timeouts ou réponses vides de l'API JRC.
+
+**Cause** : L'API PVGIS JRC a plusieurs versions avec des disponibilités variables :
+- v5.3 : Plus récent
+- v5.2 : Version stable
+
+**Solution** : Le projet utilise la version v5.3 avec les paramètres suivants :
+```typescript
+// Dans server/api/solar-potential/jrc/index.get.ts
+const url = 'https://re.jrc.ec.europa.eu/api/v5_3/PVcalc';
+// ...
+query: {
+  // ...
+  raddatabase: 'PVGIS-SARAH3', // Pour v5.3
+  // raddatabase: 'PVGIS-SARAH2', // Pour v5.2 (non recommandé)
+}
+```
+
+**Versions disponibles** :
+- **v5.2** : `PVGIS-SARAH2` (stable) ✅
+- **v5.3** : `PVGIS-SARAH3` (instable) ❌
+
+Si vous rencontrez des problèmes de performance, vérifiez la disponibilité de l'API sur [status.jrc.ec.europa.eu](https://re.jrc.ec.europa.eu/api/).
 
 ## 📚 Documentation
 

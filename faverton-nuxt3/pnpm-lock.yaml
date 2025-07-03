@@ -20,6 +20,9 @@ importers:
       '@nuxtjs/device':
         specifier: 3.2.4
         version: 3.2.4
+      '@nuxtjs/google-fonts':
+        specifier: 3.2.0
+        version: 3.2.0(magicast@0.3.5)
       '@nuxtjs/leaflet':
         specifier: ^1.2.6
         version: 1.2.6(typescript@5.8.3)
@@ -847,6 +850,9 @@ packages:
 
   '@nuxtjs/device@3.2.4':
     resolution: {integrity: sha512-jIvN6QeodBNrUrL/1FCHk4bebsiLsGHlJd8c/m2ksLrGY4IZ0npA8IYhDTdYV92epGxoe8+3iZOzCjav+6TshQ==}
+
+  '@nuxtjs/google-fonts@3.2.0':
+    resolution: {integrity: sha512-cGAjDJoeQ2jm6VJCo4AtSmKO6KjsbO9RSLj8q261fD0lMVNMZCxkCxBkg8L0/2Vfgp+5QBHWVXL71p1tiybJFw==}
 
   '@nuxtjs/leaflet@1.2.6':
     resolution: {integrity: sha512-AOefIxck/cp8LOndV91cbWfHy3qDOtxnGfSABZUxPpZNv3dBn+zY+kX/r8zmkHaoTAevFYMs7mv+oeMA2PmGJQ==}
@@ -3425,6 +3431,9 @@ packages:
     resolution: {integrity: sha512-otgSPpUmdWJ43VXyiNgEYE4luzHCL2pz4wQ0OnDluC6Eg4Ko3Vexy/SrSynglw/eR+OhkzmqFCZa/OFa/RgAOQ==}
     engines: {node: '>=0.6.0'}
     hasBin: true
+
+  google-fonts-helper@3.7.3:
+    resolution: {integrity: sha512-dENZeK6RMvkCOFoKbLbS+pyoDgpmk4U6BYmfXnztMar2d8SjEG6valxql/Lkyi7bu5F+3FTdE+gAEYSYZ5zzMA==}
 
   gopd@1.2.0:
     resolution: {integrity: sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==}
@@ -7301,6 +7310,14 @@ snapshots:
     dependencies:
       defu: 6.1.4
 
+  '@nuxtjs/google-fonts@3.2.0(magicast@0.3.5)':
+    dependencies:
+      '@nuxt/kit': 3.17.4(magicast@0.3.5)
+      google-fonts-helper: 3.7.3
+      pathe: 1.1.2
+    transitivePeerDependencies:
+      - magicast
+
   '@nuxtjs/leaflet@1.2.6(typescript@5.8.3)':
     dependencies:
       '@types/leaflet': 1.9.18
@@ -10298,6 +10315,13 @@ snapshots:
     dependencies:
       minimist: 1.2.8
 
+  google-fonts-helper@3.7.3:
+    dependencies:
+      deepmerge: 4.3.1
+      hookable: 5.5.3
+      ofetch: 1.4.1
+      ufo: 1.6.1
+
   gopd@1.2.0: {}
 
   graceful-fs@4.2.11: {}
@@ -11284,7 +11308,7 @@ snapshots:
       unctx: 2.4.1
       unimport: 5.0.1
       unplugin: 2.3.2
-      unplugin-vue-router: 0.12.0(vue-router@4.5.1(vue@3.5.13(typescript@5.8.3)))(vue@3.5.14(typescript@5.8.3))
+      unplugin-vue-router: 0.12.0(vue-router@4.5.1(vue@3.5.14(typescript@5.8.3)))(vue@3.5.14(typescript@5.8.3))
       unstorage: 1.16.0(db0@0.3.2)(ioredis@5.6.1)
       untyped: 2.0.0
       vue: 3.5.14(typescript@5.8.3)
@@ -12793,7 +12817,7 @@ snapshots:
       pathe: 2.0.3
       picomatch: 4.0.2
 
-  unplugin-vue-router@0.12.0(vue-router@4.5.1(vue@3.5.13(typescript@5.8.3)))(vue@3.5.14(typescript@5.8.3)):
+  unplugin-vue-router@0.12.0(vue-router@4.5.1(vue@3.5.14(typescript@5.8.3)))(vue@3.5.14(typescript@5.8.3)):
     dependencies:
       '@babel/types': 7.27.1
       '@vue-macros/common': 1.16.1(vue@3.5.14(typescript@5.8.3))

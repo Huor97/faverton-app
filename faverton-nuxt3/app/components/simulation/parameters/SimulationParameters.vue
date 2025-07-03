@@ -92,6 +92,60 @@ watch(() => mapStore.drawnArea, (newArea) => {
 const activateDrawing = () => {
   mapStore.startDrawing();
 };
+
+// Validation pour l'inclinaison (0° à 90°)
+const handleInclinationInput = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const value = Number(target.value);
+
+  if (value < SOLAR_LIMITS.INCLINATION.MIN && value !== 0) {
+    inclination.value = SOLAR_LIMITS.INCLINATION.MIN;
+    target.value = SOLAR_LIMITS.INCLINATION.MIN.toString();
+  }
+  else if (value > SOLAR_LIMITS.INCLINATION.MAX) {
+    inclination.value = SOLAR_LIMITS.INCLINATION.MAX;
+    target.value = SOLAR_LIMITS.INCLINATION.MAX.toString();
+  }
+  else if (value >= SOLAR_LIMITS.INCLINATION.MIN && value <= SOLAR_LIMITS.INCLINATION.MAX) {
+    inclination.value = value;
+  }
+};
+
+const handleInclinationBlur = () => {
+  if (inclination.value < SOLAR_LIMITS.INCLINATION.MIN) {
+    inclination.value = SOLAR_LIMITS.INCLINATION.MIN;
+  }
+  else if (inclination.value > SOLAR_LIMITS.INCLINATION.MAX) {
+    inclination.value = SOLAR_LIMITS.INCLINATION.MAX;
+  }
+};
+
+// Validation pour l'azimut (-180° à 180°)
+const handleAzimutInput = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const value = Number(target.value);
+
+  if (value < SOLAR_LIMITS.AZIMUT.MIN && value !== 0) {
+    azimut.value = SOLAR_LIMITS.AZIMUT.MIN;
+    target.value = SOLAR_LIMITS.AZIMUT.MIN.toString();
+  }
+  else if (value > SOLAR_LIMITS.AZIMUT.MAX) {
+    azimut.value = SOLAR_LIMITS.AZIMUT.MAX;
+    target.value = SOLAR_LIMITS.AZIMUT.MAX.toString();
+  }
+  else if (value >= SOLAR_LIMITS.AZIMUT.MIN && value <= SOLAR_LIMITS.AZIMUT.MAX) {
+    azimut.value = value;
+  }
+};
+
+const handleAzimutBlur = () => {
+  if (azimut.value < SOLAR_LIMITS.AZIMUT.MIN) {
+    azimut.value = SOLAR_LIMITS.AZIMUT.MIN;
+  }
+  else if (azimut.value > SOLAR_LIMITS.AZIMUT.MAX) {
+    azimut.value = SOLAR_LIMITS.AZIMUT.MAX;
+  }
+};
 </script>
 
 <template>
@@ -150,7 +204,13 @@ const activateDrawing = () => {
               class="flex-1"
               placeholder="35"
               size="xl"
-            />
+              @input="handleInclinationInput"
+              @blur="handleInclinationBlur"
+            >
+              <template #trailing>
+                <span class="text-gray-500">°</span>
+              </template>
+            </UInput>
             <UButton
               variant="soft"
               size="xl"
@@ -173,7 +233,7 @@ const activateDrawing = () => {
           <label class="text-sm font-medium text-gray-700">
             Orientation (azimut)
           </label>
-          <div class="flex items-center gap-2">
+          <div class="flex flex-col md:flex-row items-center gap-2">
             <USelect
               v-model="azimut"
               :options="ORIENTATION_SUGGESTIONS"
@@ -188,9 +248,14 @@ const activateDrawing = () => {
               type="number"
               min="-180"
               max="180"
-              class="w-20"
               placeholder="0"
-            />
+              @input="handleAzimutInput"
+              @blur="handleAzimutBlur"
+            >
+              <template #trailing>
+                <span class="text-gray-500">°</span>
+              </template>
+            </UInput>
           </div>
           <p class="text-xs text-gray-500">
             0° = Sud, -90° = Est, 90° = Ouest

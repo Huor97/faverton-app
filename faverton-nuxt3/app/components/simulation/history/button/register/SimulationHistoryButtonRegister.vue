@@ -4,82 +4,32 @@ const props = defineProps<{
   surface?: number
 }>();
 
-interface SimulationHistoryResponse {
-  success: boolean
-}
-
 const user = useSupabaseUser();
-const isLoading = ref(false);
-const error = ref<string | null>(null);
-const success = ref(false);
 const saved = ref(true);
 
+const historyStore = useSimulationHistoryStore();
+
 async function saveToHistory() {
-  if (!props.simulationId) {
-    error.value = `Missing simulation ID`;
-    return;
-  }
+  if (!props.simulationId) return;
 
-  isLoading.value = true;
-  error.value = null;
-  success.value = false;
-
-  try {
-    const response = await $fetch<SimulationHistoryResponse>(`/api/simulation/history`, {
-      method: `POST`,
-      body: {
-        simulationId: props.simulationId,
-        history: saved.value,
-        surface: props.surface,
-        userId: user.value?.id,
-      },
-    });
-
-    if (response.success) {
-      success.value = true;
-      setTimeout(() => {
-        success.value = false;
-      }, 2000);
-    }
-    else {
-      error.value = `Error while updating`;
-    }
-  }
-  catch (err: unknown) {
-    if (err instanceof Error) {
-      error.value = err.message;
-    }
-    else {
-      error.value = `An error has occurred`;
-    }
-  }
-  finally {
-    isLoading.value = false;
-  }
+  await historyStore.addHistory({
+    simulationId: props.simulationId,
+    history: saved.value,
+    surface: props.surface,
+    userId: user.value?.id ?? null,
+  });
 }
 </script>
 
 <template>
   <UButton
-    :loading="isLoading"
-    :disabled="isLoading || success"
-    :color="success ? 'green' : 'primary'"
+    :loading="historyStore.isLoading"
+    :disabled="historyStore.isLoading || historyStore.success"
+    :color="historyStore.success ? 'green' : 'primary'"
     size="xl"
     class="w-64"
     @click="saveToHistory"
   >
-    <template v-if="!success">
-      Sauvegarder dans l'historique
-    </template>
-    <template v-else>
-      Sauvegardé ✓
-    </template>
+    {{ historyStore.success ? 'Sauvegardé ✓' : `Sauvegarder dans l'historique` }}
   </UButton>
-
-  <div
-    v-if="error"
-    class="mt-2 text-red-500 text-sm"
-  >
-    {{ error }}
-  </div>
 </template>
