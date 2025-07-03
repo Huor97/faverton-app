@@ -38,7 +38,7 @@ Veuillez vérifier votre boîte de réception et dossier courriers indésirables
 </script>
 
 <template>
-  <div class="flex flex-col justify-center h-screen items-center gap-3">
+  <div class="flex flex-col h-screen items-center gap-3">
     <div class="z-index-[999] fixed left-2 md:left-32 top-4">
       <UBreadcrumb
         :links="[{ label: 'Accueil', to: '/introduction' }, { label: 'Créer un compte' }]"
@@ -53,12 +53,15 @@ Veuillez vérifier votre boîte de réception et dossier courriers indésirables
         </template>
       </UBreadcrumb>
     </div>
+
+    <FavertonBanner />
+
     <h1>
       Créer un compte
     </h1>
 
     <form
-      class="gap-4 flex flex-col sm:w-1/4"
+      class="gap-4 flex flex-col w-full px-8 sm:px-0 sm:w-1/4"
       @submit.prevent="register"
     >
       <UInput
@@ -101,5 +104,7 @@ Veuillez vérifier votre boîte de réception et dossier courriers indésirables
         Accédez à votre espace
       </span>
     </NuxtLink>
+    <UDivider label="OU" />
+    <FavertonAuthFoot />
   </div>
 </template>

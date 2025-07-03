@@ -46,7 +46,7 @@ const login = async () => {
     </h1>
 
     <form
-      class="gap-4 flex flex-col sm:w-1/4"
+      class="gap-4 flex flex-col w-full px-8 sm:px-0 sm:w-1/4"
       @submit.prevent="login"
     >
       <UInput
@@ -93,5 +93,7 @@ const login = async () => {
         Inscrivez-vous
       </span>
     </NuxtLink>
+    <UDivider label="OU" />
+    <FavertonAuthFoot />
   </div>
 </template>
