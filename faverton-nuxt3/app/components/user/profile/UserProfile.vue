@@ -3,35 +3,35 @@ const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 
 definePageMeta({
-  middleware: [`auth`],
+  middleware: ['auth'],
 });
 
 const router = useRouter();
 const loading = ref(false);
-const username = ref(``);
+const username = ref('');
 const uploading = ref(false);
-const avatar_path = ref(``);
+const avatar_path = ref('');
 
 onMounted(async () => {
   try {
     loading.value = true;
     const { data, error } = await supabase
-      .from(`profiles`)
-      .select(`username, avatar_url`)
+      .from('profiles')
+      .select('username, avatar_url')
       // @ts-expect-error: user.value.id might be null
-      .eq(`id`, user.value.id)
+      .eq('id', user.value.id)
       .single();
 
     if (error) throw error;
 
     if (data) {
-      username.value = data.username ?? ``;
-      avatar_path.value = data.avatar_url ?? ``;
+      username.value = data.username ?? '';
+      avatar_path.value = data.avatar_url ?? '';
     }
   }
   catch (error) {
     // @ts-expect-error: error.message is a string
-    console.error(`Error fetching profile:`, error.message);
+    console.error('Error fetching profile:', error.message);
   }
   finally {
     loading.value = false;
@@ -41,7 +41,7 @@ onMounted(async () => {
 const updateProfile = async () => {
   try {
     loading.value = true;
-    if (!user.value) throw new Error(`Pas d'utilisateur`);
+    if (!user.value) throw new Error('Pas d\'utilisateur');
 
     const updates = {
       id: user.value.id,
@@ -51,8 +51,8 @@ const updateProfile = async () => {
     };
 
     // @ts-expect-error: user.value.id might be null
-    const { error } = await supabase.from(`profiles`).upsert(updates, {
-      returning: `minimal`, // Don't return the value after inserting
+    const { error } = await supabase.from('profiles').upsert(updates, {
+      returning: 'minimal', // Don't return the value after inserting
     });
     if (error) throw error;
   }
@@ -69,11 +69,11 @@ const signOut = async () => {
   try {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
-    router.push(`/introduction`);
+    router.push('/introduction');
   }
   catch (error) {
     // @ts-expect-error: error.message is a string
-    console.error(`Erreur lors de la déconnexion:`, error.message);
+    console.error('Erreur lors de la déconnexion:', error.message);
   }
   finally {
     loading.value = false;
@@ -84,7 +84,7 @@ const isSmallScreen = computed(() => isMobile);
 </script>
 
 <template>
-  <div class="bg-yellow-100 h-screen flex flex-col justify-center items-center">
+  <div class="h-screen flex flex-col justify-center items-center">
     <div
       class="z-[999] fixed top-4"
       :class="!isSmallScreen? 'left-32':'left-16'"

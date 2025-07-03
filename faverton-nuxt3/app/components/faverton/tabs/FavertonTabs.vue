@@ -27,7 +27,7 @@ const items = computed(() => [
 <template>
   <UTabs
     v-model="model"
-    class="m-0 px-6 mb-8"
+    class="m-0 px-2 md:px-6 mb-8"
     :items="items"
   >
     <template #default="{ item }">
