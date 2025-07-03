@@ -175,6 +175,7 @@ const handleAzimutBlur = () => {
         <UButton
           icon="i-heroicons-paint-brush-20-solid"
           label="Dessiner votre surface"
+          size="xl"
           @click="activateDrawing"
         />
         <UDivider
