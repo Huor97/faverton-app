@@ -56,6 +56,7 @@ const login = async () => {
         type="email"
         placeholder="Email"
         size="xl"
+        data-testid="login-email-input"
       />
       <UInput
         v-model="password"
@@ -64,11 +65,13 @@ const login = async () => {
         type="password"
         placeholder="Mot de passe"
         size="xl"
+        data-testid="login-password-input"
       />
       <div>
         <UButton
           label="Continuer"
           type="submit"
+          data-testid="login-submit-button"
         />
       </div>
     </form>
