@@ -1,9 +1,9 @@
 <script setup lang="ts">
 const supabase = useSupabaseClient();
 
-const email = ref(``);
-const password = ref(``);
-const message = ref(``);
+const email = ref('');
+const password = ref('');
+const message = ref('');
 const isSuccess = ref(false);
 const isSubmitting = ref(false);
 
@@ -27,9 +27,9 @@ Veuillez vérifier votre boîte de réception et dossier courriers indésirables
     }
   }
   catch (err) {
-    message.value = `Une erreur inattendue s'est produite`;
+    message.value = 'Une erreur inattendue s\'est produite';
     isSuccess.value = false;
-    console.error(`Erreur lors de l'inscription:`, err);
+    console.error('Erreur lors de l\'inscription:', err);
   }
   finally {
     isSubmitting.value = false;
@@ -38,7 +38,7 @@ Veuillez vérifier votre boîte de réception et dossier courriers indésirables
 </script>
 
 <template>
-  <div class="flex flex-col justify-center bg-yellow-100 h-screen items-center gap-3">
+  <div class="flex flex-col justify-center h-screen items-center gap-3">
     <div class="z-index-[999] fixed left-2 md:left-32 top-4">
       <UBreadcrumb
         :links="[{ label: 'Accueil', to: '/introduction' }, { label: 'Créer un compte' }]"
