@@ -100,7 +100,7 @@ const authPromptInfo = {
       <FavertonCard
         :class="[
           'transition-all duration-500 ease-in-out',
-          isMapVisible ? 'md:w-1/2' : 'md:w-full',
+          isMapVisible ? 'md:w-1/2' : 'md:w-full xl:px-96',
         ]"
       >
         <h1 class="text-xl text-center p-6">

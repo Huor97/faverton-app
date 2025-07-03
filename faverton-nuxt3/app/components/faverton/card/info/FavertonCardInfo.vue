@@ -6,14 +6,14 @@ defineProps<{
 </script>
 
 <template>
-  <div class="relative text-[#222222]">
+  <div class="relative text-[#000000]">
     <h2
-      class="absolute -left-2 -top-3 w-8 h-8 text-center rounded-full bg-[#FF7557] shadow-xl border border-white text-xl"
+      class="absolute -left-2 -top-3 w-8 h-8 text-center rounded-full bg-[#E4ECEE] shadow-xl border border-white text-xl"
     >
       {{ infoBol }}
     </h2>
     <div>
-      <p class=" text-sm md:text-base  bg-gradient-to-r from-[#FF7557]/70 to-[#FFE49E] rounded-2xl p-5">
+      <p class=" text-sm md:text-base  bg-gradient-to-r from-[#FEFEFE]/30 to-[#FFE49E] rounded-2xl p-5">
         {{ label }}
       </p>
     </div>
