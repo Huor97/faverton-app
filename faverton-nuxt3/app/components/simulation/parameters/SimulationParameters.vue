@@ -171,7 +171,7 @@ const handleAzimutBlur = () => {
         :label="info[2]?.label"
         :info-bol="info[2]?.infoBol"
       />
-      <div class="flex gap-2">
+      <div class="flex flex-col gap-2 md:flex-row">
         <UButton
           icon="i-heroicons-paint-brush-20-solid"
           label="Dessiner votre surface"
