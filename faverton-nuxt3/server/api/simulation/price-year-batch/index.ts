@@ -1,9 +1,10 @@
 import { serverSupabaseClient } from '#supabase/server';
 
+const EDF_PRICE = 0.1269;
+
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   const client = await serverSupabaseClient(event);
-  const EDF_PRICE = 0.1269;
 
   if (!body.simulations || !Array.isArray(body.simulations)) {
     return {
@@ -26,7 +27,7 @@ export default defineEventHandler(async (event) => {
         results[solarEnergyId] = { error: 'Paramètres invalides' };
         return;
       }
-      const HIGH_PERFORMANCE_PANEL = Number((panelEfficiency / 100).toFixed(2));
+      const highPerformancePanel = Math.round((panelEfficiency / 100) * 100) / 100;
 
       try {
         const { data: solarEnergy } = await client
@@ -40,7 +41,7 @@ export default defineEventHandler(async (event) => {
           return;
         }
 
-        const amountEurosPerYear = solarEnergy.yearly_energy * surfaceArea * EDF_PRICE * HIGH_PERFORMANCE_PANEL;
+        const amountEurosPerYear = solarEnergy.yearly_energy * surfaceArea * EDF_PRICE * highPerformancePanel;
 
         results[solarEnergyId] = {
           yearlyEnergy: solarEnergy.yearly_energy,
