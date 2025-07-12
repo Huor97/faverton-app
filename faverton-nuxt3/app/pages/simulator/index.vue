@@ -96,11 +96,11 @@ const authPromptInfo = {
         </template>
       </UBreadcrumb>
     </div>
-    <div class="flex flex-col-reverse md:flex-row">
+    <div class="flex flex-col-reverse lg:flex-row">
       <FavertonCard
         :class="[
           'transition-all duration-500 ease-in-out',
-          isMapVisible ? 'md:w-1/2' : 'md:w-full xl:px-96',
+          isMapVisible ? 'lg:w-1/2' : 'lg:w-full xl:px-96',
         ]"
       >
         <h1 class="text-xl text-center p-6">
@@ -145,7 +145,7 @@ const authPromptInfo = {
             'relative overflow-hidden',
             isResizing ? 'ring-2 ring-blue-400 ring-opacity-50' : '',
           ]"
-          class="md:w-1/2 rounded-lg shadow-lg my-10 mx-5 p-5 bg-gradient-to-br from-blue-50 to-green-50 border border-blue-200"
+          class="lg:w-1/2 rounded-lg shadow-lg my-10 mx-5 p-5 bg-gradient-to-br from-blue-50 to-green-50 border border-blue-200"
         >
           <!-- Indicateur de taille en haut à droite avec animation -->
           <Transition
