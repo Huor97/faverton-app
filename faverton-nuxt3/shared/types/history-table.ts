@@ -1,36 +1,28 @@
+import type { Panel } from './panel';
+
 export interface SimulationHistoryTable {
   $id: string
   historyList: HistoryList
 }
 
 export interface HistoryList {
-  simulations: Simulation[]
+  simulations: SimulationHistoryTable[]
 }
 
-export interface Simulation {
+export interface SimulationHistoryTable {
   simulation_id: string
   simulation_date: Date
   solar_energy_id: string
   panel_id: string
   user_id: string
   history: boolean
+  panel: Panel
+  solar_energy: SolarEnergyHistory
   surface: number
   updated_at: Date
-  panel: Panel
-  solar_energy: SolarEnergy
 }
 
-export interface Panel {
-  model: string
-  detail: string
-  company: string
-  country: string
-  panel_id: string
-  efficiency: number
-  panel_type_id: string
-}
-
-export interface SolarEnergy {
+export interface SolarEnergyHistory {
   city: string
   azimuth: number
   tilt_angle: number
