@@ -22,6 +22,7 @@
     "test:all": "pnpm test:unit && pnpm test:integration && pnpm test:e2e"
   },
   "dependencies": {
+    "@nuxt/icon": "2.2.1",
     "@nuxt/image": "^1.10.0",
     "@nuxt/ui": "^2.21.1",
     "@nuxtjs/cloudinary": "^4.0.0",
