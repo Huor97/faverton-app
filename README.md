@@ -379,6 +379,11 @@ pnpm run test:coverage
 # Tests en mode watch
 pnpm run test:watch
 ```
+```bash
+# Lancer un test spécifique
+pnpm test chemin/vers/fichier
+```
+
 
 ## 🔧 Troubleshooting
 
