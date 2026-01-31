@@ -1,24 +1,30 @@
-import { defineVitestConfig } from '@nuxt/test-utils/config';
+import { defineConfig } from 'vitest/config'
+import { defineVitestProject } from '@nuxt/test-utils/config'
 
-export default defineVitestConfig({
-  // any custom Vitest config you require
+export default defineConfig({
   test: {
-    environment: `nuxt`,
-    exclude: [`app/tests/e2e/**/*`],
-    globals: true,
-    environmentOptions: {
-      nuxt: {
-        mock: {
-          intersectionObserver: true,
-          indexedDb: true,
+    projects: [
+      {
+        test: {
+          name: 'unit',
+          include: ['test/unit/*.{test,spec}.ts'],
+          environment: 'node',
         },
       },
-    },
+      {
+        test: {
+          name: 'e2e',
+          include: ['test/e2e/*.{test,spec}.ts'],
+          environment: 'node',
+        },
+      },
+      await defineVitestProject({
+        test: {
+          name: 'nuxt',
+          include: ['test/nuxt/*.{test,spec}.ts'],
+          environment: 'nuxt',
+        },
+      }),
+    ],
   },
-  resolve: {
-    alias: {
-      '~/': new URL(`./app/`, import.meta.url).pathname,
-      '@/': new URL(`./app/`, import.meta.url).pathname,
-    },
-  },
-});
+})
