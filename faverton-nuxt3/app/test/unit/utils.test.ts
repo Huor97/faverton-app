@@ -1,0 +1,1 @@
+// NOTE: For unit testing in nuxt environment
