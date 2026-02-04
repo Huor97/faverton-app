@@ -1,1 +1,0 @@
-// NOTE: For components testing in nuxt environment
