@@ -1,1 +1,0 @@
-// NOTE: For composables testing in nuxt environment
